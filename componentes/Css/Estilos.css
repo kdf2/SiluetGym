@@ -1132,13 +1132,13 @@ bottom: 3rem;
     }
 
     .pricing__container{
-        padding-top: 1;
+        padding-top: 3rem;
         grid-template-columns: repeat(3, 320px);
     }
 
     .pricing__card{
-        padding: 2rem 1rem;
-        row-gap: 0;
+        padding: 2rem 3.5rem;
+        row-gap: 2.5rem;
     }
 
     .calculate__description{
@@ -1146,11 +1146,11 @@ bottom: 3rem;
     }
 
     .calculate__form{
-        width: 450px;
+        width: 505px;
     }
 
     .calculate__img{
-        width: 250px;
+        width: 300px;
     }
 
     .scrollup{
