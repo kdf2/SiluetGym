@@ -9,9 +9,15 @@ $idemple=$_SESSION["idempleado"];
 $atributo = "persona_idpersona";
 $sql = "SELECT $atributo FROM empleado WHERE idempleado='$idemple'";
 
+
+$idrol=$_SESSION["idrol"];
+$atributorol="nombre";
+$sqlrol = "SELECT $atributorol FROM rol WHERE idRol='$idrol'";
+$resultadorol= mysqli_query($conexion, $sqlrol);
+$filarol = mysqli_fetch_assoc($resultadorol);
+echo "El rol es: " . $filarol[$atributorol];
 // Ejecutar consulta
 $resultado = mysqli_query($conexion, $sql);
-
 // Obtener fila de resultados
 $fila = mysqli_fetch_assoc($resultado);
 
@@ -41,3 +47,11 @@ echo "El nombre es: " . $fila2[$atributo2];
     <a href="controladores/controlador_cerrarsession.php">salir</a>
 </body>
 </html>
+
+
+
+
+
+
+if($filarol[$atributorol]=="Administrativo"){?>
+<?php } ?>

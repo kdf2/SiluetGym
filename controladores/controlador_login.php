@@ -8,7 +8,8 @@ if(!empty($_POST["btningresar"])){
         if ($datos=$sql->fetch_object()) {
             $_SESSION["id"]=$datos->idusuario;
             $_SESSION["idempleado"]=$datos->empleado_idempleado;
-            header("location:admin.php");
+            $_SESSION["idrol"]=$datos->Rol_idRol;
+            header("location:dashboard.php");
         } else {
             '<div class="alert alert-success">Thank You!now please login </div>';
         }

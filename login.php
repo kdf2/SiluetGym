@@ -13,7 +13,7 @@
     <div class="container">
         <div class="login">
             <div class="content">
-                <img src="componentes/Imagenes/home.png" alt="">
+               <a href="index.html"><img   src="componentes/Imagenes/home.png" alt=""></a>
             </div>
             <div class="loginform">
                 <h1>Bienvenido</h1>
@@ -23,7 +23,7 @@
                     </div>
 
                     <div class="tbox">
-                        <i class="fa fa-lock"></i><input class="pass" type="password" placeholder="Contraseña"  name="contrasña">
+                        <i class="fa fa-lock" id="eye" onclick="mostrar()"></i><input id="Input"class="pass" type="password" placeholder="Contraseña"  name="contrasña">
                     </div>
                     <input class="btn" type="submit" name="btningresar" value="Iniciar sesión">
                 <?php
@@ -34,6 +34,17 @@
             </div>
         </div>
     </div>
-    <script src="componentes/Js/main.js"></script>
 </body>
 </html>
+
+<script type="text/javascript">
+    function mostrar(){
+        var tipo =document.getElementById("Input");
+        if(tipo.type=='password'){
+            tipo.type='text';
+        }
+        else{
+            tipo.type='password';
+        }
+    }
+</script>

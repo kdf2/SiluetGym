@@ -149,5 +149,3 @@ const sendEmail=(e) =>{
     }
 }
 contacForm.addEventListener('submit',sendEmail)
-
-
