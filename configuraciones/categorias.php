@@ -161,7 +161,7 @@ $resultadogastos = $conexion->query($sqlgastos);
                                 </a>
 
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                    <li><a class="dropdown-item" href="categorias.php">extras</a></li>
+                                    <li><a class="dropdown-item" href="categorias.php">Extras</a></li>
                                 </ul>
                             </div>
 

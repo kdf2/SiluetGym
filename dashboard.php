@@ -156,7 +156,7 @@ $filarol = mysqli_fetch_assoc($resultadorol);
                                 </a>
 
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                    <li><a class="dropdown-item" href="categoriaproductos/categorias.php">extras</a></li>
+                                    <li><a class="dropdown-item" href="configuraciones/categorias.php">Extras</a></li>
                                 </ul>
                             </div>
 
