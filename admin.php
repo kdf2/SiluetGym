@@ -47,11 +47,3 @@ echo "El nombre es: " . $fila2[$atributo2];
     <a href="controladores/controlador_cerrarsession.php">salir</a>
 </body>
 </html>
-
-
-
-
-
-
-if($filarol[$atributorol]=="Administrativo"){?>
-<?php } ?>
