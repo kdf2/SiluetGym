@@ -31,6 +31,9 @@ $resultadoprudctos = $conexion->query($sqlprudctos);
 
 $sqlgastos = "SELECT * FROM categoria";
 $resultadogastos = $conexion->query($sqlgastos);
+
+$sqlcargos = "SELECT * FROM cargo";
+$resultadocargos = $conexion->query($sqlcargos);
 ?>
 
 <!DOCTYPE html>
@@ -161,6 +164,7 @@ $resultadogastos = $conexion->query($sqlgastos);
                                 </a>
 
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <li><a class="dropdown-item" href="#">Usuarios</a></li>
                                     <li><a class="dropdown-item" href="categorias.php">Extras</a></li>
                                 </ul>
                             </div>
@@ -206,7 +210,7 @@ $resultadogastos = $conexion->query($sqlgastos);
                                             </td>
                                             <td>
                                                 <a href="#" class="btn btn-sm btn-warning" data-bs-toggle="modal"
-                                                    data-bs-target="#editaModal"
+                                                    data-bs-target="#editarModal"
                                                     data-bs-id="<?= $row['idcategoriaproduct']; ?>"><i
                                                         class="fa-solid fa-pen-to-square"></i> Editar</a>
 
@@ -251,12 +255,12 @@ $resultadogastos = $conexion->query($sqlgastos);
                                             </td>
                                             <td>
                                                 <a href="#" class="btn btn-sm btn-warning" data-bs-toggle="modal"
-                                                    data-bs-target="#editaModal"
+                                                    data-bs-target="#editarModalgastos"
                                                     data-bs-id="<?= $row2['idcategoria']; ?>"><i
                                                         class="fa-solid fa-pen-to-square"></i> Editar</a>
 
                                                 <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal"
-                                                    data-bs-target="#eliminaModal"
+                                                    data-bs-target="#eliminaModalg"
                                                     data-bs-id="<?= $row2['idcategoria']; ?>"><i
                                                         class="fa-solid fa-trash"></i></i> Eliminar</a>
                                             </td>
@@ -267,11 +271,11 @@ $resultadogastos = $conexion->query($sqlgastos);
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col">
+                        <div class="col ">
                             <h1 class="mt-4">Cargos existentes</h1>
                             <div class="col-sm-4">
                                 <a href="#" class="btn btn-primary" data-bs-toggle="modal"
-                                    data-bs-target="#nuevoModalgastos"><i class="fa-solid fa-circle-plus"></i> Agregar
+                                    data-bs-target="#nuevoModalcargos"><i class="fa-solid fa-circle-plus"></i> Agregar
                                     un cargo</a>
                             </div>
                             <table class="table table-sm table-striped table-hover mt-4">
@@ -284,26 +288,24 @@ $resultadogastos = $conexion->query($sqlgastos);
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php while ($row2 = $resultadogastos->fetch_assoc()) { ?>
+                                    <?php while ($row3 = $resultadocargos->fetch_assoc()) { ?>
                                         <tr>
                                             <td>
-                                                <?= $row2['idcategoria']; ?>
+                                                <?= $row3['idcargo']; ?>
                                             </td>
                                             <td>
-                                                <?= $row2['nombre']; ?>
+                                                <?= $row3['nombre']; ?>
                                             </td>
                                             <td>
-                                                <?= $row2['descripcion']; ?>
+                                                <?= $row3['descripcion']; ?>
                                             </td>
                                             <td>
                                                 <a href="#" class="btn btn-sm btn-warning" data-bs-toggle="modal"
-                                                    data-bs-target="#editaModal"
-                                                    data-bs-id="<?= $row2['idcategoria']; ?>"><i
+                                                    data-bs-target="#editarModalgargos" data-bs-id="<?= $row3['idcargo']; ?>"><i
                                                         class="fa-solid fa-pen-to-square"></i> Editar</a>
 
                                                 <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal"
-                                                    data-bs-target="#eliminaModal"
-                                                    data-bs-id="<?= $row2['idcategoria']; ?>"><i
+                                                    data-bs-target="#eliminarcargo" data-bs-id="<?= $row3['idcargo']; ?>"><i
                                                         class="fa-solid fa-trash"></i></i> Eliminar</a>
                                             </td>
                                         </tr>
@@ -311,53 +313,9 @@ $resultadogastos = $conexion->query($sqlgastos);
                                 </tbody>
                             </table>
                         </div>
-
-
-
                         <div class="col">
-                            <h1 class="mt-4">Usuarios</h1>
-                            <div class="col-sm-4">
-                                <a href="#" class="btn btn-primary" data-bs-toggle="modal"
-                                    data-bs-target="#nuevoModalgastos"><i class="fa-solid fa-circle-plus"></i> Agregar usuario</a>
-                            </div>
-                            <table class="table table-sm table-striped table-hover mt-4">
-                                <thead class="table-dark">
-                                    <tr>
-                                        <th>#id</th>
-                                        <th>Nombre</th>
-                                        <th>Descripción</th>
-                                        <th>Acciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php while ($row2 = $resultadogastos->fetch_assoc()) { ?>
-                                        <tr>
-                                            <td>
-                                                <?= $row2['idcategoria']; ?>
-                                            </td>
-                                            <td>
-                                                <?= $row2['nombre']; ?>
-                                            </td>
-                                            <td>
-                                                <?= $row2['descripcion']; ?>
-                                            </td>
-                                            <td>
-                                                <a href="#" class="btn btn-sm btn-warning" data-bs-toggle="modal"
-                                                    data-bs-target="#editaModal"
-                                                    data-bs-id="<?= $row2['idcategoria']; ?>"><i
-                                                        class="fa-solid fa-pen-to-square"></i> Editar</a>
 
-                                                <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal"
-                                                    data-bs-target="#eliminaModal"
-                                                    data-bs-id="<?= $row2['idcategoria']; ?>"><i
-                                                        class="fa-solid fa-trash"></i></i> Eliminar</a>
-                                            </td>
-                                        </tr>
-                                    <?php } ?>
-                                </tbody>
-                            </table>
                         </div>
-
                     </div>
                 </div>
             </main>
@@ -365,7 +323,109 @@ $resultadogastos = $conexion->query($sqlgastos);
     </div>
 
     <?php include 'nuevoModal.php' ?>
+    <?php include 'editarModal.php' ?>
+    <?php include 'eliminarModal.php' ?>
 
+
+    <script>
+        //producto
+        let editarModal = document.getElementById('editarModal')
+        let elimnarrModal = document.getElementById('eliminaModal')
+
+        //gastos
+        let editarModalgastos = document.getElementById('editarModalgastos')
+        let elimarModalgastos = document.getElementById('eliminaModalg')
+
+        //cargo
+        let editarModalcargo = document.getElementById('editarModalgargos')
+        let elimarModalcargo = document.getElementById('eliminarcargo')
+
+        //editartablaproductos
+        editarModal.addEventListener('shown.bs.modal', event => {
+            let button = event.relatedTarget
+            let id = button.getAttribute('data-bs-id')
+            let inputID = editarModal.querySelector('.modal-body #id')
+            let inputNombre = editarModal.querySelector('.modal-body #nombre')
+            let url = "getproducto.php"
+            let formData = new FormData()
+            formData.append('id', id)
+            fetch(url, {
+                method: "POST",
+                body: formData
+            }).then(response => response.json())
+                .then(data => {
+                    inputID.value = data.idcategoriaproduct
+                    inputNombre.value = data.nombre
+                }).catch(err => console.log(err))
+
+        })
+        //elimnartablaproductos
+        elimnarrModal.addEventListener('shown.bs.modal', event => {
+            let button = event.relatedTarget
+            let id = button.getAttribute('data-bs-id')
+            elimnarrModal.querySelector('.modal-footer #id').value = id
+        })
+
+        //editartablagastos
+        editarModalgastos.addEventListener('shown.bs.modal', event => {
+            let button = event.relatedTarget
+            let id = button.getAttribute('data-bs-id')
+            let inputID = editarModalgastos.querySelector('.modal-body #id')
+            let inputNombre = editarModalgastos.querySelector('.modal-body #nombre')
+            let inputDes = editarModalgastos.querySelector('.modal-body #descripcion')
+            let url = "getgasto.php"
+            let formData = new FormData()
+            formData.append('id', id)
+            fetch(url, {
+                method: "POST",
+                body: formData
+            }).then(response => response.json())
+                .then(data => {
+                    inputID.value = data.idcategoria
+                    inputNombre.value = data.nombre
+                    inputDes.value = data.descripcion
+                }).catch(err => console.log(err))
+
+
+        })
+
+        //elimnartablagasto
+        elimarModalgastos.addEventListener('shown.bs.modal', event => {
+            let button = event.relatedTarget
+            let id = button.getAttribute('data-bs-id')
+            elimarModalgastos.querySelector('.modal-footer #id').value = id
+        })
+
+
+         //editartablacargos
+         editarModalcargo.addEventListener('shown.bs.modal', event => {
+            let button = event.relatedTarget
+            let id = button.getAttribute('data-bs-id')
+            let inputID = editarModalcargo.querySelector('.modal-body #id')
+            let inputNombre = editarModalcargo.querySelector('.modal-body #nombre')
+            let inputDes = editarModalcargo.querySelector('.modal-body #descripcion')
+            let url = "getcargo.php"
+            let formData = new FormData()
+            formData.append('id', id)
+            fetch(url, {
+                method: "POST",
+                body: formData
+            }).then(response => response.json())
+                .then(data => {
+                    inputID.value = data.idcargo
+                    inputNombre.value = data.nombre
+                    inputDes.value = data.descripcion
+                }).catch(err => console.log(err))
+        })
+
+        elimarModalcargo.addEventListener('shown.bs.modal', event => {
+            let button = event.relatedTarget
+            let id = button.getAttribute('data-bs-id')
+            elimarModalcargo.querySelector('.modal-footer #id').value = id
+        })
+
+
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
         crossorigin="anonymous"></script>
     <script src="../componentes/Js/scripts.js"></script>
