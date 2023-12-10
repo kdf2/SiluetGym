@@ -7,4 +7,6 @@ $sql="UPDATE cargo SET nombre='$nombre', descripcion='$descripcion' WHERE idcarg
 if($conexion->query($sql)){
 }
 header('Location:categorias.php');
+
+
 ?>

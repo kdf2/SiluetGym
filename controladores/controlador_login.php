@@ -11,11 +11,11 @@ if(!empty($_POST["btningresar"])){
             $_SESSION["idrol"]=$datos->Rol_idRol;
             header("location:dashboard.php");
         } else {
-            '<div class="alert alert-success">Thank You!now please login </div>';
+            echo"verifique el usuario y contraseña";
         }
         
     } else {
-        echo "campos vacios";
+        echo"campos vacios";
     }
     
 }

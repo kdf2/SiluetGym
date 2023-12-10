@@ -301,7 +301,8 @@ $resultadocargos = $conexion->query($sqlcargos);
                                             </td>
                                             <td>
                                                 <a href="#" class="btn btn-sm btn-warning" data-bs-toggle="modal"
-                                                    data-bs-target="#editarModalgargos" data-bs-id="<?= $row3['idcargo']; ?>"><i
+                                                    data-bs-target="#editarModalgargos"
+                                                    data-bs-id="<?= $row3['idcargo']; ?>"><i
                                                         class="fa-solid fa-pen-to-square"></i> Editar</a>
 
                                                 <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal"
@@ -331,14 +332,40 @@ $resultadocargos = $conexion->query($sqlcargos);
         //producto
         let editarModal = document.getElementById('editarModal')
         let elimnarrModal = document.getElementById('eliminaModal')
+        let nuevoModal = document.getElementById('nuevoModal')
+        nuevoModal.addEventListener('shown.bs.modal', event => {
+            let inputNombre = nuevoModal.querySelector('.modal-body #nombre').focus()
+        })
+        nuevoModal.addEventListener('hide.bs.modal', event => {
+            let inputNombre = nuevoModal.querySelector('.modal-body #nombre').value = ""
+        })
+
 
         //gastos
         let editarModalgastos = document.getElementById('editarModalgastos')
         let elimarModalgastos = document.getElementById('eliminaModalg')
+        let nuevoModalgasto = document.getElementById('nuevoModalgastos')
+        nuevoModalgasto.addEventListener('shown.bs.modal', event => {
+            let inputNombre = nuevoModalgasto.querySelector('.modal-body #nombre').focus()
+        })
+        nuevoModalgasto.addEventListener('hide.bs.modal', event => {
+            let inputNombre = nuevoModalgasto.querySelector('.modal-body #nombre').value = ""
+            let inputDes = nuevoModalgasto.querySelector('.modal-body #descripcion').value = ""
+        })
 
         //cargo
         let editarModalcargo = document.getElementById('editarModalgargos')
         let elimarModalcargo = document.getElementById('eliminarcargo')
+        let nuevoModalcargo = document.getElementById('nuevoModalcargos')
+        nuevoModalcargo.addEventListener('shown.bs.modal', event => {
+            let inputNombre = nuevoModalcargo.querySelector('.modal-body #nombre').focus()
+        })
+        nuevoModalcargo.addEventListener('hide.bs.modal', event => {
+            let inputNombre = nuevoModalcargo.querySelector('.modal-body #nombre').value = ""
+            let inputDes = nuevoModalcargo.querySelector('.modal-body #descripcion').value = ""
+        })
+
+
 
         //editartablaproductos
         editarModal.addEventListener('shown.bs.modal', event => {
@@ -397,8 +424,8 @@ $resultadocargos = $conexion->query($sqlcargos);
         })
 
 
-         //editartablacargos
-         editarModalcargo.addEventListener('shown.bs.modal', event => {
+        //editartablacargos
+        editarModalcargo.addEventListener('shown.bs.modal', event => {
             let button = event.relatedTarget
             let id = button.getAttribute('data-bs-id')
             let inputID = editarModalcargo.querySelector('.modal-body #id')
