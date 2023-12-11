@@ -164,7 +164,7 @@ $resultadocargos = $conexion->query($sqlcargos);
                                 </a>
 
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                    <li><a class="dropdown-item" href="#">Usuarios</a></li>
+                                    <li><a class="dropdown-item" href="../usuarios/usuarios.php">Usuarios</a></li>
                                     <li><a class="dropdown-item" href="categorias.php">Extras</a></li>
                                 </ul>
                             </div>
