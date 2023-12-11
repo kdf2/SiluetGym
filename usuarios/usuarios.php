@@ -30,8 +30,8 @@ $filarol = mysqli_fetch_assoc($resultadorol);
 $sqlcargos = "SELECT idcargo, nombre,descripcion FROM cargo";
 $cargos = $conexion->query($sqlcargos);
 
-$sqlrol="SELECT idRol, nombre FROM rol";
-$roles=$conexion->query($sqlrol);
+$sqlrol = "SELECT idRol, nombre FROM rol";
+$roles = $conexion->query($sqlrol);
 ?>
 
 <!DOCTYPE html>
@@ -180,11 +180,11 @@ $roles=$conexion->query($sqlrol);
             <main>
                 <div class="container-fluid px-4 row justify-content-center">
                     <h1 class="d-flex justify-content-center">Usuarios</h1>
-                    <form action="Guardar.php" method="post">
+                    <form action="Guardar.php" method="post" id="formulariopersona">
                         <div class="row">
                             <div class="col">
                                 <label for="nombre">Nombre:</label>
-                                <input type="text" class="form-control" id="nombre" name="nombre"
+                                <input autofocus type="text" class="form-control" id="nombre" name="nombre"
                                     placeholder="Ingresa tu nombre">
                             </div>
                             <div class="col">
@@ -243,8 +243,8 @@ $roles=$conexion->query($sqlrol);
                                     <form action="guardarusuario.php" method="post">
                                         <div class="mb-3">
                                             <label for="usuario" class="form-label">Usuario:</label>
-                                            <input type="text" name="usuario" id="usuario" class="form-control"
-                                                required>
+                                            <input autofocus type="text" name="usuario" id="usuario"
+                                                class="form-control" required>
                                         </div>
 
                                         <div class="mb-3">
@@ -327,6 +327,12 @@ $roles=$conexion->query($sqlrol);
     $cargos = $conexion->query($sqlcargo);
     ?>
 
+    <script>
+        let nuevoModal = document.getElementById('nuevoModal')
+        nuevoModal.addEventListener('shown.bs.modal', event => {
+            let inputNombre = nuevoModal.querySelector('.modal-body #usuario').focus()
+        })
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
         crossorigin="anonymous"></script>
     <script src="../componentes/Js/scripts.js"></script>
@@ -358,7 +364,7 @@ $roles=$conexion->query($sqlrol);
                 <?php
             }
             ?>
-            
+
         });
     </script>
 </body>
