@@ -32,6 +32,19 @@ $cargos = $conexion->query($sqlcargos);
 
 $sqlrol = "SELECT idRol, nombre FROM rol";
 $roles = $conexion->query($sqlrol);
+
+//mostrar usuario con persona inner join
+$innerjoinusuarios = "SELECT usu.idusuario, usu.usuario, usu.contraseña,
+                            person.nombre,
+                            r.nombre AS nombre_rol
+                    FROM usuario usu 
+                    INNER JOIN empleado emple ON usu.empleado_idempleado= emple.idempleado
+                    INNER JOIN persona person ON emple.persona_idpersona=person.idpersona
+                    INNER JOIN rol r ON usu.Rol_idRol=r.idRol";
+
+$usuariosiner = $conexion->query($innerjoinusuarios);
+
+
 ?>
 
 <!DOCTYPE html>
@@ -148,7 +161,7 @@ $roles = $conexion->query($sqlrol);
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                 <li><a class="dropdown-item" href="#">Miembros</a></li>
                                 <li><a class="dropdown-item" href="#">Proveedores</a></li>
-                                <li><a class="dropdown-item" href="#">Empleados</a></li>
+                                <li><a class="dropdown-item" href="../personas/empleados.php">Empleados</a></li>
                             </ul>
                         </div>
 
@@ -180,7 +193,7 @@ $roles = $conexion->query($sqlrol);
             <main>
                 <div class="container-fluid px-4 row justify-content-center">
                     <h1 class="d-flex justify-content-center">Usuarios</h1>
-                    <form action="Guardar.php" method="post" id="formulariopersona">
+                    <form action="Guardar.php" method="post" id="formulariopersona" onsubmit="return validar()">
                         <div class="row">
                             <div class="col">
                                 <label for="nombre">Nombre:</label>
@@ -226,7 +239,7 @@ $roles = $conexion->query($sqlrol);
                         </div>
                         <br>
                         <button type="submit" class="btn btn-primary" name="submit_tabla1"><i
-                                class="fa-solid fa-floppy-disk"></i>&nbsp;Agregar nuevo
+                                class="fa-solid fa-floppy-disk" ></i>&nbsp;Agregar nuevo
                             usuario</button>
 
                     </form>
@@ -287,34 +300,45 @@ $roles = $conexion->query($sqlrol);
                             </tr>
                         </thead>
                         <tbody>
-                            <?php { ?>
+                            <?php while ($row_usuarios = $usuariosiner->fetch_assoc()) { ?>
+
                                 <tr>
                                     <td>
+                                        <?= $row_usuarios['idusuario']; ?>
+                                    </td>
+
+
+                                    <td>
+                                        <?= $row_usuarios['nombre']; ?>
                                     </td>
 
                                     <td>
+                                        <?= $row_usuarios['usuario']; ?>
                                     </td>
 
                                     <td>
+                                        <?= $row_usuarios['contraseña']; ?>
                                     </td>
 
                                     <td>
-                                    </td>
-
-                                    <td>
+                                        <?= $row_usuarios['nombre_rol']; ?>
                                     </td>
 
                                     <td>
                                         <a href="#" class="btn btn-sm btn-warning" data-bs-toggle="modal"
-                                            data-bs-target="#editarModalgargos" data-bs-id="<?= $row3['']; ?>"><i
+                                            data-bs-target="#editarModal"
+                                            data-bs-id="<?= $row_usuarios['idusuario']; ?>"><i
                                                 class="fa-solid fa-pen-to-square"></i> Editar</a>
 
                                         <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal"
-                                            data-bs-target="#eliminarcargo" data-bs-id="<?= $row3['']; ?>"><i
+                                            data-bs-target="#eliminaModal"
+                                            data-bs-id="<?= $row_usuarios['idusuario']; ?>"><i
                                                 class="fa-solid fa-trash"></i></i> Eliminar</a>
                                     </td>
                                 </tr>
                             <?php } ?>
+
+
                         </tbody>
                     </table>
 
@@ -322,15 +346,55 @@ $roles = $conexion->query($sqlrol);
             </main>
         </div>
     </div>
-    <?php
-    $sqlcargo = "SELECT idcargo, nombre, descripcion FROM cargo";
-    $cargos = $conexion->query($sqlcargo);
-    ?>
+    <?php include 'editarModalusuario.php';?>
+    <?php include 'eliminarModal.php';?>
+
 
     <script>
+        function validar() {
+ //obteniendo el valor que se puso en el campo text del formulario
+ var miCampoTexto = document.getElementById("nombre").value;
+ //la condición
+ if (miCampoTexto.length == 0 || /^\s+$/.test(miCampoTexto)) {
+     alert('NO puede dejar los campos vacios, ingrese los datos');
+     return false;
+ }}
+
+    //actualiza usuario
         let nuevoModal = document.getElementById('nuevoModal')
         nuevoModal.addEventListener('shown.bs.modal', event => {
             let inputNombre = nuevoModal.querySelector('.modal-body #usuario').focus()
+        })
+
+        let editarModal = document.getElementById('editarModal')
+        editarModal.addEventListener('shown.bs.modal', event => {
+            let button = event.relatedTarget
+            let id = button.getAttribute('data-bs-id')
+            let inputID = editarModal.querySelector('.modal-body #id')
+            let inputusuario = editarModal.querySelector('.modal-body #usuario')
+            let inputcontra = editarModal.querySelector('.modal-body #contrasenia')
+            let inputrol = editarModal.querySelector('.modal-body #rol')
+            let url = "getusuario.php"
+            let formData = new FormData()
+            formData.append('id', id)
+            fetch(url, {
+                method: "POST",
+                body: formData
+            }).then(response => response.json())
+                .then(data => {
+                    inputID.value = data.idusuario
+                    inputusuario.value=data.usuario
+                    inputcontra.value=data.contraseña
+                    inputrol.value=data.Rol_idRol
+                }).catch(err => console.log(err))
+
+        })
+        //elimina usuario
+        let eliminaModal = document.getElementById('eliminaModal')
+        eliminaModal.addEventListener('shown.bs.modal', event => {
+            let button = event.relatedTarget
+            let id = button.getAttribute('data-bs-id')
+            eliminaModal.querySelector('.modal-footer #id').value = id
         })
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"

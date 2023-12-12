@@ -19,7 +19,7 @@
                 <h1>Bienvenido</h1>
                 <form method="post">
                     <div class="tbox">
-                        <i class="fa fa-user"></i><input type="text" placeholder="Usuario" name="usuario">
+                        <i class="fa fa-user"></i><input autofocus type="text" placeholder="Usuario" name="usuario">
                     </div>
 
                     <div class="tbox">

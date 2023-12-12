@@ -1,8 +1,8 @@
 <?php
-require 'modelo/conexion.php';
+require '../modelo/conexion.php';
 session_start();
 if (empty($_SESSION["id"])) {
-    header("location:login.php");
+    header("location:../login.php");
 }
 $idemple = $_SESSION["idempleado"];
 $atributo = "persona_idpersona";
@@ -26,6 +26,16 @@ $sqlrol = "SELECT $atributorol FROM rol WHERE idRol='$idrol'";
 $resultadorol = mysqli_query($conexion, $sqlrol);
 $filarol = mysqli_fetch_assoc($resultadorol);
 
+$innerjoinempleados = "SELECT p.idpersona, p.nombre, p.telefono, p.direccion, p.correo,
+                            e.idempleado,
+                            c.nombre AS nombre_cargo
+                    FROM empleado e
+                    INNER JOIN persona p ON e.persona_idpersona= p.idpersona
+                    INNER JOIN cargo c ON e.cargo_idcargo=c.idcargo";
+
+$empleadosinner = $conexion->query($innerjoinempleados);
+
+
 ?>
 
 <!DOCTYPE html>
@@ -38,18 +48,21 @@ $filarol = mysqli_fetch_assoc($resultadorol);
     <meta name="description" content="" />
     <meta name="author" content="" />
     <title>Panel de control</title>
-    <link rel="shortcut icon" href="componentes/Imagenes/iconSG.ico">
+    <link rel="shortcut icon" href="../componentes/Imagenes/iconSG.ico">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
-    <link href="componentes/Css/styles.css" rel="stylesheet" />
+    <link href="../componentes/Css/styles.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
 </head>
 
 <body class="sb-nav-fixed">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         <!-- Navbar Brand-->
-        <a class="navbar-brand ps-3" href="dashboard.php">SiluetGym <i class="fa-solid fa-dumbbell"
+        <a class="navbar-brand ps-3" href="../dashboard.php">SiluetGym <i class="fa-solid fa-dumbbell"
                 style="color: #ffffff;"></i></a>
         <!-- Sidebar Toggle-->
         <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i
@@ -68,7 +81,7 @@ $filarol = mysqli_fetch_assoc($resultadorol);
                 <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown"
                     aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="controladores/controlador_cerrarsession.php">Cerrar sesión</a>
+                    <li><a class="dropdown-item" href="../controladores/controlador_cerrarsession.php">Cerrar sesión</a>
                     </li>
                 </ul>
             </li>
@@ -80,7 +93,7 @@ $filarol = mysqli_fetch_assoc($resultadorol);
                 <div class="sb-sidenav-menu">
                     <div class="nav">
                         <div class="sb-sidenav-menu-heading">Panel de control</div>
-                        <a class=" nav-link" href="dashboard.php" role="button" id="dropdownMenuLink"
+                        <a class=" nav-link" href="../dashboard.php" role="button" id="dropdownMenuLink"
                             aria-controls="collapseLayouts">
                             <i class="fa-solid fa-chart-line"></i> &nbsp; Panel de control
                         </a>
@@ -142,7 +155,7 @@ $filarol = mysqli_fetch_assoc($resultadorol);
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                 <li><a class="dropdown-item" href="#">Miembros</a></li>
                                 <li><a class="dropdown-item" href="#">Proveedores</a></li>
-                                <li><a class="dropdown-item" href="personas/empleados.php">Empleados</a></li>
+                                <li><a class="dropdown-item" href="empleados.php">Empleados</a></li>
                             </ul>
                         </div>
 
@@ -156,8 +169,8 @@ $filarol = mysqli_fetch_assoc($resultadorol);
                                 </a>
 
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                <li><a class="dropdown-item" href="usuarios/usuarios.php">Usuarios</a></li>
-                                    <li><a class="dropdown-item" href="configuraciones/categorias.php">Extras</a></li>
+                                    <li><a class="dropdown-item" href="../usuarios/usuarios.php">Usuarios</a></li>
+                                    <li><a class="dropdown-item" href="../configuraciones/categorias.php">Extras</a></li>
                                 </ul>
                             </div>
 
@@ -172,81 +185,138 @@ $filarol = mysqli_fetch_assoc($resultadorol);
         <!--empieza el dashboard -->
         <div id="layoutSidenav_content">
             <main>
-                <div class="container-fluid px-4">
-                    <h1 class="mt-4">Panel de control</h1>
-                    <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item active">Siluet Gym</li>
-                    </ol>
-                    <div class="row">
-                        <div class="col-xl-3 col-md-6">
-                            <div class="card bg-primary text-white mb-4">
-                                <div class="card-body">Primary Card</div>
-                                <div class="card-footer d-flex align-items-center justify-content-between">
-                                    <a class="small text-white stretched-link" href="#">View Details</a>
-                                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 col-md-6">
-                            <div class="card bg-warning text-white mb-4">
-                                <div class="card-body">Warning Card</div>
-                                <div class="card-footer d-flex align-items-center justify-content-between">
-                                    <a class="small text-white stretched-link" href="#">View Details</a>
-                                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 col-md-6">
-                            <div class="card bg-success text-white mb-4">
-                                <div class="card-body">Success Card</div>
-                                <div class="card-footer d-flex align-items-center justify-content-between">
-                                    <a class="small text-white stretched-link" href="#">View Details</a>
-                                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 col-md-6">
-                            <div class="card bg-danger text-white mb-4">
-                                <div class="card-body">Danger Card</div>
-                                <div class="card-footer d-flex align-items-center justify-content-between">
-                                    <a class="small text-white stretched-link" href="#">View Details</a>
-                                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xl-6">
-                            <div class="card mb-4">
-                                <div class="card-header">
-                                    <i class="fas fa-chart-area me-1"></i>
-                                    Area Chart Example
-                                </div>
-                                <div class="card-body"><canvas id="myAreaChart" width="100%" height="40"></canvas></div>
-                            </div>
-                        </div>
-                        <div class="col-xl-6">
-                            <div class="card mb-4">
-                                <div class="card-header">
-                                    <i class="fas fa-chart-bar me-1"></i>
-                                    Bar Chart Example
-                                </div>
-                                <div class="card-body"><canvas id="myBarChart" width="100%" height="40"></canvas></div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="container-fluid px-4 row justify-content-center">
+                    <h1 class="d-flex justify-content-center">Empleados</h1>
+
+                    <table id="example" class="table table-striped table-bordered" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>nombre</th>
+                                <th>telefono</th>
+                                <th>direccion</th>
+                                <th>correo</th>
+                                <th>cargo</th>
+                                <?php
+                                    if ($filarol[$atributorol] == "Administrativo") { ?>
+                                <th>Acciones</th>
+                                <?php } ?>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php while ($row_empleados = $empleadosinner->fetch_assoc()) { ?>
+                                <tr>
+                                    <td>
+                                        <?= $row_empleados['nombre']; ?>
+                                    </td>
+
+
+                                    <td>
+                                        <?= $row_empleados['telefono']; ?>
+                                    </td>
+
+                                    <td>
+                                        <?= $row_empleados['direccion']; ?>
+                                    </td>
+
+                                    <td>
+                                        <?= $row_empleados['correo']; ?>
+                                    </td>
+
+                                    <td>
+                                        <?= $row_empleados['nombre_cargo']; ?>
+                                    </td>
+
+                                    <?php
+                                    if ($filarol[$atributorol] == "Administrativo") { ?>
+                                        <td>
+                                            
+                                            <a href="#" class="btn btn-sm btn-warning" data-bs-toggle="modal"
+                                                data-bs-target="#editarModal"
+                                                data-bs-id="<?= $row_empleados['idpersona']; ?>" > Editar</a>
+
+                                            <a href="../usuarios/usuarios.php" class="btn btn-sm btn-danger"
+                                                data-bs-toggle="modal" class="fa-solid fa-trash"></i></i> Eliminar</a>
+
+                                        </td>
+                                    <?php } ?>
+                                </tr>
+                            <?php } ?>
+                        </tbody>
+                    </table>
+                </div>
             </main>
         </div>
     </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap4.min.js"></script>
+
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
         crossorigin="anonymous"></script>
-    <script src="componentes/Js/scripts.js"></script>
+    <script src="../componentes/Js/scripts.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-    <script src="componentes/Js/demo/chart-area-demo.js"></script>
-    <script src="componentes/Js/demo/chart-bar-demo.js"></script>
+    <script src="../componentes/Js/demo/chart-area-demo.js"></script>
+    <script src="../componentes/Js/demo/chart-bar-demo.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
         crossorigin="anonymous"></script>
-    <script src="componentes/Js/datatables-simple-demo.js"></script>
+    <script src="../componentes/Js/datatables-simple-demo.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+    <script>
+
+        var table = new DataTable('#example', {
+            language: {
+                url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json',
+            },
+        });
+    </script>
+    <?php include 'editarModalpersonas.php'?>
+    <script>
+        let nuevoModal = document.getElementById('editarModal')
+        nuevoModal.addEventListener('shown.bs.modal', event => {
+            let inputNombre = nuevoModal.querySelector('.modal-body #nombre').focus()
+        })
+
+        let editarModal = document.getElementById('editarModal')
+        editarModal.addEventListener('shown.bs.modal', event => {
+            let button = event.relatedTarget
+            let id = button.getAttribute('data-bs-id')
+            let inputID = editarModal.querySelector('.modal-body #id')
+            let inputNombre = editarModal.querySelector('.modal-body #nombre')
+            let inputtelefono = editarModal.querySelector('.modal-body #telefono')
+            let inputdireccion = editarModal.querySelector('.modal-body #direccion')
+            let inputcorreo = editarModal.querySelector('.modal-body #correo')
+            let inputcargo = editarModal.querySelector('.modal-body #cargo')
+ 
+            let url = "getempleado.php"
+            let formData = new FormData()
+            formData.append('id', id)
+            fetch(url, {
+                method: "POST",
+                body: formData
+            }).then(response => response.json())
+                .then(data => {
+                    inputID.value = data.idpersona
+                    inputNombre.value=data.nombre
+                    inputtelefono.value=data.telefono
+                    inputdireccion.value=data.direccion
+                    inputcorreo.value=data.correo
+                    inputcargo.value=data.idcargo
+                }).catch(err => console.log(err))
+
+        })
+    </script>
 </body>
 
 </html>

@@ -150,7 +150,7 @@ $resultadocargos = $conexion->query($sqlcargos);
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                 <li><a class="dropdown-item" href="#">Miembros</a></li>
                                 <li><a class="dropdown-item" href="#">Proveedores</a></li>
-                                <li><a class="dropdown-item" href="#">Empleados</a></li>
+                                <li><a class="dropdown-item" href="../personas/empleados.php">Empleados</a></li>
                             </ul>
                         </div>
 
@@ -372,7 +372,7 @@ $resultadocargos = $conexion->query($sqlcargos);
             let button = event.relatedTarget
             let id = button.getAttribute('data-bs-id')
             let inputID = editarModal.querySelector('.modal-body #id')
-            let inputNombre = editarModal.querySelector('.modal-body #nombre')
+            let inputusuario = editarModal.querySelector('.modal-body #nombre')
             let url = "getproducto.php"
             let formData = new FormData()
             formData.append('id', id)
@@ -381,8 +381,9 @@ $resultadocargos = $conexion->query($sqlcargos);
                 body: formData
             }).then(response => response.json())
                 .then(data => {
-                    inputID.value = data.idcategoriaproduct
-                    inputNombre.value = data.nombre
+                    inputID.value = data.idusuario
+                    inputusuario.value = data.nombre
+
                 }).catch(err => console.log(err))
 
         })
