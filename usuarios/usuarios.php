@@ -160,7 +160,7 @@ $usuariosiner = $conexion->query($innerjoinusuarios);
 
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                 <li><a class="dropdown-item" href="#">Miembros</a></li>
-                                <li><a class="dropdown-item" href="#">Proveedores</a></li>
+                                <li><a class="dropdown-item" href="../personas/proveedores.php">Proveedores</a></li>
                                 <li><a class="dropdown-item" href="../personas/empleados.php">Empleados</a></li>
                             </ul>
                         </div>

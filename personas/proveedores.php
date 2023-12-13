@@ -26,14 +26,12 @@ $sqlrol = "SELECT $atributorol FROM rol WHERE idRol='$idrol'";
 $resultadorol = mysqli_query($conexion, $sqlrol);
 $filarol = mysqli_fetch_assoc($resultadorol);
 
-$innerjoinempleados = "SELECT p.idpersona, p.nombre, p.telefono, p.direccion, p.correo,
-                            e.idempleado,
-                            c.nombre AS nombre_cargo
-                    FROM empleado e
-                    INNER JOIN persona p ON e.persona_idpersona= p.idpersona
-                    INNER JOIN cargo c ON e.cargo_idcargo=c.idcargo";
+$innerjoineproveedor = "SELECT p.idpersona, p.nombre, p.telefono, p.direccion, p.correo,
+                            pro.idproveedor,pro.nombredelaempresa
+                    FROM proveedor pro
+                    INNER JOIN persona p ON pro.persona_idpersona= p.idpersona";
 
-$empleadosinner = $conexion->query($innerjoinempleados);
+$proveedoresinner = $conexion->query($innerjoineproveedor);
 
 
 ?>
@@ -154,7 +152,7 @@ $empleadosinner = $conexion->query($innerjoinempleados);
 
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                 <li><a class="dropdown-item" href="#">Miembros</a></li>
-                                <li><a class="dropdown-item" href="proveedores.php">Proveedores</a></li>
+                                <li><a class="dropdown-item" href="#">Proveedores</a></li>
                                 <li><a class="dropdown-item" href="empleados.php">Empleados</a></li>
                             </ul>
                         </div>
@@ -186,13 +184,13 @@ $empleadosinner = $conexion->query($innerjoinempleados);
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4 row justify-content-center">
-                    <h1 class="d-flex justify-content-center">Empleados</h1>
+                    <h1 class="d-flex justify-content-center">Proveedores</h1>
                     <?php
                     if ($filarol[$atributorol] == "Administrativo") { ?>
                         <div class="col align-self-start">
-                            <a href="../usuarios/usuarios.php" class="btn btn-primary" ><i
+                            <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nuevoModal"><i
                                     class="fa-solid fa-circle-plus"></i> Agregar
-                                empleado</a>
+                                proveedor</a>
                         </div>
 
                     <?php } ?>
@@ -201,11 +199,12 @@ $empleadosinner = $conexion->query($innerjoinempleados);
                     <table id="example" class="table table-striped table-bordered" style="width:100%">
                         <thead>
                             <tr>
+                            <th>nombre de la empresa</th>
                                 <th>nombre</th>
                                 <th>telefono</th>
                                 <th>direccion</th>
                                 <th>correo</th>
-                                <th>cargo</th>
+                                
                                 <?php
                                 if ($filarol[$atributorol] == "Administrativo") { ?>
                                     <th>Acciones</th>
@@ -213,27 +212,27 @@ $empleadosinner = $conexion->query($innerjoinempleados);
                             </tr>
                         </thead>
                         <tbody>
-                            <?php while ($row_empleados = $empleadosinner->fetch_assoc()) { ?>
+                            <?php while ($row_provedores = $proveedoresinner->fetch_assoc()) { ?>
                                 <tr>
                                     <td>
-                                        <?= $row_empleados['nombre']; ?>
+                                        <?= $row_provedores['nombredelaempresa']; ?>
                                     </td>
 
 
                                     <td>
-                                        <?= $row_empleados['telefono']; ?>
+                                        <?= $row_provedores['nombre']; ?>
                                     </td>
 
                                     <td>
-                                        <?= $row_empleados['direccion']; ?>
+                                        <?= $row_provedores['telefono']; ?>
                                     </td>
 
                                     <td>
-                                        <?= $row_empleados['correo']; ?>
+                                        <?= $row_provedores['direccion']; ?>
                                     </td>
 
                                     <td>
-                                        <?= $row_empleados['nombre_cargo']; ?>
+                                        <?= $row_provedores['correo']; ?>
                                     </td>
 
                                     <?php
@@ -241,11 +240,12 @@ $empleadosinner = $conexion->query($innerjoinempleados);
                                         <td>
 
                                             <a href="#" class="btn btn-sm btn-warning" data-bs-toggle="modal"
-                                                data-bs-target="#editarModal" data-bs-id="<?= $row_empleados['idpersona']; ?>">
+                                                data-bs-target="#actualizarModal" data-bs-id="<?= $row_provedores['idproveedor']; ?>">
                                                 Editar</a>
 
-                                            <a href="../usuarios/usuarios.php" class="btn btn-sm btn-danger"
-                                                data-bs-toggle="modal" class="fa-solid fa-trash"></i></i> Eliminar</a>
+                                            <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal"
+                                                data-bs-target="#eliminaModal" data-bs-id="<?= $row_provedores['idproveedor']; ?>"
+                                                data-bs-toggle="modal" class="fa-solid fa-trash" ></i></i> Eliminar</a>
 
                                         </td>
                                     <?php } ?>
@@ -291,25 +291,27 @@ $empleadosinner = $conexion->query($innerjoinempleados);
             },
         });
     </script>
-    <?php include 'editarModalpersonas.php' ?>
+    <?php include 'proveedoresModal.php' ?>
     <script>
-        let nuevoModal = document.getElementById('editarModal')
+        let nuevoModal = document.getElementById('nuevoModal')
         nuevoModal.addEventListener('shown.bs.modal', event => {
-            let inputNombre = nuevoModal.querySelector('.modal-body #nombre').focus()
+            let inputNombre = nuevoModal.querySelector('.modal-body #nombree').focus()
         })
 
-        let editarModal = document.getElementById('editarModal')
+        let editarModal = document.getElementById('actualizarModal')
         editarModal.addEventListener('shown.bs.modal', event => {
             let button = event.relatedTarget
             let id = button.getAttribute('data-bs-id')
             let inputID = editarModal.querySelector('.modal-body #id')
+            let inputNombreempresa = editarModal.querySelector('.modal-body #nombree')
             let inputNombre = editarModal.querySelector('.modal-body #nombre')
+            let inputgenero = editarModal.querySelector('.modal-body #genero')
             let inputtelefono = editarModal.querySelector('.modal-body #telefono')
             let inputdireccion = editarModal.querySelector('.modal-body #direccion')
             let inputcorreo = editarModal.querySelector('.modal-body #correo')
-            let inputcargo = editarModal.querySelector('.modal-body #cargo')
 
-            let url = "getempleado.php"
+
+            let url = "getproveedor.php"
             let formData = new FormData()
             formData.append('id', id)
             fetch(url, {
@@ -317,14 +319,22 @@ $empleadosinner = $conexion->query($innerjoinempleados);
                 body: formData
             }).then(response => response.json())
                 .then(data => {
-                    inputID.value = data.idpersona
+                    inputID.value = data.idproveedor
+                    inputNombreempresa.value=data.nombredelaempresa
                     inputNombre.value = data.nombre
+                    inputgenero.value=data.genero
                     inputtelefono.value = data.telefono
                     inputdireccion.value = data.direccion
                     inputcorreo.value = data.correo
-                    inputcargo.value = data.idcargo
                 }).catch(err => console.log(err))
 
+        })
+
+        let eliminaModal = document.getElementById('eliminaModal')
+        eliminaModal.addEventListener('shown.bs.modal', event => {
+            let button = event.relatedTarget
+            let id = button.getAttribute('data-bs-id')
+            eliminaModal.querySelector('.modal-footer #id').value = id
         })
     </script>
 </body>
