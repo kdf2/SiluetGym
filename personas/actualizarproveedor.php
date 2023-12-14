@@ -23,9 +23,8 @@ $genero = $conexion->real_escape_string($_POST['genero']);
 $telefono = $conexion->real_escape_string($_POST['telefono']);
 $direccion = $conexion->real_escape_string($_POST['direccion']);
 $correo = $conexion->real_escape_string($_POST['correo']);
-$sql = "UPDATE proveedor, persona SET proveedor.nombredelaempresa='$nombreempresa',
+echo $sql = "UPDATE proveedor, persona SET proveedor.nombredelaempresa='$nombreempresa',
 persona.nombre='$nombre',persona.genero='$genero', persona.telefono=$telefono, persona.direccion='$direccion',persona.correo='$correo' WHERE idproveedor= $id AND idpersona = $idpesona";
-
 
 if ($conexion->query($sql)) {
 }

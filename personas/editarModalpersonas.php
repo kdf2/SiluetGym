@@ -3,7 +3,6 @@ require '../modelo/conexion.php';
 $sqlcargo = "SELECT idcargo, nombre FROM cargo";
 $cargos = $conexion->query($sqlcargo);
 ?>
-
 <div class="modal fade" id="editarModal" tabindex="-1" role="dialog" aria-labelledby="editarModallLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">

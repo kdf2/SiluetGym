@@ -153,7 +153,7 @@ $empleadosinner = $conexion->query($innerjoinempleados);
                             </a>
 
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                <li><a class="dropdown-item" href="#">Miembros</a></li>
+                                <li><a class="dropdown-item" href="miembros.php">Miembros</a></li>
                                 <li><a class="dropdown-item" href="proveedores.php">Proveedores</a></li>
                                 <li><a class="dropdown-item" href="empleados.php">Empleados</a></li>
                             </ul>
@@ -199,7 +199,7 @@ $empleadosinner = $conexion->query($innerjoinempleados);
                     <br>
                     <br>
                     <table id="example" class="table table-striped table-bordered" style="width:100%">
-                        <thead>
+                        <thead class="table-dark">
                             <tr>
                                 <th>nombre</th>
                                 <th>telefono</th>
@@ -292,6 +292,9 @@ $empleadosinner = $conexion->query($innerjoinempleados);
         });
     </script>
     <?php include 'editarModalpersonas.php' ?>
+    <?php
+$cargos->data_seek(0);
+?>
     <script>
         let nuevoModal = document.getElementById('editarModal')
         nuevoModal.addEventListener('shown.bs.modal', event => {
