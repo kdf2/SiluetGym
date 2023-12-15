@@ -25,17 +25,18 @@ $atributorol = "nombre";
 $sqlrol = "SELECT $atributorol FROM rol WHERE idRol='$idrol'";
 $resultadorol = mysqli_query($conexion, $sqlrol);
 $filarol = mysqli_fetch_assoc($resultadorol);
+$_SESSION["nombrepersona"]=$fila2[$atributo2];
+$innerjoingasto = "SELECT usuario.idusuario,
+                             categoria.idcategoria, categoria.nombre as nombre_cateogoria,
+                            gasto.idgasto, gasto.cantidad,	gasto.fecha, gasto.usuario_idusuario, gasto.categoria_idcategoria, gasto.Nombrepersona
+                    FROM gasto
+                    INNER JOIN usuario ON gasto.usuario_idusuario= usuario.idusuario
+                    INNER JOIN categoria ON gasto.categoria_idcategoria=categoria.idcategoria";
 
-$innerjoineproveedor = "SELECT p.idpersona, p.nombre, p.telefono, p.direccion, p.correo,
-                            pro.idproveedor,pro.nombredelaempresa
-                    FROM proveedor pro
-                    INNER JOIN persona p ON pro.persona_idpersona= p.idpersona";
-
-$proveedoresinner = $conexion->query($innerjoineproveedor);
+$gastoinner = $conexion->query($innerjoingasto);
 
 
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -52,7 +53,6 @@ $proveedoresinner = $conexion->query($innerjoineproveedor);
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="../componentes/Css/styles.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="<../../assets/template/datatables.net-bs/css/responsive.dataTables.min.css">
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" rel="stylesheet" />
     <link href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
@@ -137,9 +137,9 @@ $proveedoresinner = $conexion->query($innerjoineproveedor);
                             </a>
 
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                <li><a class="dropdown-item" href="../gastos/gasto.php">Realizar gasto</a></li>
-                                <li><a class="dropdown-item" href="../gastos/informe.php">Informe</a></li>
-                                
+                                <li><a class="dropdown-item" href="gasto.php">Realizar gasto</a></li>
+                                <li><a class="dropdown-item" href="informe.php">Informe</a></li>
+                               
                             </ul>
                         </div>
 
@@ -152,9 +152,9 @@ $proveedoresinner = $conexion->query($innerjoineproveedor);
                             </a>
 
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                <li><a class="dropdown-item" href="miembros.php">Miembros</a></li>
-                                <li><a class="dropdown-item" href="proveedores.php">Proveedores</a></li>
-                                <li><a class="dropdown-item" href="empleados.php">Empleados</a></li>
+                                <li><a class="dropdown-item" href="../personas/miembros.php">Miembros</a></li>
+                                <li><a class="dropdown-item" href="../personas/proveedores.php">Proveedores</a></li>
+                                <li><a class="dropdown-item" href="../personas/empleados.php">Empleados</a></li>
                             </ul>
                         </div>
 
@@ -185,74 +185,54 @@ $proveedoresinner = $conexion->query($innerjoineproveedor);
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4 row justify-content-center">
-                    <h1 class="d-flex justify-content-center">Proveedores</h1>
-                    <?php
-                    if ($filarol[$atributorol] == "Administrativo") { ?>
-                        <div class="col align-self-start">
-                            <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nuevoModal"><i
-                                    class="fa-solid fa-circle-plus"></i> Agregar
-                                proveedor</a>
-                        </div>
-
-                    <?php } ?>
+                    <h1 class="d-flex justify-content-center">Gastos</h1>
+                    <div class="col align-self-start">
+                        <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nuevoModal"><i
+                                class="fa-solid fa-circle-plus"></i> Agregar
+                            gasto</a>
+                    </div>
                     <br>
                     <br>
-                    <table id="example" class="table table-striped table-bordered display responsive nowrap"
-                        style="width:100%">
+                    <table id="example" class="table table-striped table-bordered" style="width:100%">
                         <thead class="table-dark">
                             <tr>
-                                <th>nombre de la empresa</th>
                                 <th>nombre</th>
-                                <th>telefono</th>
-                                <th>direccion</th>
-                                <th>correo</th>
-
-                                <?php
-                                if ($filarol[$atributorol] == "Administrativo") { ?>
-                                    <th>Acciones</th>
-                                <?php } ?>
+                                <th>fecha</th>
+                                <th>categoria</th>
+                                <th>cantidad</th>
+                                <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php while ($row_provedores = $proveedoresinner->fetch_assoc()) { ?>
+                            <?php while ($row_gasto = $gastoinner->fetch_assoc()) { ?>
                                 <tr>
                                     <td>
-                                        <?= $row_provedores['nombredelaempresa']; ?>
+                                        <?= $row_gasto['Nombrepersona']; ?>
                                     </td>
 
 
                                     <td>
-                                        <?= $row_provedores['nombre']; ?>
+                                    <?= $row_gasto['fecha']; ?>
                                     </td>
 
                                     <td>
-                                        <?= $row_provedores['telefono']; ?>
+                                    <?= $row_gasto['nombre_cateogoria']; ?>
                                     </td>
 
                                     <td>
-                                        <?= $row_provedores['direccion']; ?>
+                                    <?= $row_gasto['cantidad']; ?>
                                     </td>
-
                                     <td>
-                                        <?= $row_provedores['correo']; ?>
+
+                                        <a href="#" class="btn btn-sm btn-warning" data-bs-toggle="modal"
+                                            data-bs-target="#actualizarModal" data-bs-id="<?= $row_gasto['idgasto']; ?>">
+                                            Editar</a>
+
+                                        <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal"
+                                            data-bs-target="#eliminaModal" data-bs-id="<?= $row_gasto['idgasto']; ?>"
+                                             class="fa-solid fa-trash"></i></i> Eliminar</a>
+
                                     </td>
-
-                                    <?php
-                                    if ($filarol[$atributorol] == "Administrativo") { ?>
-                                        <td>
-
-                                            <a href="#" class="btn btn-sm btn-warning" data-bs-toggle="modal"
-                                                data-bs-target="#actualizarModal"
-                                                data-bs-id="<?= $row_provedores['idproveedor']; ?>">
-                                                Editar</a>
-
-                                            <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal"
-                                                data-bs-target="#eliminaModal"
-                                                data-bs-id="<?= $row_provedores['idproveedor']; ?>" data-bs-toggle="modal"
-                                                class="fa-solid fa-trash"></i></i> Eliminar</a>
-
-                                        </td>
-                                    <?php } ?>
                                 </tr>
                             <?php } ?>
                         </tbody>
@@ -266,7 +246,6 @@ $proveedoresinner = $conexion->query($innerjoineproveedor);
     <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap4.min.js"></script>
-    <script src="<../../assets/template/datatables.net/js/dataTables.responsive.min.js"></script>
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
@@ -289,33 +268,33 @@ $proveedoresinner = $conexion->query($innerjoineproveedor);
         crossorigin="anonymous"></script>
 
     <script>
+
         var table = new DataTable('#example', {
             language: {
                 url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json',
             },
         });
+
+        
     </script>
-    <?php include 'proveedoresModal.php' ?>
+     <?php include 'gastoModal.php' ?>
+  
     <script>
-        let nuevoModal = document.getElementById('nuevoModal')
+    let nuevoModal = document.getElementById('nuevoModal')
         nuevoModal.addEventListener('shown.bs.modal', event => {
-            let inputNombre = nuevoModal.querySelector('.modal-body #nombree').focus()
+            let inputcantidad = nuevoModal.querySelector('.modal-body #cantidad').focus()
         })
+
 
         let editarModal = document.getElementById('actualizarModal')
         editarModal.addEventListener('shown.bs.modal', event => {
             let button = event.relatedTarget
             let id = button.getAttribute('data-bs-id')
             let inputID = editarModal.querySelector('.modal-body #id')
-            let inputNombreempresa = editarModal.querySelector('.modal-body #nombree')
-            let inputNombre = editarModal.querySelector('.modal-body #nombre')
-            let inputgenero = editarModal.querySelector('.modal-body #genero')
-            let inputtelefono = editarModal.querySelector('.modal-body #telefono')
-            let inputdireccion = editarModal.querySelector('.modal-body #direccion')
-            let inputcorreo = editarModal.querySelector('.modal-body #correo')
-
-
-            let url = "getproveedor.php"
+            let inputcantidad = editarModal.querySelector('.modal-body #cantidad')
+            let inputfecha = editarModal.querySelector('.modal-body #fecha')
+            let inputcategoria = editarModal.querySelector('.modal-body #categoria')
+            let url = "getgasto.php"
             let formData = new FormData()
             formData.append('id', id)
             fetch(url, {
@@ -323,13 +302,10 @@ $proveedoresinner = $conexion->query($innerjoineproveedor);
                 body: formData
             }).then(response => response.json())
                 .then(data => {
-                    inputID.value = data.idproveedor
-                    inputNombreempresa.value = data.nombredelaempresa
-                    inputNombre.value = data.nombre
-                    inputgenero.value = data.genero
-                    inputtelefono.value = data.telefono
-                    inputdireccion.value = data.direccion
-                    inputcorreo.value = data.correo
+                    inputID.value = data.idgasto
+                    inputcantidad.value=data.cantidad
+                    inputfecha.value=data.fecha
+                    inputcategoria.value=data.categoria_idcategoria
                 }).catch(err => console.log(err))
 
         })

@@ -133,9 +133,8 @@ $resultadocargos = $conexion->query($sqlcargos);
                             </a>
 
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                <li><a class="dropdown-item" href="#">Realizar gasto</a></li>
-                                <li><a class="dropdown-item" href="#">Informe</a></li>
-                                <li><a class="dropdown-item" href="#">Reporte</a></li>
+                                <li><a class="dropdown-item" href="../gastos/gasto.php">Realizar gasto</a></li>
+                                <li><a class="dropdown-item" href="../gastos/informe.php">Informe</a></li>
                             </ul>
                         </div>
 
