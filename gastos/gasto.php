@@ -138,7 +138,9 @@ $gastoinner = $conexion->query($innerjoingasto);
 
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                 <li><a class="dropdown-item" href="gasto.php">Realizar gasto</a></li>
-                                <li><a class="dropdown-item" href="informe.php">Informe</a></li>
+                                <?php if ($filarol[$atributorol] == "Administrativo") { ?>
+                                    <li><a class="dropdown-item" href="informe.php">Informe</a></li>
+                                <?php } ?>
                                
                             </ul>
                         </div>

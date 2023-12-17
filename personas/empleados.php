@@ -139,7 +139,9 @@ $empleadosinner = $conexion->query($innerjoinempleados);
 
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                 <li><a class="dropdown-item" href="../gastos/gasto.php">Realizar gasto</a></li>
-                                <li><a class="dropdown-item" href="../gastos/informe.php">Informe</a></li>
+                                <?php if ($filarol[$atributorol] == "Administrativo") { ?>
+                                    <li><a class="dropdown-item" href="../gastos/informe.php">Informe</a></li>
+                                <?php } ?>
                                 
                             </ul>
                         </div>

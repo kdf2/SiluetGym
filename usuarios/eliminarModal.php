@@ -22,3 +22,28 @@
         </div>
     </div>
 </div>
+
+<!-- Modal elimina registro -->
+<div class="modal fade" id="eliminaModal2" tabindex="-1" aria-labelledby="eliminaModal2Label" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="eliminaModa2lLabel">Aviso</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Lo siento, tienes que llenar todos los campos. 
+            </div>
+
+            <div class="modal-footer">
+                <form action="elimina.php" method="post">
+
+                    <input type="hidden" name="id" id="id">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>

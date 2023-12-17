@@ -63,6 +63,9 @@ $usuariosiner = $conexion->query($innerjoinusuarios);
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="../componentes/Css/styles.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../componentes/Css/loader.css">
 </head>
 
 <body class="sb-nav-fixed">
@@ -145,8 +148,10 @@ $usuariosiner = $conexion->query($innerjoinusuarios);
 
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                 <li><a class="dropdown-item" href="../gastos/gasto.php">Realizar gasto</a></li>
-                                <li><a class="dropdown-item" href="../gastos/informe.php">Informe</a></li>
-                                
+                                <?php if ($filarol[$atributorol] == "Administrativo") { ?>
+                                    <li><a class="dropdown-item" href="../gastos/informe.php">Informe</a></li>
+                                <?php } ?>
+
                             </ul>
                         </div>
 
@@ -239,7 +244,7 @@ $usuariosiner = $conexion->query($innerjoinusuarios);
                         </div>
                         <br>
                         <button type="submit" class="btn btn-primary" name="submit_tabla1"><i
-                                class="fa-solid fa-floppy-disk" ></i>&nbsp;Agregar nuevo
+                                class="fa-solid fa-floppy-disk"></i>&nbsp;Agregar nuevo
                             usuario</button>
 
                     </form>
@@ -326,8 +331,7 @@ $usuariosiner = $conexion->query($innerjoinusuarios);
 
                                     <td>
                                         <a href="#" class="btn btn-sm btn-warning" data-bs-toggle="modal"
-                                            data-bs-target="#editarModal"
-                                            data-bs-id="<?= $row_usuarios['idusuario']; ?>"><i
+                                            data-bs-target="#editarModal" data-bs-id="<?= $row_usuarios['idusuario']; ?>"><i
                                                 class="fa-solid fa-pen-to-square"></i> Editar</a>
 
                                         <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal"
@@ -346,21 +350,22 @@ $usuariosiner = $conexion->query($innerjoinusuarios);
             </main>
         </div>
     </div>
-    <?php include 'editarModalusuario.php';?>
-    <?php include 'eliminarModal.php';?>
+    <?php include 'editarModalusuario.php'; ?>
+    <?php include 'eliminarModal.php'; ?>
 
 
     <script>
         function validar() {
- //obteniendo el valor que se puso en el campo text del formulario
- var miCampoTexto = document.getElementById("nombre").value;
- //la condición
- if (miCampoTexto.length == 0 || /^\s+$/.test(miCampoTexto)) {
-     alert('NO puede dejar los campos vacios, ingrese los datos');
-     return false;
- }}
+            //obteniendo el valor que se puso en el campo text del formulario
+            var miCampoTexto = document.getElementById("nombre").value;
+            //la condición
+            if (miCampoTexto.length == 0 || /^\s+$/.test(miCampoTexto)) {
+                $('#eliminaModal2').modal('show'); // abrir
+                return false;
+            }
+        }
 
-    //actualiza usuario
+        //actualiza usuario
         let nuevoModal = document.getElementById('nuevoModal')
         nuevoModal.addEventListener('shown.bs.modal', event => {
             let inputNombre = nuevoModal.querySelector('.modal-body #usuario').focus()
@@ -383,9 +388,9 @@ $usuariosiner = $conexion->query($innerjoinusuarios);
             }).then(response => response.json())
                 .then(data => {
                     inputID.value = data.idusuario
-                    inputusuario.value=data.usuario
-                    inputcontra.value=data.contraseña
-                    inputrol.value=data.Rol_idRol
+                    inputusuario.value = data.usuario
+                    inputcontra.value = data.contraseña
+                    inputrol.value = data.Rol_idRol
                 }).catch(err => console.log(err))
 
         })

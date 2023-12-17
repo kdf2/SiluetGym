@@ -26,15 +26,6 @@ $sqlrol = "SELECT $atributorol FROM rol WHERE idRol='$idrol'";
 $resultadorol = mysqli_query($conexion, $sqlrol);
 $filarol = mysqli_fetch_assoc($resultadorol);
 $_SESSION["nombrepersona"] = $fila2[$atributo2];
-$innerjoingasto = "SELECT usuario.idusuario,
-                             categoria.idcategoria, categoria.nombre as nombre_cateogoria,
-                            gasto.idgasto, gasto.cantidad,	gasto.fecha, gasto.usuario_idusuario, gasto.categoria_idcategoria, gasto.Nombrepersona
-                    FROM gasto
-                    INNER JOIN usuario ON gasto.usuario_idusuario= usuario.idusuario
-                    INNER JOIN categoria ON gasto.categoria_idcategoria=categoria.idcategoria";
-
-$gastoinner = $conexion->query($innerjoingasto);
-
 
 ?>
 <!DOCTYPE html>
@@ -56,6 +47,7 @@ $gastoinner = $conexion->query($innerjoingasto);
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" rel="stylesheet" />
     <link href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../componentes/Css/loader.css">
 
 
 </head>
@@ -140,8 +132,10 @@ $gastoinner = $conexion->query($innerjoingasto);
 
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                 <li><a class="dropdown-item" href="gasto.php">Realizar gasto</a></li>
-                                <li><a class="dropdown-item" href="informe.php">Informe</a></li>
-                           
+                                <?php if ($filarol[$atributorol] == "Administrativo") { ?>
+                                    <li><a class="dropdown-item" href="informe.php">Informe</a></li>
+                                <?php } ?>
+
                             </ul>
                         </div>
 
@@ -187,54 +181,90 @@ $gastoinner = $conexion->query($innerjoingasto);
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4 row justify-content-center">
-                    <h1 class="d-flex justify-content-center">Informe sobre gastos</h1>
-                    <table id="example" class="table table-striped table-bordered" style="width:100%">
-                        <thead class="table-dark">
-                            <tr>
-                                <th>nombre</th>
-                                <th>fecha</th>
-                                <th>categoria</th>
-                                <th>cantidad</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php while ($row_gasto = $gastoinner->fetch_assoc()) { ?>
-                                <tr>
-                                    <td>
-                                        <?= $row_gasto['Nombrepersona']; ?>
-                                    </td>
+                    <h1 class="d-flex justify-content-center">Informe sobre gastos por fechas</h1>
+<br>
+<br>
+<br>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-12 text-center">
+                                <form action="DescargarReporte_x_fecha_PDF.php "  target="_blank" method="post" accept-charset="utf-8">
+                                    <div class="row">
+                                        <div class="col">
+                                            
+                                            <input type="date" name="fecha_ingreso" class="form-control"
+                                                placeholder="Fecha de Inicio" required>
+                                                <label for="">Fecha inicial</label>
+                                        </div>
+                                        <div class="col">
+                                     
+                                            <input type="date" name="fechaFin" class="form-control"
+                                                placeholder="Fecha Final" required>
+                                                <label for="">Fecha final</label>
+                                        </div>
+                                        <div class="col">
+                                            <span class="btn btn-dark mb-2" id="filtro">Filtrar</span>
+                                            <button type="submit" class="btn btn-danger mb-2" >Descargar Reporte</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div class="col-md-12 text-center mt-5">
+                                <span id="loaderFiltro"> </span>
+                            </div>
 
 
-                                    <td>
-                                        <?= $row_gasto['fecha']; ?>
-                                    </td>
+                            <div class="table-responsive resultadoFiltro">
+                                <table id="tableEmpleados" class="table table-striped table-bordered"
+                                    style="width:100%">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th>nombre</th>
+                                            <th>fecha</th>
+                                            <th>categoria</th>
+                                            <th>cantidad</th>
+                                            
+                                        </tr>
+                                    </thead>
+                                    <?php
+                                    $innerjoingasto = "SELECT usuario.idusuario,
+                                    categoria.idcategoria, categoria.nombre as nombre_cateogoria,
+                                   gasto.idgasto, gasto.cantidad,	gasto.fecha, gasto.usuario_idusuario, gasto.categoria_idcategoria, gasto.Nombrepersona
+                           FROM gasto
+                           INNER JOIN usuario ON gasto.usuario_idusuario= usuario.idusuario
+                           INNER JOIN categoria ON gasto.categoria_idcategoria=categoria.idcategoria ORDER BY fecha ASC";
+                                    $gastoinner = mysqli_query($conexion, $innerjoingasto);
+                                    $i = 1;
+                                    while ($row_gasto = $gastoinner->fetch_assoc()) { ?>
+                                        <tr>
+                                            <td>
+                                                <?= $row_gasto['Nombrepersona']; ?>
+                                            </td>
 
-                                    <td>
-                                        <?= $row_gasto['nombre_cateogoria']; ?>
-                                    </td>
 
-                                    <td>
-                                        <?= $row_gasto['cantidad']; ?>
-                                    </td>
-                                    <td>
+                                            <td>
+                                                <?= $row_gasto['fecha']; ?>
+                                            </td>
 
-                                        <a href="#" class="btn btn-sm btn-warning" data-bs-toggle="modal"
-                                            data-bs-target="#actualizarModal" data-bs-id="<?= $row_gasto['idgasto']; ?>">
-                                            Editar</a>
+                                            <td>
+                                                <?= $row_gasto['nombre_cateogoria']; ?>
+                                            </td>
 
-                                        <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal"
-                                            data-bs-target="#eliminaModal" data-bs-id="<?= $row_gasto['idgasto']; ?>"
-                                            class="fa-solid fa-trash"></i></i> Eliminar</a>
+                                            <td>
+                                                <?= $row_gasto['cantidad']; ?>
+                                            </td>
+                                        </tr>
+                                    <?php } ?>
+                                </table>
+                            </div>
 
-                                    </td>
-                                </tr>
-                            <?php } ?>
-                        </tbody>
-                    </table>
+                        </div>
+                    </div>
                 </div>
             </main>
         </div>
+    </div>
     </div>
 
 
@@ -261,14 +291,58 @@ $gastoinner = $conexion->query($innerjoingasto);
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
-    <script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"
+        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script src="assets/js/material.min.js"></script>
 
-        var table = new DataTable('#example', {
+
+    <script>
+        var table = new DataTable('#tableEmpleados', {
             language: {
                 url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json',
             },
         });
+    </script>
 
+    <script>
+        $(function () {
+            setTimeout(function () {
+                $('body').addClass('loaded');
+            }, 1000);
+
+
+            //FILTRANDO REGISTROS
+            $("#filtro").on("click", function (e) {
+                e.preventDefault();
+
+                loaderF(true);
+
+                var f_ingreso = $('input[name=fecha_ingreso]').val();
+                var f_fin = $('input[name=fechaFin]').val();
+                console.log(f_ingreso + '' + f_fin);
+
+                if (f_ingreso != "" && f_fin != "") {
+                    $.post("filtro.php", { f_ingreso, f_fin }, function (data) {
+                        $("#tableEmpleados").hide();
+                        $(".resultadoFiltro").html(data);
+                        loaderF(false);
+                    });
+                } else {
+                    $("#loaderFiltro").html('<p style="color:red;  font-weight:bold;">Debe seleccionar ambas fechas</p>');
+                }
+            });
+
+
+            function loaderF(statusLoader) {
+                console.log(statusLoader);
+                if (statusLoader) {
+                    $("#loaderFiltro").show();
+                    $("#loaderFiltro").html('<img class="img-fluid" src="../componentes/Imagenes/cargando.svg" style="left:50%; right: 50%; width:50px;">');
+                } else {
+                    $("#loaderFiltro").hide();
+                }
+            }
+        });
     </script>
 
 </body>
