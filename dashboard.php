@@ -131,7 +131,7 @@ $filarol = mysqli_fetch_assoc($resultadorol);
                                 <li><a class="dropdown-item" href="gastos/gasto.php">Realizar gasto</a></li>
                                 <?php
                         if ($filarol[$atributorol] == "Administrativo") { ?>
-                                <li><a class="dropdown-item" href="/gastos/informe.php">Informe</a></li>
+                                <li><a class="dropdown-item" href="gastos/informe.php">Informe</a></li>
                                 <?php } ?>
                             </ul>
                         </div>

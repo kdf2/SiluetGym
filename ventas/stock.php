@@ -25,15 +25,13 @@ $atributorol = "nombre";
 $sqlrol = "SELECT $atributorol FROM rol WHERE idRol='$idrol'";
 $resultadorol = mysqli_query($conexion, $sqlrol);
 $filarol = mysqli_fetch_assoc($resultadorol);
-$_SESSION["nombrepersona"]=$fila2[$atributo2];
-$innerjoingasto = "SELECT usuario.idusuario,
-                             categoria.idcategoria, categoria.nombre as nombre_cateogoria,
-                            gasto.idgasto, gasto.cantidad,	gasto.fecha, gasto.usuario_idusuario, gasto.categoria_idcategoria, gasto.Nombrepersona
-                    FROM gasto
-                    INNER JOIN usuario ON gasto.usuario_idusuario= usuario.idusuario
-                    INNER JOIN categoria ON gasto.categoria_idcategoria=categoria.idcategoria";
-
-$gastoinner = $conexion->query($innerjoingasto);
+$_SESSION["nombrepersona"] = $fila2[$atributo2];
+$innerjoinstock = "SELECT producto.idproducto, producto.nombre, producto.cantidad, producto.precio as p_precio, producto.categoriaproduct_idcategoriaproduct, producto.marca,
+                             categoriaproduct.nombre as nombre_categoria , categoriaproduct.idcategoriaproduct
+                    FROM producto
+                    INNER JOIN categoriaproduct ON producto.categoriaproduct_idcategoriaproduct = categoriaproduct.idcategoriaproduct              
+                    ORDER BY cantidad";
+$stockinner = $conexion->query($innerjoinstock);
 
 
 ?>
@@ -141,7 +139,7 @@ $gastoinner = $conexion->query($innerjoingasto);
                                 <?php if ($filarol[$atributorol] == "Administrativo") { ?>
                                     <li><a class="dropdown-item" href="informe.php">Informe</a></li>
                                 <?php } ?>
-                               
+
                             </ul>
                         </div>
 
@@ -187,11 +185,11 @@ $gastoinner = $conexion->query($innerjoingasto);
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4 row justify-content-center">
-                    <h1 class="d-flex justify-content-center">Gastos</h1>
+                    <h1 class="d-flex justify-content-center">Stock</h1>
                     <div class="col align-self-start">
                         <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nuevoModal"><i
                                 class="fa-solid fa-circle-plus"></i> Agregar
-                            gasto</a>
+                            producto</a>
                     </div>
                     <br>
                     <br>
@@ -199,43 +197,77 @@ $gastoinner = $conexion->query($innerjoingasto);
                         <thead class="table-dark">
                             <tr>
                                 <th>nombre</th>
-                                <th>fecha</th>
                                 <th>categoria</th>
                                 <th>cantidad</th>
+                                <th>precio venta</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php while ($row_gasto = $gastoinner->fetch_assoc()) { ?>
-                                <tr >
-                                    <td>
-                                        <?= $row_gasto['Nombrepersona']; ?>
-                                    </td>
+                            <?php while ($row_stock = $stockinner->fetch_assoc()) { ?>
+                                <?php if ($row_stock['cantidad'] <= 2) { ?>
+                                    <tr class="table-danger">
+                                        <td>
+                                            <?= $row_stock['nombre']; ?>
+                                        </td>
 
 
-                                    <td>
-                                    <?= $row_gasto['fecha']; ?>
-                                    </td>
+                                        <td>
+                                            <?= $row_stock['nombre_categoria']; ?>
+                                        </td>
 
-                                    <td>
-                                    <?= $row_gasto['nombre_cateogoria']; ?>
-                                    </td>
+                                        <td>
+                                            <?= $row_stock['cantidad']; ?>
+                                        </td>
 
-                                    <td>
-                                    <?= $row_gasto['cantidad']; ?>
-                                    </td>
-                                    <td>
+                                        <td>
+                                            <?= $row_stock['p_precio']; ?>
+                                        </td>
 
-                                        <a href="#" class="btn btn-sm btn-warning" data-bs-toggle="modal"
-                                            data-bs-target="#actualizarModal" data-bs-id="<?= $row_gasto['idgasto']; ?>">
-                                            Editar</a>
+                                        <td>
 
-                                        <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal"
-                                            data-bs-target="#eliminaModal" data-bs-id="<?= $row_gasto['idgasto']; ?>"
-                                             class="fa-solid fa-trash"></i></i> Eliminar</a>
+                                            <a href="#" class="btn btn-sm btn-warning" data-bs-toggle="modal"
+                                                data-bs-target="#actualizarModal" data-bs-id="<?= $row_stock['idproducto']; ?>">
+                                                Editar</a>
 
-                                    </td>
-                                </tr>
+                                            <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal"
+                                                data-bs-target="#eliminaModal" data-bs-id="<?= $row_stock['idproducto']; ?>"
+                                                class="fa-solid fa-trash"></i></i> Eliminar</a>
+
+                                        </td>
+                                    </tr>
+                                <?php } ?>
+                                <?php if ($row_stock['cantidad'] > 2) { ?>
+                                    <tr>
+                                        <td>
+                                            <?= $row_stock['nombre']; ?>
+                                        </td>
+
+                                        <td>
+                                            <?= $row_stock['nombre_categoria']; ?>
+                                        </td>
+
+                                        <td>
+                                            <?= $row_stock['cantidad']; ?>
+                                        </td>
+
+                                         <td>
+                                            <?= $row_stock['p_precio']; ?>
+                                        </td>
+
+                                        <td>
+
+                                            <a href="#" class="btn btn-sm btn-warning" data-bs-toggle="modal"
+                                                data-bs-target="#actualizarModal" data-bs-id="<?= $row_stock['idproducto']; ?>">
+                                                Editar</a>
+
+                                            <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal"
+                                                data-bs-target="#eliminaModal" data-bs-id="<?= $row_stock['idproducto']; ?>"
+                                                class="fa-solid fa-trash"></i></i> Eliminar</a>
+
+                                        </td>
+                                    </tr>
+                                <?php } ?>
                             <?php } ?>
                         </tbody>
                     </table>
@@ -277,12 +309,12 @@ $gastoinner = $conexion->query($innerjoingasto);
             },
         });
 
-        
+
     </script>
-     <?php include 'gastoModal.php' ?>
-  
+    <?php include 'compraModal.php' ?>
+
     <script>
-    let nuevoModal = document.getElementById('nuevoModal')
+        let nuevoModal = document.getElementById('nuevoModal')
         nuevoModal.addEventListener('shown.bs.modal', event => {
             let inputcantidad = nuevoModal.querySelector('.modal-body #cantidad').focus()
         })
@@ -305,9 +337,9 @@ $gastoinner = $conexion->query($innerjoingasto);
             }).then(response => response.json())
                 .then(data => {
                     inputID.value = data.idgasto
-                    inputcantidad.value=data.cantidad
-                    inputfecha.value=data.fecha
-                    inputcategoria.value=data.categoria_idcategoria
+                    inputcantidad.value = data.cantidad
+                    inputfecha.value = data.fecha
+                    inputcategoria.value = data.categoria_idcategoria
                 }).catch(err => console.log(err))
 
         })
