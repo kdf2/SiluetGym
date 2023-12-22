@@ -137,9 +137,9 @@ $stockinner = $conexion->query($innerjoinstock);
                             </a>
 
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                <li><a class="dropdown-item" href="gasto.php">Realizar gasto</a></li>
+                                <li><a class="dropdown-item" href="../gastos/gasto.php">Realizar gasto</a></li>
                                 <?php if ($filarol[$atributorol] == "Administrativo") { ?>
-                                    <li><a class="dropdown-item" href="informe.php">Informe</a></li>
+                                    <li><a class="dropdown-item" href="../gastos/informe.php">Informe</a></li>
                                 <?php } ?>
 
                             </ul>
@@ -367,6 +367,7 @@ $stockinner = $conexion->query($innerjoinstock);
                     inputprecio.value = data.precio
                     inputpreciop.value = data.total
                     inputfecha.value = data.fecha
+                    
                 }).catch(err => console.log(err))
 
         })
