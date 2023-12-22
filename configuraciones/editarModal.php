@@ -9,7 +9,7 @@
             </div>
             <div class="modal-body">
                 <form action="actualizap.php" method="post">
-                    <input type="hidden" id="id" name="id">
+                    <input type="text" id="id" name="id">
                     <div class="mb-3">
                         <label for="nombre" class="form-label">Nombre:</label>
                         <input type="text" name="nombre" id="nombre" class="form-control" required>

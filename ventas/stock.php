@@ -46,6 +46,8 @@ $stockinner = $conexion->query($innerjoinstock);
     <meta name="author" content="" />
     <title>Panel de control</title>
     <link rel="shortcut icon" href="../componentes/Imagenes/iconSG.ico">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
@@ -120,7 +122,7 @@ $stockinner = $conexion->query($innerjoinstock);
 
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                 <li><a class="dropdown-item" href="#">Realizar venta</a></li>
-                                <li><a class="dropdown-item" href="#">Stock</a></li>
+                                <li><a class="dropdown-item" href="stock.php">Stock</a></li>
                                 <li><a class="dropdown-item" href="#">Informe</a></li>
                             </ul>
                         </div>
@@ -197,6 +199,7 @@ $stockinner = $conexion->query($innerjoinstock);
                         <thead class="table-dark">
                             <tr>
                                 <th>nombre</th>
+                                <th>marca</th>
                                 <th>categoria</th>
                                 <th>cantidad</th>
                                 <th>precio venta</th>
@@ -211,6 +214,9 @@ $stockinner = $conexion->query($innerjoinstock);
                                             <?= $row_stock['nombre']; ?>
                                         </td>
 
+                                        <td>
+                                            <?= $row_stock['marca']; ?>
+                                        </td>
 
                                         <td>
                                             <?= $row_stock['nombre_categoria']; ?>
@@ -221,7 +227,7 @@ $stockinner = $conexion->query($innerjoinstock);
                                         </td>
 
                                         <td>
-                                            <?= $row_stock['p_precio']; ?>
+                                            <?= 'Q' . $row_stock['p_precio']; ?>
                                         </td>
 
                                         <td>
@@ -229,6 +235,7 @@ $stockinner = $conexion->query($innerjoinstock);
                                             <a href="#" class="btn btn-sm btn-warning" data-bs-toggle="modal"
                                                 data-bs-target="#actualizarModal" data-bs-id="<?= $row_stock['idproducto']; ?>">
                                                 Editar</a>
+
 
                                             <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal"
                                                 data-bs-target="#eliminaModal" data-bs-id="<?= $row_stock['idproducto']; ?>"
@@ -244,6 +251,10 @@ $stockinner = $conexion->query($innerjoinstock);
                                         </td>
 
                                         <td>
+                                            <?= $row_stock['marca']; ?>
+                                        </td>
+
+                                        <td>
                                             <?= $row_stock['nombre_categoria']; ?>
                                         </td>
 
@@ -251,14 +262,13 @@ $stockinner = $conexion->query($innerjoinstock);
                                             <?= $row_stock['cantidad']; ?>
                                         </td>
 
-                                         <td>
-                                            <?= $row_stock['p_precio']; ?>
+                                        <td>
+                                            <?= 'Q' . $row_stock['p_precio']; ?>
                                         </td>
 
                                         <td>
-
                                             <a href="#" class="btn btn-sm btn-warning" data-bs-toggle="modal"
-                                                data-bs-target="#actualizarModal" data-bs-id="<?= $row_stock['idproducto']; ?>">
+                                                data-bs-target="#actualizarModal" data-bs-id="<?= $row_stock['idproducto']; ?>"></i>
                                                 Editar</a>
 
                                             <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal"
@@ -281,6 +291,8 @@ $stockinner = $conexion->query($innerjoinstock);
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap4.min.js"></script>
 
+
+    
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
         crossorigin="anonymous"></script>
@@ -311,24 +323,33 @@ $stockinner = $conexion->query($innerjoinstock);
 
 
     </script>
-    <?php include 'compraModal.php' ?>
-
+    <?php include 'compraModal.php'; ?>
+    <?php
+    $categoria->data_seek(0);
+    $proveedor->data_seek(0);
+    ?>
+    <?php include 'editaModal.php'; ?>
     <script>
         let nuevoModal = document.getElementById('nuevoModal')
         nuevoModal.addEventListener('shown.bs.modal', event => {
-            let inputcantidad = nuevoModal.querySelector('.modal-body #cantidad').focus()
+            let inputcantidad = nuevoModal.querySelector('.modal-body #nombre').focus()
         })
 
-
+            
         let editarModal = document.getElementById('actualizarModal')
         editarModal.addEventListener('shown.bs.modal', event => {
             let button = event.relatedTarget
             let id = button.getAttribute('data-bs-id')
             let inputID = editarModal.querySelector('.modal-body #id')
-            let inputcantidad = editarModal.querySelector('.modal-body #cantidad')
-            let inputfecha = editarModal.querySelector('.modal-body #fecha')
+            let inputnombre = editarModal.querySelector('.modal-body #nombre')
+            let inputmarca = editarModal.querySelector('.modal-body #marca')
             let inputcategoria = editarModal.querySelector('.modal-body #categoria')
-            let url = "getgasto.php"
+            let inputproveedor = editarModal.querySelector('.modal-body #proveedor')
+            let inputcantidad = editarModal.querySelector('.modal-body #cantidad')
+            let inputpreciop = editarModal.querySelector('.modal-body #preciop')
+            let inputprecio = editarModal.querySelector('.modal-body #precio')
+            let inputpfecha = editarModal.querySelector('.modal-body #fecha')
+            let url = "getproductos.php"
             let formData = new FormData()
             formData.append('id', id)
             fetch(url, {
@@ -336,10 +357,16 @@ $stockinner = $conexion->query($innerjoinstock);
                 body: formData
             }).then(response => response.json())
                 .then(data => {
-                    inputID.value = data.idgasto
+                    inputID.value = data.idproducto
+
+                    inputnombre.value = data.nombre
+                    inputmarca.value = data.marca
+                    inputcategoria.value = data.categoriaproduct_idcategoriaproduct
+                    inputproveedor.value = data.proveedor_idproveedor
                     inputcantidad.value = data.cantidad
+                    inputprecio.value = data.precio
+                    inputpreciop.value = data.total
                     inputfecha.value = data.fecha
-                    inputcategoria.value = data.categoria_idcategoria
                 }).catch(err => console.log(err))
 
         })
@@ -351,6 +378,8 @@ $stockinner = $conexion->query($innerjoinstock);
             eliminaModal.querySelector('.modal-footer #id').value = id
         })
     </script>
+
+    
 </body>
 
 </html>

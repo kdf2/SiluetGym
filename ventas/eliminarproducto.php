@@ -1,6 +1,6 @@
 <?php
 require '../modelo/conexion.php';
-echo $id= $conexion->real_escape_string($_POST['id']);
+ $id= $conexion->real_escape_string($_POST['id']);
 
 $sql = "SELECT * FROM compra_has_producto WHERE producto_idproducto = $id";
 $result = $conexion->query($sql);
@@ -11,7 +11,7 @@ if ($result->num_rows > 0) {
     $row = $result->fetch_assoc();
     $columna_deseada = $row["compra_idcompra"];
 }
-echo $columna_deseada;
+ $columna_deseada;
 
 $sql="DELETE FROM compra_has_producto  WHERE producto_idproducto=$id";
 if($conexion->query($sql)){

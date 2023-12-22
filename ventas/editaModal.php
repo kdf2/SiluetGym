@@ -1,20 +1,13 @@
-<?php
-require '../modelo/conexion.php';
-$sqlcategoria = "SELECT idcategoriaproduct, nombre FROM categoriaproduct";
-$categoria = $conexion->query($sqlcategoria);
-$sqlproveedor="SELECT idproveedor,nombredelaempresa FROM proveedor";
-$proveedor= $conexion->query($sqlproveedor);
-?>
-
-<div class="modal fade" id="nuevoModal" tabindex="-1" role="dialog" aria-labelledby="nuevoModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+<!-- Modal edita registro -->
+<div class="modal fade" id="actualizarModal" tabindex="-1" aria-labelledby="actualizarModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title fs-5" id="nuevoModalLabel">Agregar producto</h5>
+                <h1 class="modal-title fs-5" id="actualizarModalLabel">Editar registro</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="guardarproducto.php" method="post">
+            <form action="actualizarproducto.php" method="post">
                     <input type="hidden" id="id" name="id">
 
                     <div class="mb-3">
@@ -73,36 +66,9 @@ $proveedor= $conexion->query($sqlproveedor);
                     </div>
 
                     <div class="">
-                        <button type="submit" class="btn btn-primary" name="submit_tabla2"><i
+                        <button type="submit" class="btn btn-primary" ><i
                                 class="fa-solid fa-floppy-disk"></i>&nbsp;Guardar</button>
                     </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-
-<!-- Modal elimina registro -->
-<div class="modal fade" id="eliminaModal" tabindex="-1" aria-labelledby="eliminaModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="eliminaModalLabel">Aviso</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                ¿Desea eliminar el producto?
-            </div>
-
-            <div class="modal-footer">
-                <form action="eliminarproducto.php" method="post">
-
-                    <input type="hidden" name="id" id="id">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="submit" class="btn btn-danger">Eliminar</button>
                 </form>
             </div>
 

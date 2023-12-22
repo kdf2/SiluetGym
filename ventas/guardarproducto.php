@@ -23,8 +23,9 @@ if ($conexion->query($sql)) {
 if ($conexion->query($sql)) {
     $idcompra = $conexion->insert_id;
 }
+$subtotal= $cantidad*$preciop;
 
- $sql = "INSERT INTO compra_has_producto ( compra_idcompra, producto_idproducto,cantidad, subtotal ) VALUES ($idcompra, $idproducto, $cantidad, $preciop )";
+ $sql = "INSERT INTO compra_has_producto ( compra_idcompra, producto_idproducto, subtotal ) VALUES ($idcompra, $idproducto, $subtotal )";
 if ($conexion->query($sql)) {
     $idcompra = $conexion->insert_id;
 }

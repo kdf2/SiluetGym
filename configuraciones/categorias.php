@@ -216,7 +216,7 @@ $resultadocargos = $conexion->query($sqlcargos);
                                             <td>
                                                 <a href="#" class="btn btn-sm btn-warning" data-bs-toggle="modal"
                                                     data-bs-target="#editarModal"
-                                                    data-bs-id="<?= $row['idcategoriaproduct']; ?>"><i
+                                                    data-bs-id="<?= $row['idcategoriaproduct'];?>"><i
                                                         class="fa-solid fa-pen-to-square"></i> Editar</a>
 
                                                 <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal"
@@ -386,7 +386,7 @@ $resultadocargos = $conexion->query($sqlcargos);
                 body: formData
             }).then(response => response.json())
                 .then(data => {
-                    inputID.value = data.idusuario
+                    inputID.value = data.idcategoriaproduct
                     inputusuario.value = data.nombre
 
                 }).catch(err => console.log(err))
