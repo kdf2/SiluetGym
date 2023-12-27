@@ -26,14 +26,6 @@ $sqlrol = "SELECT $atributorol FROM rol WHERE idRol='$idrol'";
 $resultadorol = mysqli_query($conexion, $sqlrol);
 $filarol = mysqli_fetch_assoc($resultadorol);
 $_SESSION["nombrepersona"] = $fila2[$atributo2];
-$innerjoinstock = "SELECT producto.idproducto, producto.nombre, producto.cantidad, producto.precio as p_precio, producto.categoriaproduct_idcategoriaproduct, producto.marca,
-                             categoriaproduct.nombre as nombre_categoria , categoriaproduct.idcategoriaproduct
-                    FROM producto
-                    INNER JOIN categoriaproduct ON producto.categoriaproduct_idcategoriaproduct = categoriaproduct.idcategoriaproduct              
-                    ORDER BY cantidad";
-$stockinner = $conexion->query($innerjoinstock);
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -53,10 +45,21 @@ $stockinner = $conexion->query($innerjoinstock);
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="../componentes/Css/styles.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-
+    <script src="../jquery-3.7.1.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" rel="stylesheet" />
     <link href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
 </head>
+<style>
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    #add_producto_venta {
+        display: none;
+    }
+</style>
 
 <body class="sb-nav-fixed">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -187,109 +190,109 @@ $stockinner = $conexion->query($innerjoinstock);
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4 row justify-content-center">
-                    <h1 class="d-flex justify-content-center">Stock</h1>
-                    <div class="col align-self-start">
-                        <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nuevoModal"><i
-                                class="fa-solid fa-circle-plus"></i> Agregar
-                            producto</a>
+                    <h1 class="d-flex justify-content-center">Nueva venta</h1>
+                    <div class="col align-self-start datos_cliente">
+                        <div class="form-group">
+                            <h4 class="text-center">Datos del Cliente</h4>
+                        </div>
+
+                        <div class="card">
+                            <div class="action_cliente">
+                                <a href="#" class="btn btn-primary btn_new btn_new_cliente" data-bs-toggle="modal"
+                                    data-bs-target="#nuevoModal"><i class="fa-solid fa-circle-plus"></i> Agregar
+                                    cliente</a>
+                            </div>
+
+                            <div class="card-body">
+                                <form action="" name="form_new_cliente_venta" id="form_new_cliente_venta" class="datos">
+                                    <input type="hidden" name="action" value="addCliente">
+                                    <input type="hidden" name="idCliente" id="idCliente" value="" require>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label> Numero de telefono</label>
+                                                <input class="form-control" type="number" name="telefono_cliente"
+                                                    id="telefono_cliente" placeholder="Ingrese numero del cliente"
+                                                    required>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Nombre</label>
+                                                <input type="text" name="nombre_cliente" id="nombre_cliente"
+                                                    class="form-control" disabled required>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Dirreción</label>
+                                                <input type="text" name="direccion_cliente" id="direccion_cliente"
+                                                    class="form-control" disabled required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
-                    <br>
-                    <br>
-                    <table id="example" class="table table-striped table-bordered" style="width:100%">
+
+                    <div class="datos_venta">
+                        <div class="form-group">
+                            <h4 class="text-center">venta realizada por :
+                                <?php
+                                echo $fila2[$atributo2];
+                                ?>
+                            </h4>
+                        </div>
+                    </div>
+
+                    <table class="tbl_venta ">
                         <thead class="table-dark">
+                            <tr class="table-primary">
+                                <th width="100px">codigo</th>
+                                <th class="text-center">Nombre</th>
+                                <th class="text-center">marca</th>
+                                <th class="text-center">existencia</th>
+                                <th width="100px" class="text-center">cantidad</th>
+                                <th class="text-right">precio</th>
+                                <th class="text-right">precio total</th>
+                                <th>accion</th>
+                            </tr>
+
+
                             <tr>
+                                <td><input type="number" name="text_codigo_producto" id="text_codigo_producto"></td>
+                                <td id="text_nombre" class="text-center">-</td>
+                                <td id="text_marca" class="text-center">-</td>
+                                <td id="text_existencia" class="text-center">-</td>
+                                <td><input type="number" name="txt_cantidad_producto" id="txt_cantidad_producto"
+                                        value="0" min="1" disabled></td>
+                                <td id="text_precio" class="text-right">0.00</td>
+                                <td id="text_precio_total" class="text-right">0.00</td>
+                                <td> <a href="#" id="add_producto_venta" class="text-success "><i
+                                            class="fas fa-plus"></i> Agregar</a></td>
+                            </tr>
+
+                            <tr class="table-primary">
                                 <th>codigo</th>
-                                <th>nombre</th>
-                                <th>marca</th>
-                                <th>categoria</th>
-                                <th>cantidad</th>
-                                <th>precio venta</th>
-                                <th>Acciones</th>
+                                <th class="text-center">Nombre</th>
+                                <th class="text-center">marca</th>
+                                <th class="text-center">cantidad</th>
+                                <th class="text-right">precio total</th>
+                                <th class="text-center">accion</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <?php while ($row_stock = $stockinner->fetch_assoc()) { ?>
-                                <?php if ($row_stock['cantidad'] <= 2) { ?>
-                                    <tr class="table-danger">
-                                        <td>
-                                            <?= $row_stock['idproducto']; ?>
-                                        </td>
 
-                                        <td>
-                                            <?= $row_stock['nombre']; ?>
-                                        </td>
-
-                                        <td>
-                                            <?= $row_stock['marca']; ?>
-                                        </td>
-
-                                        <td>
-                                            <?= $row_stock['nombre_categoria']; ?>
-                                        </td>
-
-                                        <td>
-                                            <?= $row_stock['cantidad']; ?>
-                                        </td>
-
-                                        <td>
-                                            <?= 'Q' . $row_stock['p_precio']; ?>
-                                        </td>
-
-                                        <td>
-
-                                            <a href="#" class="btn btn-sm btn-warning" data-bs-toggle="modal"
-                                                data-bs-target="#actualizarModal" data-bs-id="<?= $row_stock['idproducto']; ?>">
-                                                Editar</a>
-
-
-                                            <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal"
-                                                data-bs-target="#eliminaModal" data-bs-id="<?= $row_stock['idproducto']; ?>"
-                                                class="fa-solid fa-trash"></i></i> Eliminar</a>
-
-                                        </td>
-                                    </tr>
-                                <?php } ?>
-                                <?php if ($row_stock['cantidad'] > 2) { ?>
-                                    <tr>
-                                        <td>
-                                            <?= $row_stock['idproducto']; ?>
-                                        </td>
-
-                                        <td>
-                                            <?= $row_stock['nombre']; ?>
-                                        </td>
-
-                                        <td>
-                                            <?= $row_stock['marca']; ?>
-                                        </td>
-
-                                        <td>
-                                            <?= $row_stock['nombre_categoria']; ?>
-                                        </td>
-
-                                        <td>
-                                            <?= $row_stock['cantidad']; ?>
-                                        </td>
-
-                                        <td>
-                                            <?= 'Q' . $row_stock['p_precio']; ?>
-                                        </td>
-
-                                        <td>
-                                            <a href="#" class="btn btn-sm btn-warning" data-bs-toggle="modal"
-                                                data-bs-target="#actualizarModal"
-                                                data-bs-id="<?= $row_stock['idproducto']; ?>"></i>
-                                                Editar</a>
-
-                                            <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal"
-                                                data-bs-target="#eliminaModal" data-bs-id="<?= $row_stock['idproducto']; ?>"
-                                                class="fa-solid fa-trash"></i></i> Eliminar</a>
-
-                                        </td>
-                                    </tr>
-                                <?php } ?>
-                            <?php } ?>
+                        <tbody id="detalle_venta" class="table-dark">
+                       <!--contenido ajax-->
                         </tbody>
+                       
+                        <tfoot id="detalle_totales">
+                        
+                        </tfoot>
                     </table>
                 </div>
             </main>
@@ -297,7 +300,10 @@ $stockinner = $conexion->query($innerjoinstock);
     </div>
 
 
-    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="funciones.js"></script>
+
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap4.min.js"></script>
 
@@ -307,15 +313,9 @@ $stockinner = $conexion->query($innerjoinstock);
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
         crossorigin="anonymous"></script>
     <script src="../componentes/Js/scripts.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-    <script src="../componentes/Js/demo/chart-area-demo.js"></script>
-    <script src="../componentes/Js/demo/chart-bar-demo.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
         crossorigin="anonymous"></script>
     <script src="../componentes/Js/datatables-simple-demo.js"></script>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
         integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
         crossorigin="anonymous"></script>
@@ -324,70 +324,11 @@ $stockinner = $conexion->query($innerjoinstock);
         crossorigin="anonymous"></script>
 
     <script>
-
-        var table = new DataTable('#example', {
-            language: {
-                url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json',
-            },
-        });
-
-
-    </script>
-    <?php include 'compraModal.php'; ?>
-    <?php
-    $categoria->data_seek(0);
-    $proveedor->data_seek(0);
-    ?>
-    <?php include 'editaModal.php'; ?>
-    <script>
-        let nuevoModal = document.getElementById('nuevoModal')
+/*
+let nuevoModal = document.getElementById('nuevoModal')
         nuevoModal.addEventListener('shown.bs.modal', event => {
             let inputcantidad = nuevoModal.querySelector('.modal-body #nombre').focus()
-        })
-
-
-        let editarModal = document.getElementById('actualizarModal')
-        editarModal.addEventListener('shown.bs.modal', event => {
-            let button = event.relatedTarget
-            let id = button.getAttribute('data-bs-id')
-            let inputID = editarModal.querySelector('.modal-body #id')
-            let inputnombre = editarModal.querySelector('.modal-body #nombre')
-            let inputmarca = editarModal.querySelector('.modal-body #marca')
-            let inputcategoria = editarModal.querySelector('.modal-body #categoria')
-            let inputproveedor = editarModal.querySelector('.modal-body #proveedor')
-            let inputcantidad = editarModal.querySelector('.modal-body #cantidad')
-            let inputpreciop = editarModal.querySelector('.modal-body #preciop')
-            let inputprecio = editarModal.querySelector('.modal-body #precio')
-            let inputpfecha = editarModal.querySelector('.modal-body #fecha')
-            let url = "getproductos.php"
-            let formData = new FormData()
-            formData.append('id', id)
-            fetch(url, {
-                method: "POST",
-                body: formData
-            }).then(response => response.json())
-                .then(data => {
-                    inputID.value = data.idproducto
-
-                    inputnombre.value = data.nombre
-                    inputmarca.value = data.marca
-                    inputcategoria.value = data.categoriaproduct_idcategoriaproduct
-                    inputproveedor.value = data.proveedor_idproveedor
-                    inputcantidad.value = data.cantidad
-                    inputprecio.value = data.precio
-                    inputpreciop.value = data.total
-                    inputfecha.value = data.fecha
-
-                }).catch(err => console.log(err))
-
-        })
-
-        let eliminaModal = document.getElementById('eliminaModal')
-        eliminaModal.addEventListener('shown.bs.modal', event => {
-            let button = event.relatedTarget
-            let id = button.getAttribute('data-bs-id')
-            eliminaModal.querySelector('.modal-footer #id').value = id
-        })
+        })*/
     </script>
 
 
