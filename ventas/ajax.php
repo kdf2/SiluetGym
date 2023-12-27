@@ -100,10 +100,10 @@ if ($_POST['action'] == 'addProductodetalle') {
 
 if ($_POST['action'] == 'delProductoDetalle') {
 
-    if (empty($_POST('idfan'))) {
+    if (empty($_POST['idfan'])) {
         echo 'error';
     } else {
-        $id_detalle = $_POST('idfan');
+        $id_detalle = $_POST['idfan'];
 
         $resultado = "CALL 	del_detalle_temp ($id_detalle)";
         $resultadofinal2 = $conexion->query($resultado);
@@ -133,7 +133,7 @@ if ($_POST['action'] == 'delProductoDetalle') {
         </tr>
             ';
             }
-            $total = round($total);
+            $total = round($total,2);
             $detalle_totales = '
         <tr class="bg-danger">
                             <td colspan="4" class="text-right text-white">TOTAL Q.</td>

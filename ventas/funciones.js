@@ -156,31 +156,21 @@ function del_producto_detalle(correlativo) {
         url: 'ajax.php',
         type: "POST",
         async: true,
-        data: { action: action, correlativo: idfan },
+        data: { action: action, idfan: idfan },
         success: function (response) {
-            //console.log(response);
-            if (response != 'error') {
-                var infor = JSON.parse(response);
-                $('#detalle_venta').html(infor.detalle);
-                $('#detalle_totales').html(infor.totales);
+            var infor = JSON.parse(response);
+            $('#detalle_venta').html(infor.detalle);
+            $('#detalle_totales').html(infor.totales);
 
-                $('#text_codigo_producto').val('0');
-                $('#text_nombre').html('-');
-                $('#text_existencia').html('-');
-                $('#text_marca').html('-');
-                $('#text_precio').html('0.00');
-                $('#text_precio_total').html('0.00');
-                $('#txt_cantidad_producto').val('0');
-                $('#txt_cantidad_producto').attr('disabled', 'disabled');
-                $('#add_producto_venta').slideUp();
-
-            }
-            else {
-                console.log('nodata');
-                $('#detalle_venta').html('');
-                $('#detalle_totales').html('');
-            }
-
+            $('#text_codigo_producto').val('0');
+            $('#text_nombre').html('-');
+            $('#text_existencia').html('-');
+            $('#text_marca').html('-');
+            $('#text_precio').html('0.00');
+            $('#text_precio_total').html('0.00');
+            $('#txt_cantidad_producto').val('0');
+            $('#txt_cantidad_producto').attr('disabled', 'disabled');
+            $('#add_producto_venta').slideUp();
         },
         error: function (error) {
         }
@@ -188,3 +178,5 @@ function del_producto_detalle(correlativo) {
     });
 
 }
+
+
