@@ -1,4 +1,8 @@
+
+
 //buscar cliente
+
+
 $('#telefono_cliente').keyup(function (e) {
     e.preventDefault();
 
@@ -62,6 +66,7 @@ $('#text_codigo_producto').keyup(function (e) {
                 $('#txt_cantidad_producto').val('0');
                 $('#txt_cantidad_producto').attr('disabled', 'disabled');
                 $('#add_producto_venta').slideUp();
+
             }
             else {
                 var data = JSON.parse(response);
@@ -72,7 +77,8 @@ $('#text_codigo_producto').keyup(function (e) {
                 $('#txt_cantidad_producto').val('0');
                 $('#txt_cantidad_producto').removeAttr('disabled');
                 $('#add_producto_venta').slideDown();
-
+                $('#btn-facturar-venta').slideDown();
+                $('#btn_anular_venta').slideDown();
                 $('#text_nombre').attr('disabled', 'disabled');
                 $('#text_existencia').attr('disabled', 'disabled');
                 $('#text_marca').attr('disabled', 'disabled');
@@ -94,9 +100,10 @@ $('#text_codigo_producto').keyup(function (e) {
 $('#txt_cantidad_producto').keyup(function (e) {
     e.preventDefault();
     var precio_total = $(this).val() * $('#text_precio').html();
+    var existencia = parseInt($('#text_existencia').html());
     $('#text_precio_total').html(precio_total);
 
-    if ($(this).val() < 1 || isNaN($(this).val())) {
+    if (($(this).val() < 1 || isNaN($(this).val())) || ($(this).val() > existencia) ) {
         $('#add_producto_venta').slideUp();
     }
     else {
@@ -135,6 +142,7 @@ $('#add_producto_venta').click(function (e) {
                     $('#txt_cantidad_producto').attr('disabled', 'disabled');
                     $('#add_producto_venta').slideUp();
 
+
                 }
                 else {
                     console.log('nodata');
@@ -171,6 +179,7 @@ function del_producto_detalle(correlativo) {
             $('#txt_cantidad_producto').val('0');
             $('#txt_cantidad_producto').attr('disabled', 'disabled');
             $('#add_producto_venta').slideUp();
+
         },
         error: function (error) {
         }
@@ -180,3 +189,62 @@ function del_producto_detalle(correlativo) {
 }
 
 
+$('#btn_anular_venta').click(function (e) {
+    e.preventDefault();
+    var rows = $('#detalle_venta tr').length;
+
+    if (rows > 0) {
+        var action = 'anularventa';
+        $.ajax({
+            url: 'ajax.php',
+            type: "POST",
+            async: true,
+            data: { action: action },
+            success: function (response) {
+                console.log(response);
+                if (response != 'error') {
+                    location.reload();
+                }
+            },
+            error: function (erro) {
+            }
+        });
+    }
+    console.log('no tiene registros');
+});
+
+
+
+function enviarID() {
+    // Obtener el valor del input
+    var id = document.getElementById("idCliente").value;
+    // Crear una instancia de XMLHttpRequest
+    var url = 'generarventa.php';
+
+    // Abre una nueva pestaña o ventana con la URL especificada
+    window.open(url, '_blank');
+    location.reload();
+    var xhr = new XMLHttpRequest();
+  
+    // Configurar la solicitud AJAX
+    xhr.open("POST", "generarventa.php", true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+  
+    // Enviar el valor del input a PHP
+    xhr.send("id=" + id);
+  
+    // Manejar la respuesta de PHP
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+        if (xhr.status === 200) {
+          // Hacer algo con la respuesta de PHP
+          console.log(xhr.responseText);
+        } else {
+          // Manejar errores
+          console.error("Error: " + xhr.status);
+        }
+      }
+    };
+
+
+  }

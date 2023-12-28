@@ -150,6 +150,21 @@ if ($_POST['action'] == 'delProductoDetalle') {
     }
 
 
+    
+}
+
+
+if ($_POST['action'] == 'anularventa') {
+
+    $resultado = "DELETE FROM fantasma";
+    $resultadofinal = $conexion->query($resultado);
+    if($resultadofinal){
+        echo 'ok';
+    }
+    else{
+        echo 'nosepuedo';
+    }
     exit;
 }
+
 ?>

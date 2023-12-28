@@ -59,6 +59,14 @@ $_SESSION["nombrepersona"] = $fila2[$atributo2];
     #add_producto_venta {
         display: none;
     }
+
+    #btn-facturar-venta {
+        display: none;
+    }
+
+    #btn_anular_venta {
+        display: none;
+    }
 </style>
 
 <body class="sb-nav-fixed">
@@ -204,16 +212,16 @@ $_SESSION["nombrepersona"] = $fila2[$atributo2];
                             </div>
 
                             <div class="card-body">
-                                <form action="" name="form_new_cliente_venta" id="form_new_cliente_venta" class="datos">
+                                <form action="generarventa.php" target="_blank" method="POST"  name="form_new_cliente_venta" target="_blank" >
                                     <input type="hidden" name="action" value="addCliente">
                                     <input type="hidden" name="idCliente" id="idCliente" value="" require>
                                     <div class="row">
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label> Numero de telefono</label>
-                                                <input class="form-control" type="number" name="telefono_cliente"
-                                                    id="telefono_cliente" placeholder="Ingrese numero del cliente"
-                                                    required>
+                                                <input autofocus class="form-control" type="number"
+                                                    name="telefono_cliente" id="telefono_cliente"
+                                                    placeholder="Ingrese numero del cliente" required>
                                             </div>
                                         </div>
 
@@ -234,6 +242,21 @@ $_SESSION["nombrepersona"] = $fila2[$atributo2];
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="row">
+
+                                        <div class="col-md-2">
+                                        <button type="submit" id="btn_anular_venta"
+                                                class="btn btn-danger btn_ok text-center"><i class="fas fa-ban"></i>
+                                                &nbsp;Anular venta</button>
+                                        </div>
+
+                                        <div class=" col-md-2">
+                                        <button  type="subtmit" class="btn btn-success btn_new  text-center" id="btn-facturar-venta"  onclick="enviarID()"><i
+                                                    class="far fa-edit"></i>&nbsp;Realizar venta</button>
+                                            
+                                        </div>
+                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -246,6 +269,10 @@ $_SESSION["nombrepersona"] = $fila2[$atributo2];
                                 echo $fila2[$atributo2];
                                 ?>
                             </h4>
+
+
+
+
                         </div>
                     </div>
 
@@ -287,13 +314,14 @@ $_SESSION["nombrepersona"] = $fila2[$atributo2];
                         </thead>
 
                         <tbody id="detalle_venta" class="table-dark">
-                       <!--contenido ajax-->
+                            <!--contenido ajax-->
                         </tbody>
-                       
+
                         <tfoot id="detalle_totales">
-                        
+
                         </tfoot>
                     </table>
+
                 </div>
             </main>
         </div>
@@ -324,11 +352,11 @@ $_SESSION["nombrepersona"] = $fila2[$atributo2];
         crossorigin="anonymous"></script>
 
     <script>
-/*
-let nuevoModal = document.getElementById('nuevoModal')
-        nuevoModal.addEventListener('shown.bs.modal', event => {
-            let inputcantidad = nuevoModal.querySelector('.modal-body #nombre').focus()
-        })*/
+        /*
+        let nuevoModal = document.getElementById('nuevoModal')
+                nuevoModal.addEventListener('shown.bs.modal', event => {
+                    let inputcantidad = nuevoModal.querySelector('.modal-body #nombre').focus()
+                })*/
     </script>
 
 

@@ -1,7 +1,9 @@
 <?php
+require '../modelo/conexion.php';
+session_start();
 require_once('../librerias/tcpdf/tcpdf.php');
- //Llamando a la Libreria TCPDF
-require '../modelo/conexion.php';//Llamando a la conexión para BD
+
+//creacion del pdf
 date_default_timezone_set('America/Guatemala');
 
 
@@ -35,7 +37,7 @@ $pdf->SetAutoPageBreak(true, PDF_MARGIN_BOTTOM); //Activa o desactiva el modo de
 //Informacion del PDF
 $pdf->SetCreator('kevin daniel fuentes fuentes');
 $pdf->SetAuthor('Siluet Gym');
-$pdf->SetTitle('Informe de gastos');
+$pdf->SetTitle('Informe de venta');
  
 /** Eje de Coordenadas
  *          Y
@@ -84,7 +86,7 @@ $pdf->SetTextColor(34,68,136);
 //$pdf->SetTextColor(245,245,205); //Gris claro
 //$pdf->SetTextColor(100, 0, 0); //Color Carne
 $pdf->SetFont('helvetica','B', 15); 
-$pdf->Cell(85,6,'LISTA DE GASTOS',0,0,'C');
+$pdf->Cell(85,6,'CLIENTE',0,0,'C');
 
 
 
@@ -95,19 +97,31 @@ $pdf->SetTextColor(0, 0, 0);
 $pdf->SetFillColor(232,232,232);
 $pdf->SetFont('helvetica','B',12); //La B es para letras en Negritas
 $pdf->Cell(60,6,'Nombre',1,0,'C',1);
-$pdf->Cell(25,6,'Fecha',1,0,'C',1);
-$pdf->Cell(48,6,'Categoria',1,0,'C',1);
-$pdf->Cell(35,6,'Cantidad',1,1,'C',1); 
+$pdf->Cell(25,6,'Telefono',1,0,'C',1);
+$pdf->Cell(48,6,'Direccion',1,0,'C',1); 
 /*El 1 despues de  Fecha Ingreso indica que hasta alli 
 llega la linea */
 
 $pdf->SetFont('helvetica','',10);
 
 
-//SQL para consultas Empleados
-$fechaInit = date("Y-m-d", strtotime($_POST['fecha_ingreso']));
-$fechaFin  = date("Y-m-d", strtotime($_POST['fechaFin']));
+//SQL para consultas datos del cliente
+echo $_SESSION["idsesionpersonacompra"];
+$sql = "SELECT * FROM persona WHERE idpersona = $id";
+$result = $conexion->query($sql);
+if ($result) {
+    // Obtener el resultado como un array asociativo
+    $row = $result->fetch_assoc();
 
+    // Mostrar o utilizar los datos obtenidos
+    if ($row) {
+        $pdf->Cell(60,6,($row['nombre']),1,0,'C',1);
+        $pdf->Cell(25,6,($row['telefono']),1,0,'C',1);
+        $pdf->Cell(48,6,($row['direccion']),1,0,'C',1); 
+        // ... Puedes mostrar o utilizar otros campos según tu tabla
+    }
+}
+/*
 $innerjoingasto = "SELECT usuario.idusuario,
 categoria.idcategoria, categoria.nombre as nombre_cateogoria,
 gasto.idgasto, gasto.cantidad,	gasto.fecha, gasto.usuario_idusuario, gasto.categoria_idcategoria, gasto.Nombrepersona
@@ -123,12 +137,14 @@ while ($row_gasto = mysqli_fetch_array($query)) {
         $pdf->Cell(48,6,($row_gasto['nombre_cateogoria']),1,0,'C');
         $pdf->Cell(35,6,$row_gasto['cantidad'],1,1,'C');
     }
+    
     $pdf->SetFont('helvetica','B',12);
     $pdf->SetTextColor(204,0,0);
     $pdf->Cell(133,6,('TOTAL'),1,0,'C');
     $pdf->Cell(35,6,'Q'.$suma,1,0,'C');
-//$pdf->AddPage(); //Agregar nueva Pagina
+*/
+    //$pdf->AddPage(); //Agregar nueva Pagina
 
-$pdf->Output('Resumen_venta_'.date('d_m_y').'.pdf', 'I'); 
+$pdf->Output('Resumen_gastos_'.date('d_m_y').'.pdf', 'I'); 
 // Output funcion que recibe 2 parameros, el nombre del archivo, ver archivo o descargar,
 // La D es para Forzar una descarga
