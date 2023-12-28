@@ -121,7 +121,7 @@ $stockinner = $conexion->query($innerjoinstock);
                             </a>
 
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                <li><a class="dropdown-item" href="#">Realizar venta</a></li>
+                                <li><a class="dropdown-item" href="venta.php">Realizar venta</a></li>
                                 <li><a class="dropdown-item" href="stock.php">Stock</a></li>
                                 <li><a class="dropdown-item" href="#">Informe</a></li>
                             </ul>

@@ -121,7 +121,7 @@ $gastoinner = $conexion->query($innerjoingasto);
                             </a>
 
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                <li><a class="dropdown-item" href="#">Realizar venta</a></li>
+                                <li><a class="dropdown-item" href="../ventas/venta.php">Realizar venta</a></li>
                                 <li><a class="dropdown-item" href="../ventas/stock.php">Stock</a></li>
                                 <li><a class="dropdown-item" href="#">Informe</a></li>
                             </ul>
