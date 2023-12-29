@@ -25,21 +25,11 @@ $atributorol = "nombre";
 $sqlrol = "SELECT $atributorol FROM rol WHERE idRol='$idrol'";
 $resultadorol = mysqli_query($conexion, $sqlrol);
 $filarol = mysqli_fetch_assoc($resultadorol);
-
-$innerjoinmiembros = "SELECT persona.idpersona, persona.nombre, persona.telefono, persona.direccion, persona.correo,
-                             miembro.idmiembro, miembro.edad, miembro.peso, miembro.altura, miembro.persona_idpersona, miembro.membresia_idmembresia, miembro.fechaincio, miembro.estado,
-                            membresia.nombre AS nombre_membresia, membresia.precio
-                    FROM miembro
-                    INNER JOIN persona ON miembro.persona_idpersona= persona.idpersona
-                    INNER JOIN membresia ON miembro.membresia_idmembresia=membresia.idmembresia";
-
-$miembrosinner = $conexion->query($innerjoinmiembros);
-
+$_SESSION["nombrepersona"] = $fila2[$atributo2];
 
 ?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -56,7 +46,15 @@ $miembrosinner = $conexion->query($innerjoinmiembros);
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" rel="stylesheet" />
     <link href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../componentes/Css/loader.css">
+
+
 </head>
+
+
+<style>
+   
+</style>
 
 <body class="sb-nav-fixed">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -121,11 +119,11 @@ $miembrosinner = $conexion->query($innerjoinmiembros);
                             </a>
 
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                <li><a class="dropdown-item" href="../ventas/venta.php">Realizar venta</a></li>
-                                <li><a class="dropdown-item" href="../ventas/stock.php">Stock</a></li>
+                                <li><a class="dropdown-item" href="venta.php">Realizar venta</a></li>
+                                <li><a class="dropdown-item" href="stock.php">Stock</a></li>
                                 <?php
                         if ($filarol[$atributorol] == "Administrativo") { ?>
-                                <li><a class="dropdown-item" href="../ventas/informe.php">Informe</a></li>
+                                <li><a class="dropdown-item" href="informe.php">Informe</a></li>
                                 <?php } ?>
                             </ul>
                         </div>
@@ -144,7 +142,7 @@ $miembrosinner = $conexion->query($innerjoinmiembros);
                                 <?php if ($filarol[$atributorol] == "Administrativo") { ?>
                                     <li><a class="dropdown-item" href="../gastos/informe.php">Informe</a></li>
                                 <?php } ?>
-                        
+
                             </ul>
                         </div>
 
@@ -157,9 +155,9 @@ $miembrosinner = $conexion->query($innerjoinmiembros);
                             </a>
 
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                <li><a class="dropdown-item" href="miembros.php">Miembros</a></li>
-                                <li><a class="dropdown-item" href="proveedores.php">Proveedores</a></li>
-                                <li><a class="dropdown-item" href="empleados.php">Empleados</a></li>
+                                <li><a class="dropdown-item" href="../personas/miembros.php">Miembros</a></li>
+                                <li><a class="dropdown-item" href="../personas/proveedores.php">Proveedores</a></li>
+                                <li><a class="dropdown-item" href="../personas/empleados.php">Empleados</a></li>
                             </ul>
                         </div>
 
@@ -190,101 +188,111 @@ $miembrosinner = $conexion->query($innerjoinmiembros);
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4 row justify-content-center">
-                    <h1 class="d-flex justify-content-center">Miembros</h1>
-                    <div class="col align-self-start">
-                        <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nuevoModal"><i
-                                class="fa-solid fa-circle-plus"></i> Agregar
-                            miembro</a>
+                    <h1 class="d-flex justify-content-center">Informe sobre ventas por fechas</h1>
+                    <br>
+                    <br>
+                    <br>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-12 text-center">
+                                <form action="DescargarReporte_x_fecha_PDF.php" target="_blank" method="post"
+                                    accept-charset="utf-8">
+                                    <div class="row">
+                                        <div class="col">
+
+                                            <input type="date" name="fecha_ingreso" class="form-control"
+                                                placeholder="Fecha de Inicio" required>
+                                            <label for="">Fecha inicial</label>
+                                        </div>
+                                        <div class="col">
+
+                                            <input type="date" name="fechaFin" class="form-control"
+                                                placeholder="Fecha Final" required>
+                                            <label for="">Fecha final</label>
+                                        </div>
+                                        <div class="col">
+                                            <span class="btn btn-dark mb-2" id="filtro">Filtrar</span>
+                                            <button id="pdf" type="submit" class="btn btn-danger mb-2 pdf">Descargar Reporte</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div class="col-md-12 text-center mt-5">
+                                <span id="loaderFiltro"> </span>
+                            </div>
+
+
+                            <div class="table-responsive resultadoFiltro">
+                                <table id="tableEmpleados" class="table table-striped table-bordered"
+                                    style="width:100%">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th>No. venta</th>
+                                            <th>fecha</th>
+                                            <th>personal</th>
+                                            <th>cliente</th>
+                                            <th>producto</th>
+                                            <th>marca</th>
+                                            <th>cantidad</th>
+                                            <th>total</th>
+
+                                        </tr>
+                                    </thead>
+                                    <?php
+                                    $innerjoinventas = "SELECT detalle_de_venta.venta_idventa, detalle_de_venta.producto_idproducto, detalle_de_venta.cantidad, detalle_de_venta.subt, 
+                                                              venta.Fecha, venta.nombrepersona, venta.idventa, venta.persona_idpersona, persona.idpersona, persona.nombre as pnombre,
+                                                              producto.idproducto, producto.nombre, producto.marca
+                           FROM detalle_de_venta 
+                           INNER JOIN venta ON detalle_de_venta.venta_idventa= venta.idventa 
+                           INNER JOIN persona ON venta.persona_idpersona=persona.idpersona
+                           INNER JOIN producto ON detalle_de_venta.producto_idproducto=producto.idproducto ORDER BY Fecha ASC";
+                                    $ventasinner = mysqli_query($conexion, $innerjoinventas);
+                                    $i = 1;
+                                    while ($row_venta = $ventasinner->fetch_assoc()) { ?>
+                                        <tr>
+                                            <td>
+                                                <?= $row_venta['venta_idventa']; ?>
+                                            </td>
+
+                                            <td>
+                                                <?= $row_venta['Fecha']; ?>
+                                            </td>
+
+                                            <td>
+                                                <?= $row_venta['nombrepersona']; ?>
+                                            </td>
+
+                                            <td>
+                                                <?= $row_venta['pnombre']; ?>
+                                            </td>
+
+                                            <td>
+                                                <?= $row_venta['nombre']; ?>
+                                            </td>
+
+                                            <td>
+                                                <?= $row_venta['marca']; ?>
+                                            </td>
+
+                                            <td>
+                                                <?= $row_venta['cantidad']; ?>
+                                            </td>
+
+                                            <td>
+                                                <?= $row_venta['subt']; ?>
+                                            </td>
+                                        </tr>
+                                    <?php } ?>
+                                </table>
+                            </div>
+
+                        </div>
                     </div>
-                    <br>
-                    <br>
-                    <table id="example" class="table table-striped table-bordered" style="width:100%">
-                        <thead class="table-dark">
-                            <tr>
-                                <th>nombre</th>
-                                <th>edad</th>
-                                <th>peso</th>
-                                <th>altura</th>
-                                <th>telefono</th>
-                                <th>direccion</th>
-                                <th>correo</th>
-                                <th>membresia</th>
-                                <th>fecha inicio</th>
-                                <th>estado</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php while ($row_miembro = $miembrosinner->fetch_assoc()) { ?>
-                                <tr>
-                                    <td>
-                                        <?= $row_miembro['nombre']; ?>
-                                    </td>
-
-
-                                    <td>
-                                        <?= $row_miembro['edad']; ?>
-                                    </td>
-
-                                    <td>
-                                        <?= $row_miembro['peso']; ?>
-                                    </td>
-
-                                    <td>
-                                        <?= $row_miembro['altura']; ?>
-                                    </td>
-
-                                    <td>
-                                        <?= $row_miembro['telefono']; ?>
-                                    </td>
-
-                                    <td>
-                                        <?= $row_miembro['direccion']; ?>
-                                    </td>
-
-                                    <td>
-                                        <?= $row_miembro['correo']; ?>
-                                    </td>
-
-                                    <td>
-                                        <?= $row_miembro['nombre_membresia'] . "-" . $row_miembro['precio']; ?>
-                                    </td>
-
-                                    <td>
-                                        <?= $row_miembro['fechaincio']; ?>
-                                    </td>
-
-                                    <td>
-                                        <?php if ($row_miembro['estado'] == 1) { ?>
-                                            <div class="bg-success text-center text-light">
-                                                <a >ACTIVO</a>
-                                            </div>
-
-                                        <?php } else { ?><div class="bg-danger text-center text-light">
-                                                INACTIVO
-                                            </div>
-                                        <?php }
-                                        ?>
-                                    </td>
-
-                                    <td>
-
-                                        <a href="#" class="btn btn-sm btn-warning" data-bs-toggle="modal"
-                                            data-bs-target="#actualizarModal" data-bs-id="<?= $row_miembro['idmiembro']; ?>">
-                                            Editar</a>
-
-                                        <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal"
-                                            data-bs-target="#eliminaModal" data-bs-id="<?= $row_miembro['idmiembro']; ?>"
-                                             class="fa-solid fa-trash"></i></i> Eliminar</a>
-
-                                    </td>
-                                </tr>
-                            <?php } ?>
-                        </tbody>
-                    </table>
                 </div>
             </main>
         </div>
+    </div>
     </div>
 
 
@@ -311,66 +319,60 @@ $miembrosinner = $conexion->query($innerjoinmiembros);
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"
+        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script src="assets/js/material.min.js"></script>
+
 
     <script>
-
-        var table = new DataTable('#example', {
+        var table = new DataTable('#tableEmpleados', {
             language: {
                 url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json',
             },
         });
     </script>
-    <?php include 'miembroModal.php' ?>
-  
+
     <script>
-        let nuevoModal = document.getElementById('nuevoModal')
-        nuevoModal.addEventListener('shown.bs.modal', event => {
-            let inputNombre = nuevoModal.querySelector('.modal-body #nombre').focus()
-        })
+        $(function () {
+            setTimeout(function () {
+                $('body').addClass('loaded');
+            }, 1000);
 
-        let editarModal = document.getElementById('actualizarModal')
-        editarModal.addEventListener('shown.bs.modal', event => {
-            let button = event.relatedTarget
-            let id = button.getAttribute('data-bs-id')
-            let inputID = editarModal.querySelector('.modal-body #id')
-            let inputNombre = editarModal.querySelector('.modal-body #nombre')
-            let inputedad = editarModal.querySelector('.modal-body #edad')
-            let inputpeso = editarModal.querySelector('.modal-body #peso')
-            let inputaltura = editarModal.querySelector('.modal-body #altura')
-            let inputtelefono = editarModal.querySelector('.modal-body #telefono')
-            let inputdireccion = editarModal.querySelector('.modal-body #direccion')
-            let inputcorreo = editarModal.querySelector('.modal-body #correo')
-            let inputfecha = editarModal.querySelector('.modal-body #fecha')
-            let inputmembresia = editarModal.querySelector('.modal-body #membresia')
-            let url = "getmiembro.php"
-            let formData = new FormData()
-            formData.append('id', id)
-            fetch(url, {
-                method: "POST",
-                body: formData
-            }).then(response => response.json())
-                .then(data => {
-                    inputID.value = data.idmiembro
-                    inputNombre.value = data.nombre
-                    inputedad.value = data.edad
-                    inputpeso.value = data.peso
-                    inputaltura.value = data.altura
-                    inputtelefono.value = data.telefono
-                    inputdireccion.value = data.direccion
-                    inputcorreo.value = data.correo
-                    inputfecha.value = data.fechaincio
-                    inputmembresia.value=data.membresia_idmembresia
-                }).catch(err => console.log(err))
 
-        })
+            //FILTRANDO REGISTROS
+            $("#filtro").on("click", function (e) {
+                e.preventDefault();
 
-        let eliminaModal = document.getElementById('eliminaModal')
-        eliminaModal.addEventListener('shown.bs.modal', event => {
-            let button = event.relatedTarget
-            let id = button.getAttribute('data-bs-id')
-            eliminaModal.querySelector('.modal-footer #id').value = id
-        })
+                loaderF(true);
+
+                var f_ingreso = $('input[name=fecha_ingreso]').val();
+                var f_fin = $('input[name=fechaFin]').val();
+                console.log(f_ingreso + '' + f_fin);
+
+                if (f_ingreso != "" && f_fin != "") {
+                    $.post("filtro.php", { f_ingreso, f_fin }, function (data) {
+                        $("#tableEmpleados").hide();
+                        $(".resultadoFiltro").html(data);
+                        loaderF(false);
+                    });
+                } else {
+                    $("#loaderFiltro").html('<p style="color:red;  font-weight:bold;">Debe seleccionar ambas fechas</p>');
+                }
+            });
+
+
+            function loaderF(statusLoader) {
+                console.log(statusLoader);
+                if (statusLoader) {
+                    $("#loaderFiltro").show();
+                    $("#loaderFiltro").html('<img class="img-fluid" src="../componentes/Imagenes/cargando.svg" style="left:50%; right: 50%; width:50px;">');
+                } else {
+                    $("#loaderFiltro").hide();
+                }
+            }
+        });
     </script>
+
 </body>
 
 </html>
