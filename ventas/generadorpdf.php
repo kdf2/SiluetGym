@@ -57,8 +57,6 @@ $pdf->SetTitle('Informe de venta');
 //Agregando la primera página
 $pdf->AddPage();
 $pdf->SetFont('helvetica','B',10); //Tipo de fuente y tamaño de letra
-$pdf->SetXY(150, 20);
-$pdf->Write(0, 'Código: 0014ABC');
 $pdf->SetXY(150, 25);
 $pdf->Write(0, 'Fecha: '. date('d-m-Y'));
 $pdf->SetXY(150, 30);

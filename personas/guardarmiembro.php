@@ -19,7 +19,7 @@ if ($conexion->query($sql)) {
 }
 
 
-$sql = "INSERT INTO miembro (edad, peso, altura, persona_idpersona, membresia_idmembresia, fechaincio, estado) VALUES ($edad, $peso ,$altura, $idpersona, $membresia, DATE('$fecha'),$estado )";
+$sql = "INSERT INTO miembro (edad, peso, altura, persona_idpersona, membresia_idmembresia, fechaincio, fechapago, estado) VALUES ($edad, $peso ,$altura, $idpersona, $membresia, DATE('$fecha'),DATE('$fecha'),$estado )";
 if ($conexion->query($sql)) {
     $idmiembro = $conexion->insert_id;
 }

@@ -23,7 +23,7 @@ $fecha = $conexion->real_escape_string($_POST['fecha']);
 $membresia = $conexion->real_escape_string($_POST['membresia']);
 $estado=1;
 
-echo $sql = "UPDATE miembro, persona SET miembro.edad=$edad, miembro.peso=$peso, miembro.altura=$altura, miembro.membresia_idmembresia=$membresia, miembro.fechaincio=DATE('$fecha'), miembro.estado=$estado,
+echo $sql = "UPDATE miembro, persona SET miembro.edad=$edad, miembro.peso=$peso, miembro.altura=$altura, miembro.membresia_idmembresia=$membresia, miembro.fechaincio=DATE('$fecha'), miembro.fechapago=DATE('$fecha'),miembro.estado=$estado,
 persona.nombre='$nombre', persona.telefono=$telefono, persona.direccion='$direccion',persona.correo='$correo' WHERE idmiembro= $idpr AND idpersona = $idpesona";
 
 
