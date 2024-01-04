@@ -1,4 +1,5 @@
 <?php
+
 require '../modelo/conexion.php';
 session_start();
 if (empty($_SESSION["id"])) {
@@ -27,7 +28,7 @@ $resultadorol = mysqli_query($conexion, $sqlrol);
 $filarol = mysqli_fetch_assoc($resultadorol);
 
 $innerjoinmiembros = "SELECT persona.idpersona, persona.nombre, persona.telefono, persona.direccion, persona.correo,
-                             miembro.idmiembro, miembro.edad, miembro.peso, miembro.altura, miembro.persona_idpersona, miembro.membresia_idmembresia, miembro.fechaincio, miembro.estado,
+                             miembro.idmiembro, miembro.edad, miembro.peso, miembro.altura, miembro.persona_idpersona, miembro.membresia_idmembresia, miembro.fechaincio, miembro.fechapago, miembro.estado,
                             membresia.nombre AS nombre_membresia, membresia.precio
                     FROM miembro
                     INNER JOIN persona ON miembro.persona_idpersona= persona.idpersona
@@ -35,8 +36,37 @@ $innerjoinmiembros = "SELECT persona.idpersona, persona.nombre, persona.telefono
 
 $miembrosinner = $conexion->query($innerjoinmiembros);
 
+$sql = "SELECT idmiembro ,fechapago, estado FROM miembro";
+$resultado = $conexion->query($sql);
+// Verificar si la consulta tuvo éxito
+if ($resultado->num_rows > 0) {
+   $fechaActual = new DateTime();
+    // Iterar a través de las filas de la tabla
+    while ($fila = $resultado->fetch_assoc()) {
+        $idmiembro= $fila['idmiembro'];
+        // Acceder a los valores de cada columna en la fila
+        $valorColumna1 = new DateTime( $fila['fechapago']);
+        $valorColumna2 = $fila['estado'];
+        // Puedes hacer lo que necesites con los valores, por ejemplo, imprimirlos
+    
+        if ($fechaActual > $valorColumna1) {
+           $sql = "UPDATE miembro SET estado = 0 WHERE idmiembro = $idmiembro  ";
+           $final=$conexion->query($sql);
+        // echo "la fecha ya expiro. <br>";
+         //   echo "Columna1: ".$valorColumna1->format('Y-m-d H:i:s')." estado debe ser -0-: $valorColumna2 <br>";
+        } else {
+             $sql = "UPDATE miembro SET estado = 1 WHERE idmiembro =$idmiembro ";
+             $final=$conexion->query($sql);
+          // echo "La fecha de pago aun sigue vigente. <br>";
+          // echo "Columna1: ".$valorColumna1->format('Y-m-d H:i:s')." estado debe ser -1- $valorColumna2 <br>";
+        }
+        
+    }
+   
+}
 
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -59,6 +89,7 @@ $miembrosinner = $conexion->query($innerjoinmiembros);
 </head>
 
 <body class="sb-nav-fixed">
+    
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         <!-- Navbar Brand-->
         <a class="navbar-brand ps-3" href="../dashboard.php">SiluetGym <i class="fa-solid fa-dumbbell"
@@ -106,9 +137,12 @@ $miembrosinner = $conexion->query($innerjoinmiembros);
                             </a>
 
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                <li><a class="dropdown-item" href="#">Ralizar mensualidad</a></li>
-                                <li><a class="dropdown-item" href="membresias/membresias.php">Membresias</a></li>
-                                <li><a class="dropdown-item" href="#">Informe</a></li>
+                                <li><a class="dropdown-item" href="../pagos/pagos.php">Ralizar mensualidad</a></li>
+                                <li><a class="dropdown-item" href="../pagos/membresias.php">Membresias</a></li>
+                                <?php
+                        if ($filarol[$atributorol] == "Administrativo") { ?>
+                                <li><a class="dropdown-item" href="../pagos/informe.php">Informe</a></li>
+                                <?php } ?>
                             </ul>
                         </div>
 
@@ -210,6 +244,7 @@ $miembrosinner = $conexion->query($innerjoinmiembros);
                                 <th>correo</th>
                                 <th>membresia</th>
                                 <th>fecha inicio</th>
+                                <th>F.ultimio pago</th>
                                 <th>estado</th>
                                 <th>Acciones</th>
                             </tr>
@@ -255,6 +290,10 @@ $miembrosinner = $conexion->query($innerjoinmiembros);
                                     </td>
 
                                     <td>
+                                        <?= $row_miembro['fechapago']; ?>
+                                    </td>
+
+                                    <td>
                                         <?php if ($row_miembro['estado'] == 1) { ?>
                                             <div class="bg-success text-center text-light">
                                                 <a >ACTIVO</a>
@@ -287,7 +326,7 @@ $miembrosinner = $conexion->query($innerjoinmiembros);
         </div>
     </div>
 
-
+    
     <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap4.min.js"></script>
@@ -296,9 +335,6 @@ $miembrosinner = $conexion->query($innerjoinmiembros);
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
         crossorigin="anonymous"></script>
     <script src="../componentes/Js/scripts.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-    <script src="../componentes/Js/demo/chart-area-demo.js"></script>
-    <script src="../componentes/Js/demo/chart-bar-demo.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
         crossorigin="anonymous"></script>
     <script src="../componentes/Js/datatables-simple-demo.js"></script>
@@ -371,6 +407,10 @@ $miembrosinner = $conexion->query($innerjoinmiembros);
             eliminaModal.querySelector('.modal-footer #id').value = id
         })
     </script>
+
+
+
+
 </body>
 
 </html>

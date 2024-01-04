@@ -26,6 +26,10 @@ $sqlrol = "SELECT $atributorol FROM rol WHERE idRol='$idrol'";
 $resultadorol = mysqli_query($conexion, $sqlrol);
 $filarol = mysqli_fetch_assoc($resultadorol);
 
+$miembros = mysqli_query($conexion, "SELECT * FROM miembro");
+$total['miembros'] = mysqli_num_rows($miembros);
+
+
 ?>
 
 <!DOCTYPE html>
@@ -97,9 +101,12 @@ $filarol = mysqli_fetch_assoc($resultadorol);
                             </a>
 
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                <li><a class="dropdown-item" href="#">Ralizar mensualidad</a></li>
-                                <li><a class="dropdown-item" href="membresias/membresias.php">Membresias</a></li>
-                                <li><a class="dropdown-item" href="#">Informe</a></li>
+                                <li><a class="dropdown-item" href="pagos/pagos.php">Ralizar mensualidad</a></li>
+                                <li><a class="dropdown-item" href="pagos/membresias.php">Membresias</a></li>
+                                <?php
+                                if ($filarol[$atributorol] == "Administrativo") { ?>
+                                    <li><a class="dropdown-item" href="pagos/informe.php">Informe</a></li>
+                                <?php } ?>
                             </ul>
                         </div>
 
@@ -115,8 +122,8 @@ $filarol = mysqli_fetch_assoc($resultadorol);
                                 <li><a class="dropdown-item" href="ventas/venta.php">Realizar venta</a></li>
                                 <li><a class="dropdown-item" href="ventas/stock.php">Stock</a></li>
                                 <?php
-                        if ($filarol[$atributorol] == "Administrativo") { ?>
-                                <li><a class="dropdown-item" href="ventas/informe.php">Informe</a></li>
+                                if ($filarol[$atributorol] == "Administrativo") { ?>
+                                    <li><a class="dropdown-item" href="ventas/informe.php">Informe</a></li>
                                 <?php } ?>
                             </ul>
                         </div>
@@ -133,8 +140,8 @@ $filarol = mysqli_fetch_assoc($resultadorol);
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                 <li><a class="dropdown-item" href="gastos/gasto.php">Realizar gasto</a></li>
                                 <?php
-                        if ($filarol[$atributorol] == "Administrativo") { ?>
-                                <li><a class="dropdown-item" href="gastos/informe.php">Informe</a></li>
+                                if ($filarol[$atributorol] == "Administrativo") { ?>
+                                    <li><a class="dropdown-item" href="gastos/informe.php">Informe</a></li>
                                 <?php } ?>
                             </ul>
                         </div>
@@ -164,7 +171,7 @@ $filarol = mysqli_fetch_assoc($resultadorol);
                                 </a>
 
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                <li><a class="dropdown-item" href="usuarios/usuarios.php">Usuarios</a></li>
+                                    <li><a class="dropdown-item" href="usuarios/usuarios.php">Usuarios</a></li>
                                     <li><a class="dropdown-item" href="configuraciones/categorias.php">Extras</a></li>
                                 </ul>
                             </div>
@@ -182,67 +189,127 @@ $filarol = mysqli_fetch_assoc($resultadorol);
             <main>
                 <div class="container-fluid px-4">
                     <h1 class="mt-4">Panel de control</h1>
-                    <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item active">Siluet Gym</li>
-                    </ol>
                     <div class="row">
-                        <div class="col-xl-3 col-md-6">
-                            <div class="card bg-primary text-white mb-4">
-                                <div class="card-body">Primary Card</div>
-                                <div class="card-footer d-flex align-items-center justify-content-between">
-                                    <a class="small text-white stretched-link" href="#">View Details</a>
-                                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                        <div class="col-lg-3 col-md-6 col-sm-6">
+                            <div class="card card-stats">
+                                <div class="card-header card-header-warning card-header-icon">
+                                    <div class="card-icon">
+                                        <i class="fas fa-user fa-2x"></i>
+                                    </div>
+                                    <a href="personas/miembros.php" class="card-category text-warning font-weight-bold">
+                                        Miembros
+                                    </a>
+                                    <h3 class="card-title">
+                                        <?php echo $total['miembros'] ?>
+                                    </h3>
+                                </div>
+                                <div class="card-footer bg-warning text-white">
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xl-3 col-md-6">
-                            <div class="card bg-warning text-white mb-4">
-                                <div class="card-body">Warning Card</div>
-                                <div class="card-footer d-flex align-items-center justify-content-between">
-                                    <a class="small text-white stretched-link" href="#">View Details</a>
-                                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+
+                        <div class="col-lg-3 col-md-6 col-sm-6">
+                            <div class="card card-stats">
+                                <div class="card-header card-header-success card-header-icon">
+                                    <div class="card-icon">
+                                        <i class="fas fa-users fa-2x"></i>
+                                    </div>
+                                    <a href="clientes.php" class="card-category text-secondary font-weight-bold">
+                                        Ventas del dia
+                                    </a>
+                                    <h3 class="card-title">
+                                        <?php echo $total['miembros'] ?>
+                                    </h3>
+                                </div>
+                                <div class="card-footer bg-secondary text-white">
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xl-3 col-md-6">
-                            <div class="card bg-success text-white mb-4">
-                                <div class="card-body">Success Card</div>
-                                <div class="card-footer d-flex align-items-center justify-content-between">
-                                    <a class="small text-white stretched-link" href="#">View Details</a>
-                                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                        <div class="col-lg-3 col-md-6 col-sm-6">
+                            <div class="card card-stats">
+                                <div class="card-header card-header-danger card-header-icon">
+                                    <div class="card-icon">
+                                        <i class="fab fa-product-hunt fa-2x"></i>
+                                    </div>
+                                    <a href="productos.php" class="card-category text-primary font-weight-bold">
+                                        Mensualidades del dia
+                                    </a>
+                                    <h3 class="card-title">
+                                        <?php echo $total['miembros'] ?>
+                                    </h3>
+                                </div>
+                                <div class="card-footer bg-primary">
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xl-3 col-md-6">
-                            <div class="card bg-danger text-white mb-4">
-                                <div class="card-body">Danger Card</div>
-                                <div class="card-footer d-flex align-items-center justify-content-between">
-                                    <a class="small text-white stretched-link" href="#">View Details</a>
-                                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                        <div class="col-lg-3 col-md-6 col-sm-6">
+                            <div class="card card-stats">
+                                <div class="card-header card-header-info card-header-icon">
+                                    <div class="card-icon">
+                                        <i class="fas fa-cash-register fa-2x"></i>
+                                    </div>
+                                    <a href="ventas.php" class="card-category text-danger font-weight-bold">
+                                        Gastos del dia
+                                    </a>
+                                    <h3 class="card-title">
+                                        <?php echo $total['miembros'] ?>
+                                    </h3>
+                                </div>
+                                <div class="card-footer bg-danger text-white">
                                 </div>
                             </div>
                         </div>
+
+                        <div><br></div>
+
+                        <div class="col-lg-6">
+                            <div class="card">
+                                <div class="card-header card-header-primary">
+                                    <h3 class="title-2 m-b-40">Productos con stock mínimo</h3>
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="stockMinimo"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="card">
+                                <div class="card-header card-header-primary">
+                                    <h3 class="title-2 m-b-40">Personas con mensulidad pendiente</h3>
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="ProductosVendidos"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div><br></div>
+
+                        <div class="col-lg-6">
+                            <div class="card">
+                                <div class="card-header card-header-primary">
+                                    <h3 class="title-2 m-b-40">Gastos durante el año</h3>
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="stockMinimo"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="card">
+                                <div class="card-header card-header-primary">
+                                    <h3 class="title-2 m-b-40">Ventas durante el año</h3>
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="ProductosVendidos"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+
+
                     </div>
-                    <div class="row">
-                        <div class="col-xl-6">
-                            <div class="card mb-4">
-                                <div class="card-header">
-                                    <i class="fas fa-chart-area me-1"></i>
-                                    Area Chart Example
-                                </div>
-                                <div class="card-body"><canvas id="myAreaChart" width="100%" height="40"></canvas></div>
-                            </div>
-                        </div>
-                        <div class="col-xl-6">
-                            <div class="card mb-4">
-                                <div class="card-header">
-                                    <i class="fas fa-chart-bar me-1"></i>
-                                    Bar Chart Example
-                                </div>
-                                <div class="card-body"><canvas id="myBarChart" width="100%" height="40"></canvas></div>
-                            </div>
-                        </div>
-                    </div>
+                </div>
             </main>
         </div>
     </div>

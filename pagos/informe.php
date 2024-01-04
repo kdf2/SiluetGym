@@ -30,7 +30,6 @@ $_SESSION["nombrepersona"] = $fila2[$atributo2];
 ?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -51,6 +50,11 @@ $_SESSION["nombrepersona"] = $fila2[$atributo2];
 
 
 </head>
+
+
+<style>
+   
+</style>
 
 <body class="sb-nav-fixed">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -118,11 +122,11 @@ $_SESSION["nombrepersona"] = $fila2[$atributo2];
                             </a>
 
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                <li><a class="dropdown-item" href="../ventas/venta.php">Realizar venta</a></li>
-                                <li><a class="dropdown-item" href="../ventas/stock.php">Stock</a></li>
+                                <li><a class="dropdown-item" href="venta.php">Realizar venta</a></li>
+                                <li><a class="dropdown-item" href="stock.php">Stock</a></li>
                                 <?php
                         if ($filarol[$atributorol] == "Administrativo") { ?>
-                                <li><a class="dropdown-item" href="../ventas/informe.php">Informe</a></li>
+                                <li><a class="dropdown-item" href="informe.php">Informe</a></li>
                                 <?php } ?>
                             </ul>
                         </div>
@@ -137,9 +141,9 @@ $_SESSION["nombrepersona"] = $fila2[$atributo2];
                             </a>
 
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                <li><a class="dropdown-item" href="gasto.php">Realizar gasto</a></li>
+                                <li><a class="dropdown-item" href="../gastos/gasto.php">Realizar gasto</a></li>
                                 <?php if ($filarol[$atributorol] == "Administrativo") { ?>
-                                    <li><a class="dropdown-item" href="informe.php">Informe</a></li>
+                                    <li><a class="dropdown-item" href="../gastos/informe.php">Informe</a></li>
                                 <?php } ?>
 
                             </ul>
@@ -187,30 +191,31 @@ $_SESSION["nombrepersona"] = $fila2[$atributo2];
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4 row justify-content-center">
-                    <h1 class="d-flex justify-content-center">Informe sobre gastos por fechas</h1>
-<br>
-<br>
-<br>
+                    <h1 class="d-flex justify-content-center">Informe sobre mensualidades por fechas</h1>
+                    <br>
+                    <br>
+                    <br>
                     <div class="container">
                         <div class="row">
                             <div class="col-md-12 text-center">
-                                <form action="DescargarReporte_x_fecha_PDF.php "  target="_blank" method="post" accept-charset="utf-8">
+                                <form action="DescargarReporte_x_fecha_PDF.php" target="_blank" method="post"
+                                    accept-charset="utf-8">
                                     <div class="row">
                                         <div class="col">
-                                            
+
                                             <input type="date" name="fecha_ingreso" class="form-control"
                                                 placeholder="Fecha de Inicio" required>
-                                                <label for="">Fecha inicial</label>
+                                            <label for="">Fecha inicial</label>
                                         </div>
                                         <div class="col">
-                                     
+
                                             <input type="date" name="fechaFin" class="form-control"
                                                 placeholder="Fecha Final" required>
-                                                <label for="">Fecha final</label>
+                                            <label for="">Fecha final</label>
                                         </div>
                                         <div class="col">
                                             <span class="btn btn-dark mb-2" id="filtro">Filtrar</span>
-                                            <button type="submit" class="btn btn-danger mb-2" >Descargar Reporte</button>
+                                            <button id="pdf" type="submit" class="btn btn-danger mb-2 pdf">Descargar Reporte</button>
                                         </div>
                                     </div>
                                 </form>
@@ -226,40 +231,48 @@ $_SESSION["nombrepersona"] = $fila2[$atributo2];
                                     style="width:100%">
                                     <thead class="table-dark">
                                         <tr>
-                                            <th>nombre</th>
-                                            <th>fecha</th>
-                                            <th>categoria</th>
-                                            <th>cantidad</th>
-                                            
+                                            <th>Nombre</th>
+                                            <th>Membresia</th>
+                                            <th>Fecha de pago</th>
+                                            <th>C. meses</th>
+                                            <th>Fecha de vencimiento</th>
+                                            <th>total</th>
+
                                         </tr>
                                     </thead>
                                     <?php
-                                    $innerjoingasto = "SELECT usuario.idusuario,
-                                    categoria.idcategoria, categoria.nombre as nombre_cateogoria,
-                                   gasto.idgasto, gasto.cantidad,	gasto.fecha, gasto.usuario_idusuario, gasto.categoria_idcategoria, gasto.Nombrepersona
-                           FROM gasto
-                           INNER JOIN usuario ON gasto.usuario_idusuario= usuario.idusuario
-                           INNER JOIN categoria ON gasto.categoria_idcategoria=categoria.idcategoria ORDER BY fecha ASC";
-                                    $gastoinner = mysqli_query($conexion, $innerjoingasto);
+                                    $innerjoinventas = "SELECT  persona.nombre as personanombre, miembro.fechapago, membresia.nombre as nombremembresia, membresia.precio, pago.total, pago.mesesapagar, pago.fechadepago as fpago, pago.fechavencimiento FROM pago
+                                    INNER JOIN miembro ON pago.miembro_idmiembro = miembro.idmiembro 
+                                    INNER JOIN persona ON miembro.persona_idpersona = persona.idpersona 
+                                    INNER JOIN membresia ON miembro.membresia_idmembresia = membresia.idmembresia ORDER BY fpago ASC";
+                                    $ventasinner = mysqli_query($conexion, $innerjoinventas);
                                     $i = 1;
-                                    while ($row_gasto = $gastoinner->fetch_assoc()) { ?>
+                                    while ($row_venta = $ventasinner->fetch_assoc()) { ?>
                                         <tr>
                                             <td>
-                                                <?= $row_gasto['Nombrepersona']; ?>
-                                            </td>
-
-
-                                            <td>
-                                                <?= $row_gasto['fecha']; ?>
+                                                <?= $row_venta['personanombre']; ?>
                                             </td>
 
                                             <td>
-                                                <?= $row_gasto['nombre_cateogoria']; ?>
+                                                <?= $row_venta['nombremembresia'].' - Q'.$row_venta['precio']; ?>
                                             </td>
 
                                             <td>
-                                                <?= $row_gasto['cantidad']; ?>
+                                                <?= $row_venta['fpago']; ?>
                                             </td>
+
+                                            <td>
+                                                <?= $row_venta['mesesapagar']; ?>
+                                            </td>
+
+                                            <td>
+                                                <?= $row_venta['fechavencimiento']; ?>
+                                            </td>
+
+                                            <td>
+                                                <?= $row_venta['total']; ?>
+                                            </td>
+
                                         </tr>
                                     <?php } ?>
                                 </table>

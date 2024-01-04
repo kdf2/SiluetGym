@@ -25,9 +25,12 @@ $atributorol = "nombre";
 $sqlrol = "SELECT $atributorol FROM rol WHERE idRol='$idrol'";
 $resultadorol = mysqli_query($conexion, $sqlrol);
 $filarol = mysqli_fetch_assoc($resultadorol);
-$_SESSION["nombrepersona"] = $fila2[$atributo2];
 
+
+$sqlmembresia = "SELECT * FROM membresia";
+$resultadomembresias = $conexion->query($sqlmembresia);
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -44,12 +47,9 @@ $_SESSION["nombrepersona"] = $fila2[$atributo2];
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="../componentes/Css/styles.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" rel="stylesheet" />
     <link href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="../componentes/Css/loader.css">
-
-
 </head>
 
 <body class="sb-nav-fixed">
@@ -100,12 +100,9 @@ $_SESSION["nombrepersona"] = $fila2[$atributo2];
                             </a>
 
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                <li><a class="dropdown-item" href="../pagos/pagos.php">Ralizar mensualidad</a></li>
-                                <li><a class="dropdown-item" href="../pagos/membresias.php">Membresias</a></li>
-                                <?php
-                        if ($filarol[$atributorol] == "Administrativo") { ?>
-                                <li><a class="dropdown-item" href="../pagos/informe.php">Informe</a></li>
-                                <?php } ?>
+                                <li><a class="dropdown-item" href="pagos.php">Ralizar mensualidad</a></li>
+                                <li><a class="dropdown-item" href="membresias.php">Membresias</a></li>
+                                <li><a class="dropdown-item" href="informe.php">Informe</a></li>
                             </ul>
                         </div>
 
@@ -125,6 +122,7 @@ $_SESSION["nombrepersona"] = $fila2[$atributo2];
                                 <li><a class="dropdown-item" href="../ventas/informe.php">Informe</a></li>
                                 <?php } ?>
                             </ul>
+                            </ul>
                         </div>
 
 
@@ -137,11 +135,11 @@ $_SESSION["nombrepersona"] = $fila2[$atributo2];
                             </a>
 
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                <li><a class="dropdown-item" href="gasto.php">Realizar gasto</a></li>
-                                <?php if ($filarol[$atributorol] == "Administrativo") { ?>
-                                    <li><a class="dropdown-item" href="informe.php">Informe</a></li>
+                                <li><a class="dropdown-item" href="../gastos/gasto.php">Realizar gasto</a></li>
+                               
+                                 <?php if ($filarol[$atributorol] == "Administrativo") { ?>
+                                <li><a class="dropdown-item" href="../gastos/informe.php">Informe</a></li>
                                 <?php } ?>
-
                             </ul>
                         </div>
 
@@ -186,105 +184,117 @@ $_SESSION["nombrepersona"] = $fila2[$atributo2];
         <!--empieza el dashboard -->
         <div id="layoutSidenav_content">
             <main>
-                <div class="container-fluid px-4 row justify-content-center">
-                    <h1 class="d-flex justify-content-center">Informe sobre gastos por fechas</h1>
-<br>
-<br>
-<br>
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-12 text-center">
-                                <form action="DescargarReporte_x_fecha_PDF.php "  target="_blank" method="post" accept-charset="utf-8">
-                                    <div class="row">
-                                        <div class="col">
-                                            
-                                            <input type="date" name="fecha_ingreso" class="form-control"
-                                                placeholder="Fecha de Inicio" required>
-                                                <label for="">Fecha inicial</label>
-                                        </div>
-                                        <div class="col">
-                                     
-                                            <input type="date" name="fechaFin" class="form-control"
-                                                placeholder="Fecha Final" required>
-                                                <label for="">Fecha final</label>
-                                        </div>
-                                        <div class="col">
-                                            <span class="btn btn-dark mb-2" id="filtro">Filtrar</span>
-                                            <button type="submit" class="btn btn-danger mb-2" >Descargar Reporte</button>
-                                        </div>
-                                    </div>
-                                </form>
+                <div class="container-fluid px-4">
+                    <h1 class="d-flex justify-content-center">Membresias</h1>
+                    <div class="row ">
+                        <div class="col">
+                            
+                        <div class="col">
+                           
+                            <div class="col-sm-4">
+                                <a href="#" class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#nuevoModalgastos"><i class="fa-solid fa-circle-plus"></i> Agregar
+                                     membresia</a>
                             </div>
-
-                            <div class="col-md-12 text-center mt-5">
-                                <span id="loaderFiltro"> </span>
-                            </div>
-
-
-                            <div class="table-responsive resultadoFiltro">
-                                <table id="tableEmpleados" class="table table-striped table-bordered"
-                                    style="width:100%">
-                                    <thead class="table-dark">
+                            <table class="table table-sm table-striped table-hover mt-4">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th class="text-center">#id</th>
+                                        <th class="text-center">Nombre</th>
+                                        <th class="text-center">Precio</th>
+                                        <th class="text-center" >Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php while ($row2 = $resultadomembresias->fetch_assoc()) { ?>
                                         <tr>
-                                            <th>nombre</th>
-                                            <th>fecha</th>
-                                            <th>categoria</th>
-                                            <th>cantidad</th>
-                                            
-                                        </tr>
-                                    </thead>
-                                    <?php
-                                    $innerjoingasto = "SELECT usuario.idusuario,
-                                    categoria.idcategoria, categoria.nombre as nombre_cateogoria,
-                                   gasto.idgasto, gasto.cantidad,	gasto.fecha, gasto.usuario_idusuario, gasto.categoria_idcategoria, gasto.Nombrepersona
-                           FROM gasto
-                           INNER JOIN usuario ON gasto.usuario_idusuario= usuario.idusuario
-                           INNER JOIN categoria ON gasto.categoria_idcategoria=categoria.idcategoria ORDER BY fecha ASC";
-                                    $gastoinner = mysqli_query($conexion, $innerjoingasto);
-                                    $i = 1;
-                                    while ($row_gasto = $gastoinner->fetch_assoc()) { ?>
-                                        <tr>
-                                            <td>
-                                                <?= $row_gasto['Nombrepersona']; ?>
-                                            </td>
+                                            <td class="text-center">
+                                                <?= $row2['idmembresia']; ?>
+                                            </td >
+                                            <td class="text-center">
+                                                <?= $row2['nombre']; ?>
+                                            </td >
+                                            <td class="text-center">
+                                                <?= $row2['precio']; ?>
+                                            </td >
+                                            <td class="text-center">
+                                                <a href="#" class="btn btn-sm btn-warning" data-bs-toggle="modal"
+                                                    data-bs-target="#editarModalgastos"
+                                                    data-bs-id="<?= $row2['idmembresia']; ?>"><i
+                                                        class="fa-solid fa-pen-to-square"></i> Editar</a>
 
-
-                                            <td>
-                                                <?= $row_gasto['fecha']; ?>
-                                            </td>
-
-                                            <td>
-                                                <?= $row_gasto['nombre_cateogoria']; ?>
-                                            </td>
-
-                                            <td>
-                                                <?= $row_gasto['cantidad']; ?>
+                                                <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal"
+                                                    data-bs-target="#eliminaModalg"
+                                                    data-bs-id="<?= $row2['idmembresia']; ?>"><i
+                                                        class="fa-solid fa-trash"></i></i> Eliminar</a>
                                             </td>
                                         </tr>
                                     <?php } ?>
-                                </table>
-                            </div>
-
+                                </tbody>
+                            </table>
                         </div>
                     </div>
+                   
+                    
                 </div>
             </main>
         </div>
     </div>
-    </div>
+
+    <?php include 'nuevoModal.php' ?>
+    <?php include 'editarModal.php' ?>
+    <?php include 'eliminarModal.php' ?>
 
 
-    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap4.min.js"></script>
+    <script>
+        //gastos
+        let editarModalgastos = document.getElementById('editarModalgastos')
+        let elimarModalgastos = document.getElementById('eliminaModalg')
+        let nuevoModalgasto = document.getElementById('nuevoModalgastos')
+        nuevoModalgasto.addEventListener('shown.bs.modal', event => {
+            let inputNombre = nuevoModalgasto.querySelector('.modal-body #nombre').focus()
+        })
+        nuevoModalgasto.addEventListener('hide.bs.modal', event => {
+            let inputNombre = nuevoModalgasto.querySelector('.modal-body #nombre').value = ""
+            let inputDes = nuevoModalgasto.querySelector('.modal-body #precio').value = ""
+        })
+
+        //editartablagastos
+        editarModalgastos.addEventListener('shown.bs.modal', event => {
+            let button = event.relatedTarget
+            let id = button.getAttribute('data-bs-id')
+            let inputID = editarModalgastos.querySelector('.modal-body #id')
+            let inputNombre = editarModalgastos.querySelector('.modal-body #nombre')
+            let inputDes = editarModalgastos.querySelector('.modal-body #precio')
+            let url = "getmembresia.php"
+            let formData = new FormData()
+            formData.append('id', id)
+            fetch(url, {
+                method: "POST",
+                body: formData
+            }).then(response => response.json())
+                .then(data => {
+                    inputID.value = data.idmembresia
+                    inputNombre.value = data.nombre
+                    inputDes.value = data.precio
+                }).catch(err => console.log(err))
 
 
+        })
+
+        //elimnartablagasto
+        elimarModalgastos.addEventListener('shown.bs.modal', event => {
+            let button = event.relatedTarget
+            let id = button.getAttribute('data-bs-id')
+            elimarModalgastos.querySelector('.modal-footer #id').value = id
+        })
+
+
+
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
         crossorigin="anonymous"></script>
     <script src="../componentes/Js/scripts.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-    <script src="../componentes/Js/demo/chart-area-demo.js"></script>
-    <script src="../componentes/Js/demo/chart-bar-demo.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
         crossorigin="anonymous"></script>
     <script src="../componentes/Js/datatables-simple-demo.js"></script>
@@ -297,60 +307,6 @@ $_SESSION["nombrepersona"] = $fila2[$atributo2];
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.js"
-        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-    <script src="assets/js/material.min.js"></script>
-
-
-    <script>
-        var table = new DataTable('#tableEmpleados', {
-            language: {
-                url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json',
-            },
-        });
-    </script>
-
-    <script>
-        $(function () {
-            setTimeout(function () {
-                $('body').addClass('loaded');
-            }, 1000);
-
-
-            //FILTRANDO REGISTROS
-            $("#filtro").on("click", function (e) {
-                e.preventDefault();
-
-                loaderF(true);
-
-                var f_ingreso = $('input[name=fecha_ingreso]').val();
-                var f_fin = $('input[name=fechaFin]').val();
-                console.log(f_ingreso + '' + f_fin);
-
-                if (f_ingreso != "" && f_fin != "") {
-                    $.post("filtro.php", { f_ingreso, f_fin }, function (data) {
-                        $("#tableEmpleados").hide();
-                        $(".resultadoFiltro").html(data);
-                        loaderF(false);
-                    });
-                } else {
-                    $("#loaderFiltro").html('<p style="color:red;  font-weight:bold;">Debe seleccionar ambas fechas</p>');
-                }
-            });
-
-
-            function loaderF(statusLoader) {
-                console.log(statusLoader);
-                if (statusLoader) {
-                    $("#loaderFiltro").show();
-                    $("#loaderFiltro").html('<img class="img-fluid" src="../componentes/Imagenes/cargando.svg" style="left:50%; right: 50%; width:50px;">');
-                } else {
-                    $("#loaderFiltro").hide();
-                }
-            }
-        });
-    </script>
-
 </body>
 
 </html>

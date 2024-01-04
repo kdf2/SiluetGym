@@ -107,9 +107,12 @@ $empleadosinner = $conexion->query($innerjoinempleados);
                             </a>
 
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                <li><a class="dropdown-item" href="#">Ralizar mensualidad</a></li>
-                                <li><a class="dropdown-item" href="membresias/membresias.php">Membresias</a></li>
-                                <li><a class="dropdown-item" href="#">Informe</a></li>
+                                <li><a class="dropdown-item" href="../pagos/pagos.php">Ralizar mensualidad</a></li>
+                                <li><a class="dropdown-item" href="../pagos/membresias.php">Membresias</a></li>
+                                <?php
+                        if ($filarol[$atributorol] == "Administrativo") { ?>
+                                <li><a class="dropdown-item" href="../pagos/informe.php">Informe</a></li>
+                                <?php } ?>
                             </ul>
                         </div>
 
