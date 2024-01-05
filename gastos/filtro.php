@@ -64,5 +64,7 @@ echo '<strong>Total: </strong> (' . $total . ')';
 
 </table>
 <?php
-echo '<strong>el total que se gasto en el rango dado es de: </strong> (' ."Q".$suma . ')';
+echo '<h1 style="color:red">El total que se gasto en el rango dado es de: </strong> (' ."Q".$suma . ')</h1>';
+
+
 ?>

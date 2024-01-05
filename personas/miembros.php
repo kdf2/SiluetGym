@@ -27,14 +27,7 @@ $sqlrol = "SELECT $atributorol FROM rol WHERE idRol='$idrol'";
 $resultadorol = mysqli_query($conexion, $sqlrol);
 $filarol = mysqli_fetch_assoc($resultadorol);
 
-$innerjoinmiembros = "SELECT persona.idpersona, persona.nombre, persona.telefono, persona.direccion, persona.correo,
-                             miembro.idmiembro, miembro.edad, miembro.peso, miembro.altura, miembro.persona_idpersona, miembro.membresia_idmembresia, miembro.fechaincio, miembro.fechapago, miembro.estado,
-                            membresia.nombre AS nombre_membresia, membresia.precio
-                    FROM miembro
-                    INNER JOIN persona ON miembro.persona_idpersona= persona.idpersona
-                    INNER JOIN membresia ON miembro.membresia_idmembresia=membresia.idmembresia";
 
-$miembrosinner = $conexion->query($innerjoinmiembros);
 
 $sql = "SELECT idmiembro ,fechapago, estado FROM miembro";
 $resultado = $conexion->query($sql);
@@ -62,8 +55,21 @@ if ($resultado->num_rows > 0) {
         }
         
     }
-   
 }
+
+
+
+$innerjoinmiembros = "SELECT persona.idpersona, persona.nombre, persona.telefono, persona.direccion, persona.correo,
+                             miembro.idmiembro, miembro.edad, miembro.peso, miembro.altura, miembro.persona_idpersona, miembro.membresia_idmembresia, miembro.fechaincio, miembro.fechapago, miembro.estado,
+                            membresia.nombre AS nombre_membresia, membresia.precio
+                    FROM miembro
+                    INNER JOIN persona ON miembro.persona_idpersona= persona.idpersona
+                    INNER JOIN membresia ON miembro.membresia_idmembresia=membresia.idmembresia";
+
+$miembrosinner = $conexion->query($innerjoinmiembros);
+
+   
+
 
 ?>
 
