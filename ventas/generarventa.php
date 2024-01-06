@@ -83,6 +83,7 @@ if ($resultSelect->num_rows > 0) {
 }
 
 
+
 //creacion del pdf
 date_default_timezone_set('America/Guatemala');
 
@@ -146,7 +147,7 @@ $pdf->Write(0, 'Hora: '. date('h:i A'));
 
 $pdf->SetFont('helvetica','B',25); //Tipo de fuente y tamaño de letra
 $pdf->SetXY(15, 20); //Margen en X y en Y
-$pdf->SetTextColor(204,0,0);
+$pdf->SetTextColor(153,204,0); //Verde
 $pdf->Write(0, 'Siluet Gym ');
 
 $pdf->SetFont('helvetica','B',12);
@@ -248,6 +249,9 @@ llega la linea */
 
 $pdf->SetFont('helvetica','',10);
 
+
+
+
 $consulta = "SELECT * FROM detalle_de_venta ORDER BY venta_idventa DESC LIMIT 1";
 $resultado = $conexion->query($consulta);
 if ($resultado) {
@@ -260,30 +264,29 @@ if ($resultado) {
 
 
 $innerjoingasto = "SELECT producto.idproducto, producto.nombre,
-detalle_de_venta.cantidad, detalle_de_venta.subt, detalle_de_venta.producto_idproducto
+detalle_de_venta.cantidad, detalle_de_venta.subt, detalle_de_venta.producto_idproducto,detalle_de_venta.venta_idventa
 FROM detalle_de_venta
-INNER JOIN producto ON detalle_de_venta.producto_idproducto = producto.idproducto WHERE venta_idventa=$iddetalleventa" ;
+INNER JOIN producto ON detalle_de_venta.producto_idproducto = producto.idproducto WHERE detalle_de_venta.venta_idventa=$iddetalleventa" ;
 $query = mysqli_query($conexion, $innerjoingasto);
 $suma=0;
 while ($row_gasto = mysqli_fetch_array($query)) {
     $suma+=$row_gasto['subt'];
         $pdf->Cell(30,6,$row_gasto['cantidad'],1,0,'C');
-        $pdf->Cell(90,6,($row_gasto['nombre']),1,0,'C'); 
+        $pdf->Cell(90,6,$row_gasto['nombre'],1,0,'C'); 
         $pdf->Cell(50,6,$row_gasto['subt'],1,1,'C');
     }
-    
+    $resultado = "DELETE FROM fantasma";
+$resultadofinal = $conexion->query($resultado);
+if($resultadofinal){
+}
     $pdf->SetFont('helvetica','B',12);
     $pdf->SetTextColor(204,0,0);
     $pdf->Cell(120,6,('TOTAL'),1,0,'C');
     $pdf->Cell(50,6,'Q'.$suma,1,0,'C');
-    $resultado = "DELETE FROM fantasma";
-    $resultadofinal = $conexion->query($resultado);
-    if($resultadofinal){
-     
-    }
+
     //$pdf->AddPage(); //Agregar nueva Pagina
 
-$pdf->Output('Resumen_gastos_'.date('d_m_y').'.pdf', 'I'); 
+$pdf->Output('Resumen_venta_'.date('d_m_y').'.pdf', 'I'); 
 // Output funcion que recibe 2 parameros, el nombre del archivo, ver archivo o descargar,
 // La D es para Forzar una descarga
 

@@ -333,7 +333,7 @@ $_SESSION["nombrepersona"] = $fila2[$atributo2];
         </div>
     </div>
 
-
+    <?php include 'nuevoModal.php' ?>
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script type="text/javascript" src="funciones.js"></script>
@@ -358,11 +358,11 @@ $_SESSION["nombrepersona"] = $fila2[$atributo2];
         crossorigin="anonymous"></script>
 
     <script>
-        /*
+        
         let nuevoModal = document.getElementById('nuevoModal')
                 nuevoModal.addEventListener('shown.bs.modal', event => {
                     let inputcantidad = nuevoModal.querySelector('.modal-body #nombre').focus()
-                })*/
+                })
     </script>
 
 

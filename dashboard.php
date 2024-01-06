@@ -458,7 +458,7 @@ while ($row = $result->fetch_assoc()) {
                                             membresia.nombre AS nombre_membresia, membresia.precio
                                             FROM miembro
                                             INNER JOIN persona ON miembro.persona_idpersona= persona.idpersona
-                                            INNER JOIN membresia ON miembro.membresia_idmembresia=membresia.idmembresia";
+                                            INNER JOIN membresia ON miembro.membresia_idmembresia=membresia.idmembresia ORDER BY fechapago ASC";
 
                                         $miembrosinner = $conexion->query($innerjoinmiembros);
 

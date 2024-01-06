@@ -2,6 +2,7 @@
 
 require '../modelo/conexion.php';
 session_start();
+date_default_timezone_set('America/Guatemala');
 if (empty($_SESSION["id"])) {
     header("location:../login.php");
 }
@@ -33,12 +34,12 @@ $sql = "SELECT idmiembro ,fechapago, estado FROM miembro";
 $resultado = $conexion->query($sql);
 // Verificar si la consulta tuvo éxito
 if ($resultado->num_rows > 0) {
-   $fechaActual = new DateTime();
+   $fechaActual = date("Y-m-d");
     // Iterar a través de las filas de la tabla
     while ($fila = $resultado->fetch_assoc()) {
         $idmiembro= $fila['idmiembro'];
         // Acceder a los valores de cada columna en la fila
-        $valorColumna1 = new DateTime( $fila['fechapago']);
+        $valorColumna1 =  $fila['fechapago'];
         $valorColumna2 = $fila['estado'];
         // Puedes hacer lo que necesites con los valores, por ejemplo, imprimirlos
     

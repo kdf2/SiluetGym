@@ -65,7 +65,7 @@ $pdf->Write(0, 'Hora: '. date('h:i A'));
 
 $pdf->SetFont('helvetica','B',25); //Tipo de fuente y tamaño de letra
 $pdf->SetXY(15, 20); //Margen en X y en Y
-$pdf->SetTextColor(204,0,0);
+$pdf->SetTextColor(153,204,0); //Verde
 $pdf->Write(0, 'Siluet Gym ');
 
 
