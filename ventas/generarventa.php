@@ -83,7 +83,10 @@ if ($resultSelect->num_rows > 0) {
 }
 
 
-
+$resultado = "DELETE FROM fantasma";
+$resultadofinal = $conexion->query($resultado);
+if($resultadofinal){
+}
 //creacion del pdf
 date_default_timezone_set('America/Guatemala');
 
@@ -275,10 +278,7 @@ while ($row_gasto = mysqli_fetch_array($query)) {
         $pdf->Cell(90,6,$row_gasto['nombre'],1,0,'C'); 
         $pdf->Cell(50,6,$row_gasto['subt'],1,1,'C');
     }
-    $resultado = "DELETE FROM fantasma";
-$resultadofinal = $conexion->query($resultado);
-if($resultadofinal){
-}
+
     $pdf->SetFont('helvetica','B',12);
     $pdf->SetTextColor(204,0,0);
     $pdf->Cell(120,6,('TOTAL'),1,0,'C');
