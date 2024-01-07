@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 05-12-2023 a las 03:38:33
+-- Tiempo de generación: 07-01-2024 a las 03:08:34
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.0.30
 
@@ -32,15 +32,6 @@ CREATE TABLE `cargo` (
   `nombre` varchar(45) DEFAULT NULL,
   `descripcion` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
---
--- Volcado de datos para la tabla `cargo`
---
-
-INSERT INTO `cargo` (`idcargo`, `nombre`, `descripcion`) VALUES
-(1, 'Jefe', 'persona con autoridad impuesta para dirigir y'),
-(3, 'Entrenador', 'orienta a los atletas para que puedan lograr '),
-(4, 'Limpieza', 'limpieza del gimnasio');
 
 -- --------------------------------------------------------
 
@@ -74,7 +65,7 @@ CREATE TABLE `categoriaproduct` (
 CREATE TABLE `compra` (
   `idcompra` int(11) NOT NULL,
   `fecha` date NOT NULL,
-  `total` decimal(10,0) NOT NULL,
+  `total` decimal(10,2) NOT NULL,
   `proveedor_idproveedor` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
@@ -87,21 +78,20 @@ CREATE TABLE `compra` (
 CREATE TABLE `compra_has_producto` (
   `compra_idcompra` int(11) NOT NULL,
   `producto_idproducto` int(11) NOT NULL,
-  `cantidad` int(11) DEFAULT NULL,
   `subtotal` decimal(10,0) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `detalle de venta`
+-- Estructura de tabla para la tabla `detalle_de_venta`
 --
 
-CREATE TABLE `detalle de venta` (
+CREATE TABLE `detalle_de_venta` (
   `venta_idventa` int(11) NOT NULL,
   `producto_idproducto` int(11) NOT NULL,
   `cantidad` int(11) NOT NULL,
-  `subtotal` decimal(10,0) NOT NULL
+  `subt` decimal(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
@@ -116,12 +106,18 @@ CREATE TABLE `empleado` (
   `cargo_idcargo` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+-- --------------------------------------------------------
+
 --
--- Volcado de datos para la tabla `empleado`
+-- Estructura de tabla para la tabla `fantasma`
 --
 
-INSERT INTO `empleado` (`idempleado`, `persona_idpersona`, `cargo_idcargo`) VALUES
-(1, 1, 1);
+CREATE TABLE `fantasma` (
+  `correlativo` int(11) NOT NULL,
+  `cantidad` int(11) NOT NULL,
+  `codproducto` int(11) NOT NULL,
+  `subt` double(10,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
 
@@ -131,10 +127,11 @@ INSERT INTO `empleado` (`idempleado`, `persona_idpersona`, `cargo_idcargo`) VALU
 
 CREATE TABLE `gasto` (
   `idgasto` int(11) NOT NULL,
-  `cantidad` decimal(10,0) NOT NULL,
+  `cantidad` decimal(10,2) NOT NULL,
   `fecha` date NOT NULL,
   `usuario_idusuario` int(11) NOT NULL,
-  `categoria_idcategoria` int(11) NOT NULL
+  `categoria_idcategoria` int(11) NOT NULL,
+  `Nombrepersona` varchar(40) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
@@ -158,12 +155,13 @@ CREATE TABLE `membresia` (
 CREATE TABLE `miembro` (
   `idmiembro` int(11) NOT NULL,
   `edad` int(11) NOT NULL,
-  `peso` decimal(10,0) NOT NULL,
-  `altura` decimal(10,0) NOT NULL,
+  `peso` decimal(10,2) NOT NULL,
+  `altura` decimal(10,2) NOT NULL,
   `persona_idpersona` int(11) NOT NULL,
   `membresia_idmembresia` int(11) NOT NULL,
   `fechaincio` date NOT NULL,
-  `fechafinal` date NOT NULL
+  `estado` tinyint(1) NOT NULL,
+  `fechapago` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
@@ -174,10 +172,11 @@ CREATE TABLE `miembro` (
 
 CREATE TABLE `pago` (
   `idpago` int(11) NOT NULL,
-  `meseapagar` int(11) NOT NULL,
+  `mesesapagar` int(11) NOT NULL,
   `miembro_idmiembro` int(11) NOT NULL,
-  `fechadepago` date NOT NULL,
-  `total` decimal(10,0) NOT NULL
+  `fechadepago` date NOT NULL DEFAULT current_timestamp(),
+  `total` decimal(10,0) NOT NULL,
+  `fechavencimiento` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
@@ -195,13 +194,6 @@ CREATE TABLE `persona` (
   `correo` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
---
--- Volcado de datos para la tabla `persona`
---
-
-INSERT INTO `persona` (`idpersona`, `nombre`, `genero`, `telefono`, `direccion`, `correo`) VALUES
-(1, 'Andy Miranda', 'Masculino', 58661937, 'zona 1 san pedro sacatepequez', 'anhasa_511196@hotmail.com');
-
 -- --------------------------------------------------------
 
 --
@@ -212,7 +204,7 @@ CREATE TABLE `producto` (
   `idproducto` int(11) NOT NULL,
   `nombre` varchar(45) NOT NULL,
   `cantidad` int(11) NOT NULL,
-  `precio` decimal(10,0) NOT NULL,
+  `precio` decimal(10,2) NOT NULL,
   `categoriaproduct_idcategoriaproduct` int(11) NOT NULL,
   `marca` varchar(45) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
@@ -240,14 +232,6 @@ CREATE TABLE `rol` (
   `nombre` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
---
--- Volcado de datos para la tabla `rol`
---
-
-INSERT INTO `rol` (`idRol`, `nombre`) VALUES
-(1, 'Administrativo'),
-(2, 'Estándar');
-
 -- --------------------------------------------------------
 
 --
@@ -262,13 +246,6 @@ CREATE TABLE `usuario` (
   `Rol_idRol` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
---
--- Volcado de datos para la tabla `usuario`
---
-
-INSERT INTO `usuario` (`idusuario`, `usuario`, `contraseña`, `empleado_idempleado`, `Rol_idRol`) VALUES
-(1, 'AnMiranda', 'Miranda3840', 1, 1);
-
 -- --------------------------------------------------------
 
 --
@@ -277,9 +254,10 @@ INSERT INTO `usuario` (`idusuario`, `usuario`, `contraseña`, `empleado_idemplea
 
 CREATE TABLE `venta` (
   `idventa` int(11) NOT NULL,
-  `Fecha` date DEFAULT NULL,
+  `Fecha` date DEFAULT current_timestamp(),
   `persona_idpersona` int(11) NOT NULL,
-  `total` decimal(10,0) DEFAULT NULL
+  `total` decimal(10,2) DEFAULT NULL,
+  `nombrepersona` varchar(60) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
@@ -320,9 +298,9 @@ ALTER TABLE `compra_has_producto`
   ADD KEY `fk_compra_has_producto_compra1_idx` (`compra_idcompra`);
 
 --
--- Indices de la tabla `detalle de venta`
+-- Indices de la tabla `detalle_de_venta`
 --
-ALTER TABLE `detalle de venta`
+ALTER TABLE `detalle_de_venta`
   ADD PRIMARY KEY (`venta_idventa`,`producto_idproducto`),
   ADD KEY `fk_venta_has_producto_producto1_idx` (`producto_idproducto`),
   ADD KEY `fk_venta_has_producto_venta1_idx` (`venta_idventa`);
@@ -334,6 +312,13 @@ ALTER TABLE `empleado`
   ADD PRIMARY KEY (`idempleado`),
   ADD KEY `fk_empleado_persona1_idx` (`persona_idpersona`),
   ADD KEY `fk_empleado_cargo1_idx` (`cargo_idcargo`);
+
+--
+-- Indices de la tabla `fantasma`
+--
+ALTER TABLE `fantasma`
+  ADD PRIMARY KEY (`correlativo`),
+  ADD KEY `codproducto` (`codproducto`);
 
 --
 -- Indices de la tabla `gasto`
@@ -361,7 +346,7 @@ ALTER TABLE `miembro`
 -- Indices de la tabla `pago`
 --
 ALTER TABLE `pago`
-  ADD PRIMARY KEY (`idpago`,`meseapagar`),
+  ADD PRIMARY KEY (`idpago`) USING BTREE,
   ADD KEY `fk_pago_miembro1_idx` (`miembro_idmiembro`);
 
 --
@@ -413,7 +398,7 @@ ALTER TABLE `venta`
 -- AUTO_INCREMENT de la tabla `cargo`
 --
 ALTER TABLE `cargo`
-  MODIFY `idcargo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `idcargo` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `categoria`
@@ -434,22 +419,22 @@ ALTER TABLE `compra`
   MODIFY `idcompra` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `compra_has_producto`
+-- AUTO_INCREMENT de la tabla `detalle_de_venta`
 --
-ALTER TABLE `compra_has_producto`
-  MODIFY `compra_idcompra` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `detalle de venta`
---
-ALTER TABLE `detalle de venta`
+ALTER TABLE `detalle_de_venta`
   MODIFY `venta_idventa` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `empleado`
 --
 ALTER TABLE `empleado`
-  MODIFY `idempleado` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idempleado` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `fantasma`
+--
+ALTER TABLE `fantasma`
+  MODIFY `correlativo` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `gasto`
@@ -479,7 +464,7 @@ ALTER TABLE `pago`
 -- AUTO_INCREMENT de la tabla `persona`
 --
 ALTER TABLE `persona`
-  MODIFY `idpersona` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idpersona` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `producto`
@@ -497,13 +482,13 @@ ALTER TABLE `proveedor`
 -- AUTO_INCREMENT de la tabla `rol`
 --
 ALTER TABLE `rol`
-  MODIFY `idRol` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `idRol` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `idusuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idusuario` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `venta`
@@ -529,9 +514,9 @@ ALTER TABLE `compra_has_producto`
   ADD CONSTRAINT `fk_compra_has_producto_producto1` FOREIGN KEY (`producto_idproducto`) REFERENCES `producto` (`idproducto`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Filtros para la tabla `detalle de venta`
+-- Filtros para la tabla `detalle_de_venta`
 --
-ALTER TABLE `detalle de venta`
+ALTER TABLE `detalle_de_venta`
   ADD CONSTRAINT `fk_venta_has_producto_producto1` FOREIGN KEY (`producto_idproducto`) REFERENCES `producto` (`idproducto`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_venta_has_producto_venta1` FOREIGN KEY (`venta_idventa`) REFERENCES `venta` (`idventa`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
@@ -541,6 +526,12 @@ ALTER TABLE `detalle de venta`
 ALTER TABLE `empleado`
   ADD CONSTRAINT `fk_empleado_cargo1` FOREIGN KEY (`cargo_idcargo`) REFERENCES `cargo` (`idcargo`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_empleado_persona1` FOREIGN KEY (`persona_idpersona`) REFERENCES `persona` (`idpersona`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `fantasma`
+--
+ALTER TABLE `fantasma`
+  ADD CONSTRAINT `fantasma_ibfk_1` FOREIGN KEY (`codproducto`) REFERENCES `producto` (`idproducto`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `gasto`

@@ -85,7 +85,7 @@ const calculateForm=document.getElementById('calculate-form'),
 
 const calculateBmi=(e) => {
     e.preventDefault()
-
+    
     if(calculateCm.value === '' || calculateKg.value=== ''){
         calculateMessage.classList.remove('color-green')
         calculateMessage.classList.add('color-red')

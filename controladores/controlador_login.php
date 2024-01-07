@@ -6,6 +6,7 @@ if(!empty($_POST["btningresar"])){
         $contra=$_POST["contrasña"];
         $sql=$conexion->query(" select * from usuario where usuario='$usario' and contraseña='$contra' ");
         if ($datos=$sql->fetch_object()) {
+            
             $_SESSION["id"]=$datos->idusuario;
             $_SESSION["idempleado"]=$datos->empleado_idempleado;
             $_SESSION["idrol"]=$datos->Rol_idRol;
