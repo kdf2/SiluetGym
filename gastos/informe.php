@@ -226,10 +226,10 @@ $_SESSION["nombrepersona"] = $fila2[$atributo2];
                                     style="width:100%">
                                     <thead class="table-dark">
                                         <tr>
-                                            <th>nombre</th>
-                                            <th>fecha</th>
-                                            <th>categoria</th>
-                                            <th>cantidad</th>
+                                            <th>Nombre</th>
+                                            <th>Fecha</th>
+                                            <th>Categoría</th>
+                                            <th>Cantidad</th>
                                             
                                         </tr>
                                     </thead>

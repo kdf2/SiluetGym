@@ -204,10 +204,10 @@ $gastoinner = $conexion->query($innerjoingasto);
                     <table id="example" class="table table-striped table-bordered" style="width:100%">
                         <thead class="table-dark">
                             <tr>
-                                <th>nombre</th>
-                                <th>fecha</th>
-                                <th>categoria</th>
-                                <th>cantidad</th>
+                                <th>Nombre</th>
+                                <th>Fecha</th>
+                                <th>Categoría</th>
+                                <th>Cantidad</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -234,11 +234,10 @@ $gastoinner = $conexion->query($innerjoingasto);
 
                                         <a href="#" class="btn btn-sm btn-warning" data-bs-toggle="modal"
                                             data-bs-target="#actualizarModal" data-bs-id="<?= $row_gasto['idgasto']; ?>">
-                                            Editar</a>
+                                            <i class="fa-solid fa-pen-to-square"></i> Editar</a>
 
                                         <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal"
-                                            data-bs-target="#eliminaModal" data-bs-id="<?= $row_gasto['idgasto']; ?>"
-                                             class="fa-solid fa-trash"></i></i> Eliminar</a>
+                                            data-bs-target="#eliminaModal" data-bs-id="<?= $row_gasto['idgasto']; ?>"> <i class="fa-solid fa-trash"></i> Eliminar</a>
 
                                     </td>
                                 </tr>

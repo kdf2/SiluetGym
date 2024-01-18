@@ -27,8 +27,20 @@ $resultadorol = mysqli_query($conexion, $sqlrol);
 $filarol = mysqli_fetch_assoc($resultadorol);
 $_SESSION["nombrepersona"] = $fila2[$atributo2];
 
+// Recibe el ID de la URL
+$idmiembroo = isset($_GET['id']) ? $_GET['id'] : '';
+
+
+
+
 
 ?>
+
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -137,8 +149,8 @@ $_SESSION["nombrepersona"] = $fila2[$atributo2];
                                 <li><a class="dropdown-item" href="../ventas/venta.php">Realizar venta</a></li>
                                 <li><a class="dropdown-item" href="../ventas/stock.php">Stock</a></li>
                                 <?php
-                        if ($filarol[$atributorol] == "Administrativo") { ?>
-                                <li><a class="dropdown-item" href="../ventas/informe.php">Informe</a></li>
+                                if ($filarol[$atributorol] == "Administrativo") { ?>
+                                    <li><a class="dropdown-item" href="../ventas/informe.php">Informe</a></li>
                                 <?php } ?>
                             </ul>
                         </div>
@@ -216,92 +228,116 @@ $_SESSION["nombrepersona"] = $fila2[$atributo2];
 
 
                     <div class="card-body">
-                                <form action="generarpdf.php" target="_blank" method="POST"  name="form_new_cliente_venta" target="_blank" >
-                                    <input type="hidden" name="action" value="idcliente">
-                                    <input type="hidden" name="idmiembro" id="idmiembro" value="" require>
-                                    <input type="hidden" name="precio" id="precio" value="" require>
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label> Numero de telefono</label>
-                                                <input autofocus class="form-control" type="number"
-                                                    name="telefono_miembro" id="telefono_miembro"
-                                                    placeholder="Ingrese numero del miembro" required>
-                                            </div>
-                                        </div>
-
-
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label>Nombre</label>
-                                                <input type="text" name="nombre_miembro" id="nombre_miembro"
-                                                    class="form-control" disabled required>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label>Membresia</label>
-                                                <input type="text" name="membresia_miembro" id="membresia_miembro"
-                                                    class="form-control" disabled required>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label>Fecha de inicio</label>
-                                                <input type="date" name="fecha_inicio" id="fecha_inicio"
-                                                    class="form-control" disabled required>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label>Cantidad de meses a pagar</label>
-                                                <input type="number" name="txt_cantidad_meses" id="txt_cantidad_meses"
-                                        value="0" min="1" class="form-control" disabled>
-                                            </div>
-                                        </div>
-
-
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label> Total</label>
-                                                <input autofocus class="form-control" type="number"
-                                                    name="total_meses" id="total_meses"
-                                                    disabled>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label>Fecha de vencimiento</label>
-                                                <input type="date" name="fechavencimiento" id="fechavencimiento"  class="form-control" disabled>
-                                            </div>
-                                        </div>
+                        <form action="generarpdf.php" target="_blank" method="POST" name="form_new_cliente_venta"
+                            target="_blank">
+                            <input type="hidden" name="action" value="idcliente">
+                            <input type="hidden" name="idmiembro" id="idmiembro" value="" require>
+                            <input type="hidden" name="precio" id="precio" value="" require>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label> Numero de teléfono </label>
+                                        <?php if($idmiembroo >0){
+                                            $sql = "SELECT persona.telefono FROM persona INNER JOIN miembro ON miembro.persona_idpersona =persona.idpersona WHERE idmiembro =$idmiembroo"; 
+                                           $result = $conexion->query($sql); 
+                                           if (mysqli_num_rows($result) > 0) {
+                                            // Recorrer los resultados y mostrar los datos
+                                            while ($row = mysqli_fetch_assoc($result)) {
+                                                $celular = $row["telefono"];
+                                            }
+                                        } 
+                                           ?>
+                                           <input autofocus class="form-control" type="number" name="telefono_miembro" value="<?php echo $celular; ?>"
+                                            id="telefono_miembro" placeholder="Ingrese numero del miembro" required>
+                                           <?php } 
+                                             else
+                                              {?>
+                                                 <input autofocus class="form-control" type="number" name="telefono_miembro"
+                                               id="telefono_miembro" placeholder="Ingrese numero del miembro" required>
+                                             <?php } ?>
                                     </div>
+                                </div>
 
-                                    <div class="row">
+                               
 
-                                        <div class="col-md-2">
-                                        <button type="submit" id="btn_anular_mensualidad" 
-                                                class="btn btn-danger btn_ok text-center" onclick="refrezcar()"><i class="fas fa-ban"></i>
-                                                &nbsp;Anular pago</button>
-                                        </div>
 
-                                        <div class=" col-md-2">
-                                        <button href="#" id="btn-facturar-mensualidad" class="btn btn-success btn_new  text-center "><i
-                                            class="far fa-edit"></i>&nbsp; Realizar pago</button>
 
-                                        </div>
-                                        
-                                        <div class=" col-md-2">
-                                        <button  type="subtmit" class="btn btn-info btn_new  text-center" id="btn-pdf"  ><i
-                                                    class="far fa-edit"></i>&nbsp;Generar comprobante de pago </button>
-                                        </div>
+
+
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Nombre</label>
+                                        <input type="text" name="nombre_miembro" id="nombre_miembro"
+                                            class="form-control" disabled required>
                                     </div>
-                                </form>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Membresía</label>
+                                        <input type="text" name="membresia_miembro" id="membresia_miembro"
+                                            class="form-control" disabled required>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Fecha de inicio</label>
+                                        <input type="date" name="fecha_inicio" id="fecha_inicio" class="form-control"
+                                            disabled required>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Cantidad de meses a pagar</label>
+                                        <input type="number" name="txt_cantidad_meses" id="txt_cantidad_meses" value="0"
+                                            min="1" class="form-control" disabled>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label> Total</label>
+                                        <input autofocus class="form-control" type="number" name="total_meses"
+                                            id="total_meses" disabled>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Fecha de vencimiento</label>
+                                        <input type="date" name="fechavencimiento" id="fechavencimiento"
+                                            class="form-control" disabled>
+                                    </div>
+                                </div>
                             </div>
+
+                            <div class="row">
+
+                                <div class="col-md-2">
+                                    <button type="submit" id="btn_anular_mensualidad"
+                                        class="btn btn-danger btn_ok text-center" onclick="refrezcar()"><i
+                                            class="fas fa-ban"></i>
+                                        &nbsp;Anular pago</button>
+                                </div>
+
+                                <div class=" col-md-2">
+                                    <button href="#" id="btn-facturar-mensualidad"
+                                        class="btn btn-success btn_new  text-center "><i class="far fa-edit"></i>&nbsp;
+                                        Realizar pago</button>
+
+                                </div>
+
+                                <div class=" col-md-2">
+                                    <button type="subtmit" class="btn btn-info btn_new  text-center" id="btn-pdf"><i
+                                            class="far fa-edit"></i>&nbsp;Generar comprobante de pago </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
 
                 </div>
             </main>
@@ -315,9 +351,6 @@ $_SESSION["nombrepersona"] = $fila2[$atributo2];
 
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap4.min.js"></script>
-
-
-
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
         crossorigin="anonymous"></script>

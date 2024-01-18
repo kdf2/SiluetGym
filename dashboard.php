@@ -5,6 +5,39 @@ date_default_timezone_set('America/Guatemala');
 if (empty($_SESSION["id"])) {
     header("location:login.php");
 }
+
+
+$sql = "SELECT idmiembro ,fechapago, estado FROM miembro";
+$resultado = $conexion->query($sql);
+// Verificar si la consulta tuvo éxito
+if ($resultado->num_rows > 0) {
+    $fechaActual = date("Y-m-d");
+    // Iterar a través de las filas de la tabla
+    while ($fila = $resultado->fetch_assoc()) {
+        $idmiembro = $fila['idmiembro'];
+        // Acceder a los valores de cada columna en la fila
+        $valorColumna1 = $fila['fechapago'];
+        $valorColumna2 = $fila['estado'];
+        // Puedes hacer lo que necesites con los valores, por ejemplo, imprimirlos
+
+        if ($fechaActual > $valorColumna1) {
+            $sql = "UPDATE miembro SET estado = 0 WHERE idmiembro = $idmiembro  ";
+            $final = $conexion->query($sql);
+            // echo "la fecha ya expiro. <br>";
+            //   echo "Columna1: ".$valorColumna1->format('Y-m-d H:i:s')." estado debe ser -0-: $valorColumna2 <br>";
+        } else {
+            $sql = "UPDATE miembro SET estado = 1 WHERE idmiembro =$idmiembro ";
+            $final = $conexion->query($sql);
+            // echo "La fecha de pago aun sigue vigente. <br>";
+            // echo "Columna1: ".$valorColumna1->format('Y-m-d H:i:s')." estado debe ser -1- $valorColumna2 <br>";
+        }
+
+    }
+}
+
+
+
+
 $idemple = $_SESSION["idempleado"];
 $atributo = "persona_idpersona";
 $sql = "SELECT $atributo FROM empleado WHERE idempleado='$idemple'";
@@ -223,6 +256,7 @@ while ($row = $result->fetch_assoc()) {
 
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                 <li><a class="dropdown-item" href="pagos/pagos.php">Ralizar mensualidad</a></li>
+
                                 <li><a class="dropdown-item" href="pagos/membresias.php">Membresias</a></li>
                                 <?php
                                 if ($filarol[$atributorol] == "Administrativo") { ?>
@@ -384,6 +418,84 @@ while ($row = $result->fetch_assoc()) {
 
                         <div><br></div>
 
+                        <div>
+                            <div class="card">
+                                <div class="card-header text-white bg-info">
+                                    <h3 class="title-2 m-b-40 text-center">Personas con mensualidad pendiente</h3>
+                                </div>
+                                <div class="card-body">
+                                    <table id="example" class="table table-striped table-bordered" style="width:100%">
+                                        <thead class="table-dark">
+                                            <tr class="bg-danger">
+                                                <th>Nombre</th>
+                                                <th>Teléfono</th>
+                                                <th>Membresía</th>
+                                                <th>F.ultimio pago</th>
+                                                <th>Estado</th>
+                                                <th>Accion</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            <?php
+                                            $innerjoinmiembros = "SELECT persona.idpersona, persona.nombre, persona.telefono, persona.direccion, persona.correo,
+                                            miembro.idmiembro, miembro.edad, miembro.peso, miembro.altura, miembro.persona_idpersona, miembro.membresia_idmembresia, miembro.fechaincio, miembro.fechapago, miembro.estado,
+                                            membresia.nombre AS nombre_membresia, membresia.precio
+                                            FROM miembro
+                                            INNER JOIN persona ON miembro.persona_idpersona= persona.idpersona
+                                            INNER JOIN membresia ON miembro.membresia_idmembresia=membresia.idmembresia ORDER BY fechapago ASC";
+
+                                            $miembrosinner = $conexion->query($innerjoinmiembros);
+
+                                            while ($row_miembro = $miembrosinner->fetch_assoc()) { ?>
+                                                <?php
+                                                if ($row_miembro['estado'] == 0) { ?>
+                                                    <tr>
+                                                        <td>
+                                                            <?= $row_miembro['nombre']; ?>
+                                                        </td>
+
+                                                        <td>
+                                                            <?= $row_miembro['telefono']; ?>
+                                                        </td>
+
+                                                        <td>
+                                                            <?= $row_miembro['nombre_membresia'] . ' - Q' . $row_miembro['precio']; ?>
+                                                        </td>
+
+                                                        <td>
+                                                            <?= $row_miembro['fechapago']; ?>
+                                                        </td>
+
+                                                        <td>
+                                                            <div class="bg-danger text-center text-light">
+                                                                INACTIVO
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="row">
+                                                                <button class="idbutton btn btn-primary  " onclick="miFuncion()"
+                                                                    data-bs-id="<?= $row_miembro['idmiembro']; ?>"> <i
+                                                                        class="fa-solid fa-money-bill-1-wave"></i>
+                                                                    Pagar</button>
+                                                            </div>
+
+                                                        </td>
+                                                    </tr>
+                                                <?php } ?>
+                                            <?php } ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+
+                        <div><br></div>
+
                         <div class="col-lg-6">
                             <div class="card">
                                 <div class="card-header text-white bg-secondary">
@@ -434,68 +546,6 @@ while ($row = $result->fetch_assoc()) {
                     </div>
 
                     <div><br></div>
-                    <div>
-                        <div class="card">
-                            <div class="card-header text-white bg-warning">
-                                <h3 class="title-2 m-b-40 text-center">Personas con mensualidad pendiente</h3>
-                            </div>
-                            <div class="card-body">
-                                <table id="example" class="table table-striped table-bordered" style="width:100%">
-                                    <thead class="table-dark">
-                                        <tr>
-                                            <th>nombre</th>
-                                            <th>telefono</th>
-                                            <th>membresia</th>
-                                            <th>F.ultimio pago</th>
-                                            <th>estado</th>
-                                        </tr>
-                                    </thead>
-
-                                    <tbody>
-                                        <?php
-                                        $innerjoinmiembros = "SELECT persona.idpersona, persona.nombre, persona.telefono, persona.direccion, persona.correo,
-                                            miembro.idmiembro, miembro.edad, miembro.peso, miembro.altura, miembro.persona_idpersona, miembro.membresia_idmembresia, miembro.fechaincio, miembro.fechapago, miembro.estado,
-                                            membresia.nombre AS nombre_membresia, membresia.precio
-                                            FROM miembro
-                                            INNER JOIN persona ON miembro.persona_idpersona= persona.idpersona
-                                            INNER JOIN membresia ON miembro.membresia_idmembresia=membresia.idmembresia ORDER BY fechapago ASC";
-
-                                        $miembrosinner = $conexion->query($innerjoinmiembros);
-
-                                        while ($row_miembro = $miembrosinner->fetch_assoc()) { ?>
-                                            <?php
-                                            if ($row_miembro['estado'] == 0) { ?>
-                                                <tr>
-                                                    <td>
-                                                        <?= $row_miembro['nombre']; ?>
-                                                    </td>
-
-                                                    <td>
-                                                        <?= $row_miembro['telefono']; ?>
-                                                    </td>
-
-                                                    <td>
-                                                        <?= $row_miembro['nombre_membresia'].' - Q'.$row_miembro['precio']; ?>
-                                                    </td>
-
-                                                    <td>
-                                                        <?= $row_miembro['fechapago']; ?>
-                                                    </td>
-
-                                                    <td>
-                                                        <div class="bg-danger text-center text-light">
-                                                            INACTIVO
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            <?php } ?>
-                                        <?php } ?>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-
 
 
 
@@ -528,6 +578,23 @@ while ($row = $result->fetch_assoc()) {
         });
     </script>
     <script>
+
+        var botones = document.querySelectorAll(".idbutton"); // Selecciona todos los botones dentro de la tabla
+
+        botones.forEach(function (boton) {
+            boton.onclick = function () {
+                // Lógica del evento onclick
+                var id = this.getAttribute('data-bs-id');
+                console.log(id);
+                window.location.href = 'pagos/pagos.php?id=' + id;
+            };
+        });
+
+
+
+
+
+
         // Importa la biblioteca Chroma.js
         // Genera una paleta de colores basada en la cantidad de datos
         var colorPalette = chroma.scale(['#00FF00', '#0000FF']).colors(<?php echo json_encode($stockActual); ?>.length);

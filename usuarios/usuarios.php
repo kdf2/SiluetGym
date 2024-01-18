@@ -220,12 +220,12 @@ $usuariosiner = $conexion->query($innerjoinusuarios);
 
                         <div class="row">
                             <div class="col">
-                                <label for="telefono">Telefono:</label>
+                                <label for="telefono">Teléfono:</label>
                                 <input type="number" class="form-control" id="telefono" name="telefono"
                                     placeholder="Ingresa No. telefono">
                             </div>
                             <div class="col">
-                                <label for="direccion">Direccion:</label>
+                                <label for="direccion">Dirección:</label>
                                 <input type="text" class="form-control" id="direccion" name="direccion"
                                     placeholder="Ingresa direccion">
                             </div>

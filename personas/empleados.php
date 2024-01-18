@@ -110,8 +110,8 @@ $empleadosinner = $conexion->query($innerjoinempleados);
                                 <li><a class="dropdown-item" href="../pagos/pagos.php">Ralizar mensualidad</a></li>
                                 <li><a class="dropdown-item" href="../pagos/membresias.php">Membresias</a></li>
                                 <?php
-                        if ($filarol[$atributorol] == "Administrativo") { ?>
-                                <li><a class="dropdown-item" href="../pagos/informe.php">Informe</a></li>
+                                if ($filarol[$atributorol] == "Administrativo") { ?>
+                                    <li><a class="dropdown-item" href="../pagos/informe.php">Informe</a></li>
                                 <?php } ?>
                             </ul>
                         </div>
@@ -128,8 +128,8 @@ $empleadosinner = $conexion->query($innerjoinempleados);
                                 <li><a class="dropdown-item" href="../ventas/venta.php">Realizar venta</a></li>
                                 <li><a class="dropdown-item" href="../ventas/stock.php">Stock</a></li>
                                 <?php
-                        if ($filarol[$atributorol] == "Administrativo") { ?>
-                                <li><a class="dropdown-item" href="../ventas/informe.php">Informe</a></li>
+                                if ($filarol[$atributorol] == "Administrativo") { ?>
+                                    <li><a class="dropdown-item" href="../ventas/informe.php">Informe</a></li>
                                 <?php } ?>
                             </ul>
                         </div>
@@ -148,7 +148,7 @@ $empleadosinner = $conexion->query($innerjoinempleados);
                                 <?php if ($filarol[$atributorol] == "Administrativo") { ?>
                                     <li><a class="dropdown-item" href="../gastos/informe.php">Informe</a></li>
                                 <?php } ?>
-                                
+
                             </ul>
                         </div>
 
@@ -198,7 +198,7 @@ $empleadosinner = $conexion->query($innerjoinempleados);
                     <?php
                     if ($filarol[$atributorol] == "Administrativo") { ?>
                         <div class="col align-self-start">
-                            <a href="../usuarios/usuarios.php" class="btn btn-primary" ><i
+                            <a href="../usuarios/usuarios.php" class="btn btn-primary"><i
                                     class="fa-solid fa-circle-plus"></i> Agregar
                                 empleado</a>
                         </div>
@@ -209,11 +209,11 @@ $empleadosinner = $conexion->query($innerjoinempleados);
                     <table id="example" class="table table-striped table-bordered" style="width:100%">
                         <thead class="table-dark">
                             <tr>
-                                <th>nombre</th>
-                                <th>telefono</th>
-                                <th>direccion</th>
-                                <th>correo</th>
-                                <th>cargo</th>
+                                <th>Nombre</th>
+                                <th>Teléfono</th>
+                                <th>Dirección</th>
+                                <th>Correo</th>
+                                <th>Cargo</th>
                                 <?php
                                 if ($filarol[$atributorol] == "Administrativo") { ?>
                                     <th>Acciones</th>
@@ -248,12 +248,19 @@ $empleadosinner = $conexion->query($innerjoinempleados);
                                     if ($filarol[$atributorol] == "Administrativo") { ?>
                                         <td>
 
-                                            <a href="#" class="btn btn-sm btn-warning" data-bs-toggle="modal"
-                                                data-bs-target="#editarModal" data-bs-id="<?= $row_empleados['idpersona']; ?>">
-                                                Editar</a>
 
-                                            <a href="../usuarios/usuarios.php" class="btn btn-sm btn-danger"
-                                                data-bs-toggle="modal" class="fa-solid fa-trash"></i></i> Eliminar</a>
+                                            <div class="row">
+                                                <a href="#" class="btn btn-sm btn-warning" data-bs-toggle="modal"
+                                                    data-bs-target="#editarModal"
+                                                    data-bs-id="<?= $row_empleados['idpersona']; ?>">
+                                                    <i class="fa-solid fa-pen-to-square"></i> Editar</a>
+                                            </div>
+
+                                            <div class="row">
+                                                <a href="../usuarios/usuarios.php" class="btn btn-sm btn-danger"
+                                                    data-bs-toggle="modal"> <i class="fa-solid fa-trash"></i> Eliminar</a>
+                                            </div>
+
 
                                         </td>
                                     <?php } ?>
@@ -301,8 +308,8 @@ $empleadosinner = $conexion->query($innerjoinempleados);
     </script>
     <?php include 'editarModalpersonas.php' ?>
     <?php
-$cargos->data_seek(0);
-?>
+    $cargos->data_seek(0);
+    ?>
     <script>
         let nuevoModal = document.getElementById('editarModal')
         nuevoModal.addEventListener('shown.bs.modal', event => {

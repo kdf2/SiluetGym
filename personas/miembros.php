@@ -34,27 +34,27 @@ $sql = "SELECT idmiembro ,fechapago, estado FROM miembro";
 $resultado = $conexion->query($sql);
 // Verificar si la consulta tuvo éxito
 if ($resultado->num_rows > 0) {
-   $fechaActual = date("Y-m-d");
+    $fechaActual = date("Y-m-d");
     // Iterar a través de las filas de la tabla
     while ($fila = $resultado->fetch_assoc()) {
-        $idmiembro= $fila['idmiembro'];
+        $idmiembro = $fila['idmiembro'];
         // Acceder a los valores de cada columna en la fila
-        $valorColumna1 =  $fila['fechapago'];
+        $valorColumna1 = $fila['fechapago'];
         $valorColumna2 = $fila['estado'];
         // Puedes hacer lo que necesites con los valores, por ejemplo, imprimirlos
-    
+
         if ($fechaActual > $valorColumna1) {
-           $sql = "UPDATE miembro SET estado = 0 WHERE idmiembro = $idmiembro  ";
-           $final=$conexion->query($sql);
-        // echo "la fecha ya expiro. <br>";
-         //   echo "Columna1: ".$valorColumna1->format('Y-m-d H:i:s')." estado debe ser -0-: $valorColumna2 <br>";
+            $sql = "UPDATE miembro SET estado = 0 WHERE idmiembro = $idmiembro  ";
+            $final = $conexion->query($sql);
+            // echo "la fecha ya expiro. <br>";
+            //   echo "Columna1: ".$valorColumna1->format('Y-m-d H:i:s')." estado debe ser -0-: $valorColumna2 <br>";
         } else {
-             $sql = "UPDATE miembro SET estado = 1 WHERE idmiembro =$idmiembro ";
-             $final=$conexion->query($sql);
-          // echo "La fecha de pago aun sigue vigente. <br>";
-          // echo "Columna1: ".$valorColumna1->format('Y-m-d H:i:s')." estado debe ser -1- $valorColumna2 <br>";
+            $sql = "UPDATE miembro SET estado = 1 WHERE idmiembro =$idmiembro ";
+            $final = $conexion->query($sql);
+            // echo "La fecha de pago aun sigue vigente. <br>";
+            // echo "Columna1: ".$valorColumna1->format('Y-m-d H:i:s')." estado debe ser -1- $valorColumna2 <br>";
         }
-        
+
     }
 }
 
@@ -69,7 +69,7 @@ $innerjoinmiembros = "SELECT persona.idpersona, persona.nombre, persona.telefono
 
 $miembrosinner = $conexion->query($innerjoinmiembros);
 
-   
+
 
 
 ?>
@@ -96,7 +96,7 @@ $miembrosinner = $conexion->query($innerjoinmiembros);
 </head>
 
 <body class="sb-nav-fixed">
-    
+
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         <!-- Navbar Brand-->
         <a class="navbar-brand ps-3" href="../dashboard.php">SiluetGym <i class="fa-solid fa-dumbbell"
@@ -147,8 +147,8 @@ $miembrosinner = $conexion->query($innerjoinmiembros);
                                 <li><a class="dropdown-item" href="../pagos/pagos.php">Ralizar mensualidad</a></li>
                                 <li><a class="dropdown-item" href="../pagos/membresias.php">Membresias</a></li>
                                 <?php
-                        if ($filarol[$atributorol] == "Administrativo") { ?>
-                                <li><a class="dropdown-item" href="../pagos/informe.php">Informe</a></li>
+                                if ($filarol[$atributorol] == "Administrativo") { ?>
+                                    <li><a class="dropdown-item" href="../pagos/informe.php">Informe</a></li>
                                 <?php } ?>
                             </ul>
                         </div>
@@ -165,8 +165,8 @@ $miembrosinner = $conexion->query($innerjoinmiembros);
                                 <li><a class="dropdown-item" href="../ventas/venta.php">Realizar venta</a></li>
                                 <li><a class="dropdown-item" href="../ventas/stock.php">Stock</a></li>
                                 <?php
-                        if ($filarol[$atributorol] == "Administrativo") { ?>
-                                <li><a class="dropdown-item" href="../ventas/informe.php">Informe</a></li>
+                                if ($filarol[$atributorol] == "Administrativo") { ?>
+                                    <li><a class="dropdown-item" href="../ventas/informe.php">Informe</a></li>
                                 <?php } ?>
                             </ul>
                         </div>
@@ -185,7 +185,7 @@ $miembrosinner = $conexion->query($innerjoinmiembros);
                                 <?php if ($filarol[$atributorol] == "Administrativo") { ?>
                                     <li><a class="dropdown-item" href="../gastos/informe.php">Informe</a></li>
                                 <?php } ?>
-                        
+
                             </ul>
                         </div>
 
@@ -242,17 +242,17 @@ $miembrosinner = $conexion->query($innerjoinmiembros);
                     <table id="example" class="table table-striped table-bordered" style="width:100%">
                         <thead class="table-dark">
                             <tr>
-                                <th>nombre</th>
-                                <th>edad</th>
-                                <th>peso</th>
-                                <th>altura</th>
-                                <th>telefono</th>
-                                <th>direccion</th>
-                                <th>correo</th>
-                                <th>membresia</th>
-                                <th>fecha inicio</th>
+                                <th>Nombre</th>
+                                <th>Edad</th>
+                                <th>Peso</th>
+                                <th>Altura</th>
+                                <th>Teléfono</th>
+                                <th>Dirección</th>
+                                <th>Correo</th>
+                                <th>Membresía</th>
+                                <th>Fecha inicio</th>
                                 <th>F.ultimio pago</th>
-                                <th>estado</th>
+                                <th>Estado</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -303,10 +303,11 @@ $miembrosinner = $conexion->query($innerjoinmiembros);
                                     <td>
                                         <?php if ($row_miembro['estado'] == 1) { ?>
                                             <div class="bg-success text-center text-light">
-                                                <a >ACTIVO</a>
+                                                <a>ACTIVO</a>
                                             </div>
 
-                                        <?php } else { ?><div class="bg-danger text-center text-light">
+                                        <?php } else { ?>
+                                            <div class="bg-danger text-center text-light">
                                                 INACTIVO
                                             </div>
                                         <?php }
@@ -314,15 +315,28 @@ $miembrosinner = $conexion->query($innerjoinmiembros);
                                     </td>
 
                                     <td>
+                                        
 
-                                        <a href="#" class="btn btn-sm btn-warning" data-bs-toggle="modal"
-                                            data-bs-target="#actualizarModal" data-bs-id="<?= $row_miembro['idmiembro']; ?>">
-                                            Editar</a>
+                                        <div class="row ">
+                                            <button class="idbutton btn btn-primary" onclick="miFuncion()"
+                                                data-bs-id="<?= $row_miembro['idmiembro']; ?>"> <i class="fa-solid fa-money-bill-1-wave"></i> Pagar</button>
+                                        </div>
 
-                                        <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal"
-                                            data-bs-target="#eliminaModal" data-bs-id="<?= $row_miembro['idmiembro']; ?>"
-                                             class="fa-solid fa-trash"></i></i> Eliminar</a>
+                                        <div class="row">
+                                            <a href="#" class="btn btn-sm btn-warning" data-bs-toggle="modal"
+                                                data-bs-target="#actualizarModal"
+                                                data-bs-id="<?= $row_miembro['idmiembro']; ?>"><i
+                                                    class="fa-solid fa-pen-to-square"></i>
+                                                Editar</a>
+                                        </div>
 
+                                        <div class="row">        
+                                            <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal"
+                                                data-bs-target="#eliminaModal"
+                                                data-bs-id="<?= $row_miembro['idmiembro']; ?>">
+                                                <i class="fa-solid fa-trash"></i> Eliminar</a>
+                                        </div>
+                                        
                                     </td>
                                 </tr>
                             <?php } ?>
@@ -333,7 +347,7 @@ $miembrosinner = $conexion->query($innerjoinmiembros);
         </div>
     </div>
 
-    
+
     <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap4.min.js"></script>
@@ -364,8 +378,24 @@ $miembrosinner = $conexion->query($innerjoinmiembros);
         });
     </script>
     <?php include 'miembroModal.php' ?>
-  
+
     <script>
+
+
+
+        var botones = document.querySelectorAll(".idbutton"); // Selecciona todos los botones dentro de la tabla
+
+        botones.forEach(function (boton) {
+            boton.onclick = function () {
+                // Lógica del evento onclick
+                var id = this.getAttribute('data-bs-id');
+                console.log(id);
+                window.location.href = '../pagos/pagos.php?id=' + id;
+            };
+        });
+
+
+
         let nuevoModal = document.getElementById('nuevoModal')
         nuevoModal.addEventListener('shown.bs.modal', event => {
             let inputNombre = nuevoModal.querySelector('.modal-body #nombre').focus()
@@ -402,7 +432,7 @@ $miembrosinner = $conexion->query($innerjoinmiembros);
                     inputdireccion.value = data.direccion
                     inputcorreo.value = data.correo
                     inputfecha.value = data.fechaincio
-                    inputmembresia.value=data.membresia_idmembresia
+                    inputmembresia.value = data.membresia_idmembresia
                 }).catch(err => console.log(err))
 
         })

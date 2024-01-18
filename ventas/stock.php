@@ -204,12 +204,12 @@ $stockinner = $conexion->query($innerjoinstock);
                     <table id="example" class="table table-striped table-bordered" style="width:100%">
                         <thead class="table-dark">
                             <tr>
-                                <th>codigo</th>
-                                <th>nombre</th>
-                                <th>marca</th>
-                                <th>categoria</th>
-                                <th>cantidad</th>
-                                <th>precio venta</th>
+                                <th>Codigo</th>
+                                <th>Nombre</th>
+                                <th>Marca</th>
+                                <th>Categoría</th>
+                                <th>Cantidad</th>
+                                <th>Precio venta</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -245,12 +245,11 @@ $stockinner = $conexion->query($innerjoinstock);
 
                                             <a href="#" class="btn btn-sm btn-warning" data-bs-toggle="modal"
                                                 data-bs-target="#actualizarModal" data-bs-id="<?= $row_stock['idproducto']; ?>">
-                                                Editar</a>
+                                                <i class="fa-solid fa-pen-to-square"></i> Editar</a>
 
 
                                             <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal"
-                                                data-bs-target="#eliminaModal" data-bs-id="<?= $row_stock['idproducto']; ?>"
-                                                class="fa-solid fa-trash"></i></i> Eliminar</a>
+                                                data-bs-target="#eliminaModal" data-bs-id="<?= $row_stock['idproducto']; ?>"> <i class="fa-solid fa-trash"></i> Eliminar</a>
 
                                         </td>
                                     </tr>

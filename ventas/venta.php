@@ -224,7 +224,7 @@ $_SESSION["nombrepersona"] = $fila2[$atributo2];
                                     <div class="row">
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label> Numero de telefono</label>
+                                                <label> Numero de teléfono</label>
                                                 <input autofocus class="form-control" type="number"
                                                     name="telefono_cliente" id="telefono_cliente"
                                                     placeholder="Ingrese numero del cliente" required>
@@ -270,7 +270,7 @@ $_SESSION["nombrepersona"] = $fila2[$atributo2];
 
                     <div class="datos_venta">
                         <div class="form-group">
-                            <h4 class="text-center">venta realizada por :
+                            <h4 class="text-center">Venta realizada por :
                                 <?php
                                 echo $fila2[$atributo2];
                                 ?>
@@ -285,13 +285,13 @@ $_SESSION["nombrepersona"] = $fila2[$atributo2];
                     <table class="tbl_venta ">
                         <thead class="table-dark">
                             <tr class="table-primary">
-                                <th width="100px">codigo</th>
+                                <th width="100px">Cdigo</th>
                                 <th class="text-center">Nombre</th>
-                                <th class="text-center">marca</th>
-                                <th class="text-center">existencia</th>
-                                <th width="100px" class="text-center">cantidad</th>
-                                <th class="text-right">precio</th>
-                                <th class="text-right">precio total</th>
+                                <th class="text-center">Marca</th>
+                                <th class="text-center">Existencia</th>
+                                <th width="100px" class="text-center">Cantidad</th>
+                                <th class="text-right">Precio</th>
+                                <th class="text-right">Precio total</th>
                                 <th>accion</th>
                             </tr>
 
@@ -312,10 +312,10 @@ $_SESSION["nombrepersona"] = $fila2[$atributo2];
                             <tr class="table-primary">
                                 <th>codigo</th>
                                 <th class="text-center">Nombre</th>
-                                <th class="text-center">marca</th>
-                                <th class="text-center">cantidad</th>
-                                <th class="text-right">precio total</th>
-                                <th class="text-center">accion</th>
+                                <th class="text-center">Marca</th>
+                                <th class="text-center">Cantidad</th>
+                                <th class="text-right">Precio total</th>
+                                <th class="text-center">Accion</th>
                             </tr>
                         </thead>
 

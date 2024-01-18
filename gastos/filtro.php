@@ -12,7 +12,7 @@ require '../modelo/conexion.php';
 
 $fechaInit = date("Y-m-d", strtotime($_POST['f_ingreso']));
 $fechaFin = date("Y-m-d", strtotime($_POST['f_fin']));
-$suma=0;
+$suma = 0;
 
 $innerjoingasto = "SELECT usuario.idusuario,
 categoria.idcategoria, categoria.nombre as nombre_cateogoria,
@@ -29,18 +29,18 @@ echo '<strong>Total: </strong> (' . $total . ')';
 <table id="tableEmpleados" class="table table-striped table-bordered" style="width:100%">
     <thead class="table-dark">
         <tr>
-            <th>nombre</th>
-            <th>fecha</th>
-            <th>categoria</th>
-            <th>cantidad</th>
+            <th>Nombre</th>
+            <th>Fecha</th>
+            <th>Categoría</th>
+            <th>Cantidad</th>
         </tr>
     </thead>
     <?php
     $i = 1;
     while ($row_gasto = mysqli_fetch_array($query)) { ?>
-    <?php
-         $suma+=$row_gasto['cantidad']
-    ?>
+        <?php
+        $suma += $row_gasto['cantidad']
+            ?>
         <tr>
             <td>
                 <?= $row_gasto['Nombrepersona']; ?>
@@ -64,7 +64,7 @@ echo '<strong>Total: </strong> (' . $total . ')';
 
 </table>
 <?php
-echo '<h1 style="color:red">El total que se gasto en el rango dado es de: </strong> (' ."Q".$suma . ')</h1>';
+echo '<h1 style="color:red">El total que se gasto en el rango dado es de: </strong> (' . "Q" . $suma . ')</h1>';
 
 
 ?>

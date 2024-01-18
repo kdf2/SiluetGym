@@ -32,13 +32,13 @@ echo '<strong>Total: </strong> (' . $total . ')';
     <thead class="table-dark">
         <tr>
             <th>No. venta</th>
-            <th>fecha</th>
-            <th>personal</th>
-            <th>cliente</th>
-            <th>producto</th>
-            <th>marca</th>
-            <th>cantidad</th>
-            <th>total</th>
+            <th>Fecha</th>
+            <th>Personal</th>
+            <th>Cliente</th>
+            <th>Producto</th>
+            <th>Marca</th>
+            <th>Cantidad</th>
+            <th>Total</th>
         </tr>
     </thead>
     <?php

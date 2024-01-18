@@ -209,11 +209,11 @@ $proveedoresinner = $conexion->query($innerjoineproveedor);
                         style="width:100%">
                         <thead class="table-dark">
                             <tr>
-                                <th>nombre de la empresa</th>
-                                <th>nombre</th>
-                                <th>telefono</th>
-                                <th>direccion</th>
-                                <th>correo</th>
+                                <th>Nombre de la empresa</th>
+                                <th>Nombre</th>
+                                <th>Teléfono</th>
+                                <th>Dirección</th>
+                                <th>Correo</th>
 
                                 <?php
                                 if ($filarol[$atributorol] == "Administrativo") { ?>
@@ -251,13 +251,13 @@ $proveedoresinner = $conexion->query($innerjoineproveedor);
 
                                             <a href="#" class="btn btn-sm btn-warning" data-bs-toggle="modal"
                                                 data-bs-target="#actualizarModal"
-                                                data-bs-id="<?= $row_provedores['idproveedor']; ?>">
+                                                data-bs-id="<?= $row_provedores['idproveedor']; ?>"> <i class="fa-solid fa-pen-to-square"></i>
                                                 Editar</a>
 
                                             <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal"
                                                 data-bs-target="#eliminaModal"
                                                 data-bs-id="<?= $row_provedores['idproveedor']; ?>" data-bs-toggle="modal"
-                                                class="fa-solid fa-trash"></i></i> Eliminar</a>
+                                               ><i class="fa-solid fa-trash"></i> Eliminar</a>
 
                                         </td>
                                     <?php } ?>
