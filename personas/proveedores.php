@@ -47,13 +47,14 @@ $proveedoresinner = $conexion->query($innerjoineproveedor);
     <meta name="author" content="" />
     <title>Panel de control</title>
     <link rel="shortcut icon" href="../componentes/Imagenes/iconSG.ico">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="../componentes/Css/styles.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="<../../assets/template/datatables.net-bs/css/responsive.dataTables.min.css">
-
+    <script src="../jquery-3.7.1.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" rel="stylesheet" />
     <link href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
 </head>
@@ -109,8 +110,8 @@ $proveedoresinner = $conexion->query($innerjoineproveedor);
                                 <li><a class="dropdown-item" href="../pagos/pagos.php">Ralizar mensualidad</a></li>
                                 <li><a class="dropdown-item" href="../pagos/membresias.php">Membresias</a></li>
                                 <?php
-                        if ($filarol[$atributorol] == "Administrativo") { ?>
-                                <li><a class="dropdown-item" href="../pagos/informe.php">Informe</a></li>
+                                if ($filarol[$atributorol] == "Administrativo") { ?>
+                                    <li><a class="dropdown-item" href="../pagos/informe.php">Informe</a></li>
                                 <?php } ?>
                             </ul>
                         </div>
@@ -127,8 +128,8 @@ $proveedoresinner = $conexion->query($innerjoineproveedor);
                                 <li><a class="dropdown-item" href="../ventas/venta.php">Realizar venta</a></li>
                                 <li><a class="dropdown-item" href="../ventas/stock.php">Stock</a></li>
                                 <?php
-                        if ($filarol[$atributorol] == "Administrativo") { ?>
-                                <li><a class="dropdown-item" href="../ventas/informe.php">Informe</a></li>
+                                if ($filarol[$atributorol] == "Administrativo") { ?>
+                                    <li><a class="dropdown-item" href="../ventas/informe.php">Informe</a></li>
                                 <?php } ?>
                             </ul>
                         </div>
@@ -147,7 +148,7 @@ $proveedoresinner = $conexion->query($innerjoineproveedor);
                                 <?php if ($filarol[$atributorol] == "Administrativo") { ?>
                                     <li><a class="dropdown-item" href="../gastos/informe.php">Informe</a></li>
                                 <?php } ?>
-                                
+
                             </ul>
                         </div>
 
@@ -196,12 +197,18 @@ $proveedoresinner = $conexion->query($innerjoineproveedor);
                     <h1 class="d-flex justify-content-center">Proveedores</h1>
                     <?php
                     if ($filarol[$atributorol] == "Administrativo") { ?>
-                        <div class="col align-self-start">
-                            <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nuevoModal"><i
-                                    class="fa-solid fa-circle-plus"></i> Agregar
-                                proveedor</a>
+                        <div class="d-flex flex-row">
+                            <div class="p-2">
+                                <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nuevoModal"><i
+                                        class="fa-solid fa-circle-plus"></i> Agregar
+                                    proveedor</a>
+                            </div>
+                            <div class="p-2">
+                                <a href="#" class="btn  btn-success" data-bs-toggle="modal" data-bs-target="#existente"><i
+                                        class="fa-solid fa-circle-plus"></i> Agregar
+                                    persona existente</a>
+                            </div>
                         </div>
-
                     <?php } ?>
                     <br>
                     <br>
@@ -251,13 +258,14 @@ $proveedoresinner = $conexion->query($innerjoineproveedor);
 
                                             <a href="#" class="btn btn-sm btn-warning" data-bs-toggle="modal"
                                                 data-bs-target="#actualizarModal"
-                                                data-bs-id="<?= $row_provedores['idproveedor']; ?>"> <i class="fa-solid fa-pen-to-square"></i>
+                                                data-bs-id="<?= $row_provedores['idproveedor']; ?>"> <i
+                                                    class="fa-solid fa-pen-to-square"></i>
                                                 Editar</a>
 
                                             <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal"
                                                 data-bs-target="#eliminaModal"
-                                                data-bs-id="<?= $row_provedores['idproveedor']; ?>" data-bs-toggle="modal"
-                                               ><i class="fa-solid fa-trash"></i> Eliminar</a>
+                                                data-bs-id="<?= $row_provedores['idproveedor']; ?>" data-bs-toggle="modal"><i
+                                                    class="fa-solid fa-trash"></i> Eliminar</a>
 
                                         </td>
                                     <?php } ?>
@@ -271,30 +279,27 @@ $proveedoresinner = $conexion->query($innerjoineproveedor);
     </div>
 
 
-    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap4.min.js"></script>
-    <script src="<../../assets/template/datatables.net/js/dataTables.responsive.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-        crossorigin="anonymous"></script>
-    <script src="../componentes/Js/scripts.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-    <script src="../componentes/Js/demo/chart-area-demo.js"></script>
-    <script src="../componentes/Js/demo/chart-bar-demo.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
-        crossorigin="anonymous"></script>
-    <script src="../componentes/Js/datatables-simple-demo.js"></script>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script>
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap4.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+    crossorigin="anonymous"></script>
+<script src="../componentes/Js/scripts.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
+    crossorigin="anonymous"></script>
+<script src="../componentes/Js/datatables-simple-demo.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+
 
     <script>
         var table = new DataTable('#example', {
@@ -305,6 +310,56 @@ $proveedoresinner = $conexion->query($innerjoineproveedor);
     </script>
     <?php include 'proveedoresModal.php' ?>
     <script>
+
+
+        let Modal = document.getElementById('existente')
+        Modal.addEventListener('shown.bs.modal', event => {
+            let inputNombre = Modal.querySelector('.modal-body #telefonobuscar').focus()
+        });
+
+
+        //buscar persona
+
+
+        //buscar miembro
+        $('#telefonobuscar').keyup(function (e) {
+            e.preventDefault();
+
+            var tpersona = $(this).val();
+            var action = 'inforproveedor';
+
+            $.ajax({
+                url: 'ajax.php',
+                type: "POST",
+                data: { action: action, tpersona: tpersona },
+                success: function (response) {
+                    console.log(response);
+                    if (response == 0) {
+                        $('#idpersona').val('');
+                        $('#nombreb').val('');
+                        $('#direccionb').val('');
+                        $('#correob').val('');
+                    }
+                    else {
+                        var data = JSON.parse(response);
+                        $('#idpersona').val(data.idpersona);
+                        $('#nombreb').val(data.nombre);
+                        $('#direccionb').val(data.direccion);
+                        $('#correob').val(data.correo);
+                    }
+
+
+                },
+                error: function (error) {
+
+                }
+
+            });
+        });
+
+
+
+
         let nuevoModal = document.getElementById('nuevoModal')
         nuevoModal.addEventListener('shown.bs.modal', event => {
             let inputNombre = nuevoModal.querySelector('.modal-body #nombree').focus()

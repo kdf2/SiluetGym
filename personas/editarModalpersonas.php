@@ -53,3 +53,6 @@ $cargos = $conexion->query($sqlcargo);
         </div>
     </div>
 </div>
+<?php
+$cargos->data_seek(0);
+?>

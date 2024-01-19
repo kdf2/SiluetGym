@@ -12,7 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_tabla1'])) {
     $sqlpersona = "INSERT INTO persona (nombre, genero, telefono, direccion, correo) 
     VALUES ('$nombres','$generos',$telefonos,'$direccions','$emails')";
     // Marcar que los datos de la primera tabla han sido ingresados
-    $_SESSION['datos_tabla1_ingresados'] = true;
+
     if ($conexion->query($sqlpersona)) {
         $idpersona = $conexion->insert_id;
     }

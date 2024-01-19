@@ -120,3 +120,53 @@
         </div>
     </div>
 </div>
+
+
+
+<!-- persona existente  -->
+
+<div class="modal fade" id="existente" tabindex="-1" role="dialog" aria-labelledby="existenteLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fs-5" id="existenteLabel">Agregar proveedor</h5>
+            </div>
+            <div class="modal-body">
+                <form action="guardarnuevopro.php" method="post">
+                    <input type="hidden" id="idpersona" name="idpersona">
+
+                    <div class="mb-3">
+                        <label for="telefonobuscar" class="form-label">Telèfono:</label>
+                        <input type="number" name="telefonobuscar" id="telefonobuscar" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label">Nombre del encargado:</label>
+                        <input type="text" name="nombreb" id="nombreb" class="form-control" disabled required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="correob" class="form-label">Correo:</label>
+                        <input type="text" name="correob" id="correob" class="form-control" disabled required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="direccionb" class="form-label">Dirección:</label>
+                        <input type="text" name="direccionb" id="direccionb" class="form-control" disabled  required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="nombree" class="form-label">Nombre de la empresa:</label>
+                        <input type="text" name="nombree" id="nombree" class="form-control" required>
+                    </div>
+
+                    <div class="">
+                        <button type="submit" class="btn btn-primary" name="submit_tabla2"><i
+                                class="fa-solid fa-floppy-disk"></i>&nbsp;Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
