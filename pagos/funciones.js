@@ -114,7 +114,6 @@ $('#btn-facturar-mensualidad').click(function (e) {
             success: function (response) {
                 console.log(response);
                 if (response != 'error') {
-                    $('#telefono_miembro').val('');
                     swal("Pago registrado","correctamente", "success");
                 
                 }
@@ -133,8 +132,10 @@ $('#btn-facturar-mensualidad').click(function (e) {
 
 
 $('#btn-pdf').click(function (e) {
+    location.reload();
     var url = 'generarpdf.php';
     window.open(url, '_blank');
+    
 
 });
 function refrezcar(){

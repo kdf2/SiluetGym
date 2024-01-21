@@ -52,7 +52,7 @@ $membresia = $conexion->query($sqlmembresia);
                         <label for="correo" class="form-label">Correo:</label>
                         <input type="text" name="correo" id="correo" class="form-control" required>
                     </div>
-                    
+
                     <div class="mb-3">
                         <label for="fecha" class="form-label">Fecha inicio:</label>
                         <input type="date" name="fecha" id="fecha" class="form-control" required>
@@ -63,9 +63,9 @@ $membresia = $conexion->query($sqlmembresia);
                         <select name="membresia" id="membresia" class="form-select">
                             <option value="">selecion..</option>
                             <?php while ($row_membresia = $membresia->fetch_assoc()) { ?>
-                                <option value="<?php echo $row_membresia["idmembresia"] ?>">
-                                    <?= $row_membresia["nombre"]."-".$row_membresia["precio"]?>
-                                </option>
+                            <option value="<?php echo $row_membresia["idmembresia"] ?>">
+                                <?= $row_membresia["nombre"] . "-" . $row_membresia["precio"] ?>
+                            </option>
                             <?php } ?>
                         </select>
                     </div>
@@ -128,7 +128,7 @@ $membresia->data_seek(0);
                         <label for="correo" class="form-label">Correo:</label>
                         <input type="text" name="correo" id="correo" class="form-control" required>
                     </div>
-                    
+
                     <div class="mb-3">
                         <label for="fecha" class="form-label">Fecha inicio:</label>
                         <input type="date" name="fecha" id="fecha" class="form-control" required>
@@ -139,9 +139,9 @@ $membresia->data_seek(0);
                         <select name="membresia" id="membresia" class="form-select">
                             <option value="">selecion..</option>
                             <?php while ($row_membresia = $membresia->fetch_assoc()) { ?>
-                                <option value="<?php echo $row_membresia["idmembresia"] ?>">
-                                    <?= $row_membresia["nombre"]."-".$row_membresia["precio"]?>
-                                </option>
+                            <option value="<?php echo $row_membresia["idmembresia"] ?>">
+                                <?= $row_membresia["nombre"] . "-" . $row_membresia["precio"] ?>
+                            </option>
                             <?php } ?>
                         </select>
                     </div>
@@ -179,3 +179,7 @@ $membresia->data_seek(0);
 
         </div>
     </div>
+
+</div>
+
+

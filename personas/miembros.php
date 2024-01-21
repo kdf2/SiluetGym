@@ -232,10 +232,19 @@ $miembrosinner = $conexion->query($innerjoinmiembros);
             <main>
                 <div class="container-fluid px-4 row justify-content-center">
                     <h1 class="d-flex justify-content-center">Miembros</h1>
-                    <div class="col align-self-start">
-                        <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nuevoModal"><i
-                                class="fa-solid fa-circle-plus"></i> Agregar
-                            miembro</a>
+                    <div class="d-flex flex-row">
+                        <div class="p-2">
+                            <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nuevoModal"><i
+                                    class="fa-solid fa-circle-plus"></i> Agregar
+                                nuevo miembro</a>
+                        </div>
+
+
+                        <div class="p-2">
+                            <a href="#" class="btn  btn-success" data-bs-toggle="modal" data-bs-target="#existente"><i
+                                    class="fa-solid fa-circle-plus"></i> Agregar
+                                persona existente</a>
+                        </div>
                     </div>
                     <br>
                     <br>
@@ -315,11 +324,12 @@ $miembrosinner = $conexion->query($innerjoinmiembros);
                                     </td>
 
                                     <td>
-                                        
+
 
                                         <div class="row ">
                                             <button class="idbutton btn btn-primary" onclick="miFuncion()"
-                                                data-bs-id="<?= $row_miembro['idmiembro']; ?>"> <i class="fa-solid fa-money-bill-1-wave"></i> Pagar</button>
+                                                data-bs-id="<?= $row_miembro['idmiembro']; ?>"> <i
+                                                    class="fa-solid fa-money-bill-1-wave"></i> Pagar</button>
                                         </div>
 
                                         <div class="row">
@@ -330,13 +340,13 @@ $miembrosinner = $conexion->query($innerjoinmiembros);
                                                 Editar</a>
                                         </div>
 
-                                        <div class="row">        
+                                        <div class="row">
                                             <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal"
                                                 data-bs-target="#eliminaModal"
                                                 data-bs-id="<?= $row_miembro['idmiembro']; ?>">
                                                 <i class="fa-solid fa-trash"></i> Eliminar</a>
                                         </div>
-                                        
+
                                     </td>
                                 </tr>
                             <?php } ?>
@@ -348,26 +358,26 @@ $miembrosinner = $conexion->query($innerjoinmiembros);
     </div>
 
 
-    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-        crossorigin="anonymous"></script>
-    <script src="../componentes/Js/scripts.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
-        crossorigin="anonymous"></script>
-    <script src="../componentes/Js/datatables-simple-demo.js"></script>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script>
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap4.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+    crossorigin="anonymous"></script>
+<script src="../componentes/Js/scripts.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
+    crossorigin="anonymous"></script>
+<script src="../componentes/Js/datatables-simple-demo.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
 
     <script>
 
@@ -378,7 +388,7 @@ $miembrosinner = $conexion->query($innerjoinmiembros);
         });
     </script>
     <?php include 'miembroModal.php' ?>
-
+    <?php include 'modalexistente.php' ?>
     <script>
 
 
@@ -392,6 +402,42 @@ $miembrosinner = $conexion->query($innerjoinmiembros);
                 console.log(id);
                 window.location.href = '../pagos/pagos.php?id=' + id;
             };
+        });
+
+        //buscar miembro
+        $('#telefonobuscar').keyup(function (e) {
+            e.preventDefault();
+
+            var tpersona = $(this).val();
+            var action = 'inforproveedor';
+
+            $.ajax({
+                url: 'ajax2.php',
+                type: "POST",
+                data: { action: action, tpersona: tpersona },
+                success: function (response) {
+                    console.log(response);
+                    if (response == 0) {
+                        $('#idpersona').val('');
+                        $('#nombreb').val('');
+                        $('#direccionb').val('');
+                        $('#correob').val('');
+                    }
+                    else {
+                        var data = JSON.parse(response);
+                        $('#idpersona').val(data.idpersona);
+                        $('#nombreb').val(data.nombre);
+                        $('#direccionb').val(data.direccion);
+                        $('#correob').val(data.correo);
+                    }
+
+
+                },
+                error: function (error) {
+
+                }
+
+            });
         });
 
 
