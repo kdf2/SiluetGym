@@ -237,28 +237,27 @@ $idmiembroo = isset($_GET['id']) ? $_GET['id'] : '';
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label> Numero de teléfono </label>
-                                        <?php if($idmiembroo >0){
-                                            $sql = "SELECT persona.telefono FROM persona INNER JOIN miembro ON miembro.persona_idpersona =persona.idpersona WHERE idmiembro =$idmiembroo"; 
-                                           $result = $conexion->query($sql); 
-                                           if (mysqli_num_rows($result) > 0) {
-                                            // Recorrer los resultados y mostrar los datos
-                                            while ($row = mysqli_fetch_assoc($result)) {
-                                                $celular = $row["telefono"];
+                                        <?php if ($idmiembroo > 0) {
+                                            $sql = "SELECT persona.telefono FROM persona INNER JOIN miembro ON miembro.persona_idpersona =persona.idpersona WHERE idmiembro =$idmiembroo";
+                                            $result = $conexion->query($sql);
+                                            if (mysqli_num_rows($result) > 0) {
+                                                // Recorrer los resultados y mostrar los datos
+                                                while ($row = mysqli_fetch_assoc($result)) {
+                                                    $celular = $row["telefono"];
+                                                }
                                             }
-                                        } 
-                                           ?>
-                                           <input autofocus class="form-control" type="number" name="telefono_miembro" value="<?php echo $celular; ?>"
-                                            id="telefono_miembro" placeholder="Ingrese numero del miembro" required>
-                                           <?php } 
-                                             else
-                                              {?>
-                                                 <input autofocus class="form-control" type="number" name="telefono_miembro"
-                                               id="telefono_miembro" placeholder="Ingrese numero del miembro" required>
-                                             <?php } ?>
+                                            ?>
+                                            <input autofocus class="form-control" type="number"  name="telefono_miembro"
+                                                value="<?php echo $celular; ?>" id="telefono_miembro"
+                                                placeholder="Ingrese numero del miembro" required>
+                                        <?php } else { ?>
+                                            <input autofocus class="form-control" type="number" name="telefono_miembro" 
+                                                id="telefono_miembro" placeholder="Ingrese numero del miembro" required>
+                                        <?php } ?>
                                     </div>
                                 </div>
 
-                               
+
 
 
 
@@ -345,7 +344,6 @@ $idmiembroo = isset($_GET['id']) ? $_GET['id'] : '';
     </div>
 
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script type="text/javascript" src="funciones.js"></script>
 

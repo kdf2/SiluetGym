@@ -4,25 +4,41 @@ require '../modelo/conexion.php';
 // Procesar el formulario para la primera tabla
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_tabla1'])) {
     // ... Lógica para insertar en la primera tabla ...
-    $nombres = $conexion->real_escape_string($_POST['nombre']);
-    $generos = $conexion->real_escape_string($_POST['genero']);
-    $telefonos = $conexion->real_escape_string($_POST['telefono']);
-    $direccions = $conexion->real_escape_string($_POST['direccion']);
-    $emails = $conexion->real_escape_string($_POST['email']);
-    $sqlpersona = "INSERT INTO persona (nombre, genero, telefono, direccion, correo) 
-    VALUES ('$nombres','$generos',$telefonos,'$direccions','$emails')";
-    // Marcar que los datos de la primera tabla han sido ingresados
-
-    if ($conexion->query($sqlpersona)) {
-        $idpersona = $conexion->insert_id;
+    $boolean = $conexion->real_escape_string($_POST['boolean']);
+    if($boolean==0){
+        $nombres = $conexion->real_escape_string($_POST['nombreb']);
+        $generos = $conexion->real_escape_string($_POST['generob']);
+        $telefonos = $conexion->real_escape_string($_POST['telefono']);
+        $direccions = $conexion->real_escape_string($_POST['direccionb']);
+        $emails = $conexion->real_escape_string($_POST['emailb']);
+        $sqlpersona = "INSERT INTO persona (nombre, genero, telefono, direccion, correo) 
+        VALUES ('$nombres','$generos',$telefonos,'$direccions','$emails')";
+        // Marcar que los datos de la primera tabla han sido ingresados
+    
+        if ($conexion->query($sqlpersona)) {
+            $idpersona = $conexion->insert_id;
+        }
+    
+        $cargotabla=$conexion->real_escape_string($_POST['cargo']);
+        $sqlempleado = "INSERT INTO empleado (persona_idpersona, cargo_idcargo) 
+        VALUES ($idpersona,$cargotabla)";
+        if ($conexion->query($sqlempleado)) {
+            $_SESSION['datos_tabla1_ingresados'] = true;
+            $_SESSION['$idempleado'] = $conexion->insert_id;
+        }
     }
 
-    $cargotabla=$conexion->real_escape_string($_POST['cargo']);
-    $sqlempleado = "INSERT INTO empleado (persona_idpersona, cargo_idcargo) 
-    VALUES ($idpersona,$cargotabla)";
-    if ($conexion->query($sqlempleado)) {
-        $_SESSION['$idempleado'] = $conexion->insert_id;
+    else{
+        $cargotabla=$conexion->real_escape_string($_POST['cargo']);
+        $idpersona=$conexion->real_escape_string($_POST['idpersona']);
+        $sqlempleado = "INSERT INTO empleado (persona_idpersona, cargo_idcargo) 
+        VALUES ($idpersona,$cargotabla)";
+        if ($conexion->query($sqlempleado)) {
+            $_SESSION['datos_tabla1_ingresados'] = true;
+            $_SESSION['$idempleado'] = $conexion->insert_id;
+        }
     }
+
 
 }
 

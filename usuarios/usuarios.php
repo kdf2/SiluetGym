@@ -206,34 +206,37 @@ $usuariosiner = $conexion->query($innerjoinusuarios);
                     <h1 class="d-flex justify-content-center">Usuarios</h1>
                     <form action="Guardar.php" method="post" id="formulariopersona" onsubmit="return validar()">
                         <div class="row">
+                        <input type="hidden" id="idpersona" name="idpersona">
+                    <input type="hidden" id="boolean" name="boolean" value="0">
                             <div class="col">
-                                <label for="nombre">Nombre:</label>
-                                <input autofocus type="text" class="form-control" id="nombre" name="nombre"
-                                    placeholder="Ingresa tu nombre">
+                                <label for="telefono">Teléfono:</label>
+                                <input type="number" autofocus class="form-control" id="telefono" name="telefono"
+                                    placeholder="Ingresa No. telefono">
                             </div>
+
                             <div class="col">
                                 <label for="genero">Genero:</label>
-                                <input type="text" class="form-control" id="genero" name="genero"
+                                <input type="text" class="form-control" id="generob" name="generob"
                                     placeholder="Ingresa el genero">
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col">
-                                <label for="telefono">Teléfono:</label>
-                                <input type="number" class="form-control" id="telefono" name="telefono"
-                                    placeholder="Ingresa No. telefono">
+                                <label for="nombre">Nombre:</label>
+                                <input type="text" class="form-control" id="nombreb" name="nombreb"
+                                    placeholder="Ingresa tu nombre">
                             </div>
                             <div class="col">
                                 <label for="direccion">Dirección:</label>
-                                <input type="text" class="form-control" id="direccion" name="direccion"
+                                <input type="text" class="form-control" id="direccionb" name="direccionb"
                                     placeholder="Ingresa direccion">
                             </div>
                         </div>
                         <div class="row">
                             <div class="col">
                                 <label for="email">correo:</label>
-                                <input type="email" class="form-control" id="email" name="email"
+                                <input type="email" class="form-control" id="emailb" name="emailb"
                                     placeholder="Ingresa correo electrónico">
                             </div>
                             <div class="col">
@@ -256,12 +259,12 @@ $usuariosiner = $conexion->query($innerjoinusuarios);
                                         class="fa-solid fa-floppy-disk"></i>&nbsp;Agregar nuevo
                                     usuario</button>
                             </div>
+                            <!--
                             <div class="p-2">
-                                <a href="#" class="btn  btn-success"
-                                    data-bs-toggle="modal" data-bs-target="#existente"><i
-                                        class="fa-solid fa-circle-plus"></i> Agregar
+                                <a href="#" class="btn  btn-success" data-bs-toggle="modal"
+                                    data-bs-target="#existente"><i class="fa-solid fa-circle-plus"></i> Agregar
                                     usuario existente</a>
-                            </div>
+                            </div> -->
                         </div>
 
 
@@ -381,30 +384,30 @@ $usuariosiner = $conexion->query($innerjoinusuarios);
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap4.min.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous">
+    </script>
     <script src="../componentes/Js/scripts.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
         crossorigin="anonymous"></script>
     <script src="../componentes/Js/datatables-simple-demo.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-        crossorigin="anonymous"></script>
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+        </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script>
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+        </script>
 
 
     <script>
         function validar() {
             //obteniendo el valor que se puso en el campo text del formulario
-            var miCampoTexto = document.getElementById("nombre").value;
+            var miCampoTexto = document.getElementById("telefono").value;
 
-                if (miCampoTexto.length == 0 || /^\s+$/.test(miCampoTexto)) {
-                    $('#eliminaModal2').modal('show'); // abrir
-                    return false;
-                }
-                
+            if (miCampoTexto.length == 0 || /^\s+$/.test(miCampoTexto)) {
+                $('#eliminaModal2').modal('show'); // abrir
+                return false;
+            }
+
         }
 
 
@@ -454,7 +457,7 @@ $usuariosiner = $conexion->query($innerjoinusuarios);
             let inputNombre = Modal.querySelector('.modal-body #telefonopersona').focus()
         });
         //buscar miembro
-        $('#telefonopersona').keyup(function (e) {
+        $('#telefono').keyup(function (e) {
             e.preventDefault();
 
             var tpersona = $(this).val();
@@ -463,21 +466,35 @@ $usuariosiner = $conexion->query($innerjoinusuarios);
             $.ajax({
                 url: 'ajax.php',
                 type: "POST",
-                data: { action: action, tpersona: tpersona },
+                data: {
+                    action: action,
+                    tpersona: tpersona
+                },
                 success: function (response) {
                     // console.log(response);
                     if (response == 0) {
-                        $('#idpersona').val('');
-                        $('#nombrep').val('');
-                        $('#direccionp').val('');
-                        $('#correop').val('');
-                    }
-                    else {
+                        $('#idpersona').val('0');
+                        $('#boolean').val('0');
+                        $('#nombreb').val('');
+                        $('#direccionb').val('');
+                        $('#emailb').val('');
+                        $('#generob').val('');
+                        $('#nombreb').removeAttr('disabled');
+                        $('#direccionb').removeAttr('disabled');
+                        $('#correob').removeAttr('disabled');
+                        $('#generob').removeAttr('disabled');
+                    } else {
                         var data = JSON.parse(response);
+                        $('#boolean').val('1');
                         $('#idpersona').val(data.idpersona);
-                        $('#nombrep').val(data.nombre);
-                        $('#direccionp').val(data.direccion);
-                        $('#correop').val(data.correo);
+                        $('#nombreb').val(data.nombre);
+                        $('#direccionb').val(data.direccion);
+                        $('#emailb').val(data.correo);
+                        $('#generob').val(data.genero);
+                        $('#nombreb').attr('disabled', 'disabled');
+                        $('#direccionb').attr('disabled', 'disabled');
+                        $('#emailb').attr('disabled', 'disabled');
+                        $('#generob').attr('disabled', 'disabled');
                     }
 
 
@@ -488,15 +505,12 @@ $usuariosiner = $conexion->query($innerjoinusuarios);
 
             });
         });
-
     </script>
 
 
 
 
     <script>
-
-
         $(document).ready(function () {
             <?php
             // Verifica si los datos de la primera tabla han sido ingresados y abre el modal de la segunda tabla

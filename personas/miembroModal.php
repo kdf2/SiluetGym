@@ -13,49 +13,58 @@ $membresia = $conexion->query($sqlmembresia);
             </div>
             <div class="modal-body">
                 <form action="guardarmiembro.php" method="post">
-                    <input type="hidden" id="id" name="id">
+                    <input type="hidden" id="idpersona" name="idpersona">
+                    <input type="hidden" id="boolean" name="boolean" value="0">
+
+                    <div class="mb-3">
+                        <label for="telefono" class="form-label">Teléfono:</label>
+                        <input type="number" name="telefono" id="telefono" class="form-control" required>
+                    </div>
+
                     <div class="mb-3">
                         <label for="nombre" class="form-label">Nombre:</label>
-                        <input type="text" name="nombre" id="nombre" class="form-control" required>
+                        <input type="text" name="nombreb" id="nombreb" class="form-control" required>
                     </div>
 
-                    <div class="mb-3">
-                        <label for="edad" class="form-label">Edad:</label>
-                        <input type="number" name="edad" id="edad" class="form-control" required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="peso" class="form-label">Peso:</label>
-                        <input type="number" name="peso" step="any" id="peso" class="form-control" required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="altura" class="form-label">Altura:</label>
-                        <input type="number" step="any" name="altura" id="altura" class="form-control" required>
-                    </div>
 
                     <div class="mb-3">
                         <label for="genero" class="form-label">Genero:</label>
-                        <input type="text" name="genero" id="genero" class="form-control" required>
+                        <input type="text" name="generob" id="generob" class="form-control" required>
                     </div>
 
+                    
                     <div class="mb-3">
-                        <label for="telefono" class="form-label">Telefono:</label>
-                        <input type="number" name="telefono" id="telefono" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="direccion" class="form-label">direccion:</label>
-                        <input type="text" name="direccion" id="direccion" class="form-control" required>
+                        <label for="direccion" class="form-label">Dirección:</label>
+                        <input type="text" name="direccionb" id="direccionb" class="form-control" required>
                     </div>
 
                     <div class="mb-3">
                         <label for="correo" class="form-label">Correo:</label>
-                        <input type="text" name="correo" id="correo" class="form-control" required>
+                        <input type="text" name="correob" id="correob" class="form-control" required>
                     </div>
 
                     <div class="mb-3">
+                        <label for="edad" class="form-label">Edad:</label>
+                        <input type="number" name="edadb" id="edadb" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="peso" class="form-label">Peso:</label>
+                        <input type="number" name="pesob" step="any" id="pesob" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="altura" class="form-label">Altura:</label>
+                        <input type="number" step="any" name="alturab" id="alturab" class="form-control" required>
+                    </div>
+
+
+
+
+
+                    <div class="mb-3">
                         <label for="fecha" class="form-label">Fecha inicio:</label>
-                        <input type="date" name="fecha" id="fecha" class="form-control" required>
+                        <input type="date" name="fechab" id="fechab" class="form-control" required>
                     </div>
 
                     <div class="mb-3">

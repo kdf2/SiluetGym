@@ -14,22 +14,25 @@ $('#telefono_cliente').keyup(function (e) {
         type: "POST",
         data: { action: action, cliente: cl },
         success: function (response) {
-            console.log(response);
+           //console.log(response);
             if (response == 0) {
+                
                 $('#idCliente').val('');
                 $('#nombre_cliente').val('');
                 $('#direccion_cliente').val('');
+                $('#btncliente').slideDown();
             }
             else {
+                $('#btncliente').slideUp();
                 var data = JSON.parse(response);
                 $('#idCliente').val(data.idpersona);
                 $('#nombre_cliente').val(data.nombre);
                 $('#direccion_cliente').val(data.direccion);
-
-
                 $('#idCliente').attr('disabled', 'disabled');
                 $('#nombre_cliente').attr('disabled', 'disabled');
                 $('#direccion_cliente').attr('disabled', 'disabled');
+                
+
             }
 
 
@@ -66,7 +69,9 @@ $('#text_codigo_producto').keyup(function (e) {
                 $('#txt_cantidad_producto').val('0');
                 $('#txt_cantidad_producto').attr('disabled', 'disabled');
                 $('#add_producto_venta').slideUp();
-
+                $('#btn-facturar-venta').slideUp();
+                $('#btn_anular_venta').slideUp();
+            
             }
             else {
                 var data = JSON.parse(response);
@@ -79,10 +84,12 @@ $('#text_codigo_producto').keyup(function (e) {
                 $('#add_producto_venta').slideDown();
                 $('#btn-facturar-venta').slideDown();
                 $('#btn_anular_venta').slideDown();
+                
                 $('#text_nombre').attr('disabled', 'disabled');
                 $('#text_existencia').attr('disabled', 'disabled');
                 $('#text_marca').attr('disabled', 'disabled');
                 $('#text_precio').attr('disabled', 'disabled');
+                
 
             }
 
@@ -103,7 +110,7 @@ $('#txt_cantidad_producto').keyup(function (e) {
     var existencia = parseInt($('#text_existencia').html());
     $('#text_precio_total').html(precio_total);
 
-    if (($(this).val() < 1 || isNaN($(this).val())) || ($(this).val() > existencia) ) {
+    if (($(this).val() < 1 || isNaN($(this).val())) || ($(this).val() > existencia)) {
         $('#add_producto_venta').slideUp();
     }
     else {
@@ -225,26 +232,26 @@ function enviarID() {
     window.open(url, '_blank');
     location.reload();
     var xhr = new XMLHttpRequest();
-  
+
     // Configurar la solicitud AJAX
     xhr.open("POST", "generarventa.php", true);
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-  
+
     // Enviar el valor del input a PHP
     xhr.send("id=" + id);
-  
+
     // Manejar la respuesta de PHP
-    xhr.onreadystatechange = function() {
-      if (xhr.readyState === XMLHttpRequest.DONE) {
-        if (xhr.status === 200) {
-          // Hacer algo con la respuesta de PHP
-          console.log(xhr.responseText);
-        } else {
-          // Manejar errores
-          console.error("Error: " + xhr.status);
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                // Hacer algo con la respuesta de PHP
+                console.log(xhr.responseText);
+            } else {
+                // Manejar errores
+                console.error("Error: " + xhr.status);
+            }
         }
-      }
     };
 
 
-  };
+};

@@ -132,12 +132,12 @@ $('#btn-facturar-mensualidad').click(function (e) {
 
 
 $('#btn-pdf').click(function (e) {
-    location.reload();
-    var url = 'generarpdf.php';
-    window.open(url, '_blank');
-    
-
+  var url = 'generarpdf.php';
+  window.open(url, '_blank');
+  $('#telefono_miembro').val('0');
+  location.reload();
 });
+
 function refrezcar(){
     location.reload();
 };

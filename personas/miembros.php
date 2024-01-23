@@ -239,12 +239,12 @@ $miembrosinner = $conexion->query($innerjoinmiembros);
                                 nuevo miembro</a>
                         </div>
 
-
+                   <!--
                         <div class="p-2">
                             <a href="#" class="btn  btn-success" data-bs-toggle="modal" data-bs-target="#existente"><i
                                     class="fa-solid fa-circle-plus"></i> Agregar
                                 persona existente</a>
-                        </div>
+                        </div> -->
                     </div>
                     <br>
                     <br>
@@ -405,7 +405,7 @@ $miembrosinner = $conexion->query($innerjoinmiembros);
         });
 
         //buscar miembro
-        $('#telefonobuscar').keyup(function (e) {
+        $('#telefono').keyup(function (e) {
             e.preventDefault();
 
             var tpersona = $(this).val();
@@ -418,17 +418,29 @@ $miembrosinner = $conexion->query($innerjoinmiembros);
                 success: function (response) {
                     console.log(response);
                     if (response == 0) {
-                        $('#idpersona').val('');
+                        $('#idpersona').val('0');
+                        $('#boolean').val('0');
                         $('#nombreb').val('');
                         $('#direccionb').val('');
                         $('#correob').val('');
+                        $('#generob').val('');
+                        $('#nombreb').removeAttr('disabled');
+                        $('#direccionb').removeAttr('disabled');
+                        $('#correob').removeAttr('disabled');
+                        $('#generob').removeAttr('disabled');
                     }
                     else {
                         var data = JSON.parse(response);
+                        $('#boolean').val('1');
                         $('#idpersona').val(data.idpersona);
                         $('#nombreb').val(data.nombre);
                         $('#direccionb').val(data.direccion);
                         $('#correob').val(data.correo);
+                        $('#generob').val(data.genero);
+                        $('#nombreb').attr('disabled', 'disabled');
+                        $('#direccionb').attr('disabled', 'disabled');
+                        $('#correob').attr('disabled', 'disabled');
+                        $('#generob').attr('disabled', 'disabled');
                     }
 
 
@@ -444,7 +456,7 @@ $miembrosinner = $conexion->query($innerjoinmiembros);
 
         let nuevoModal = document.getElementById('nuevoModal')
         nuevoModal.addEventListener('shown.bs.modal', event => {
-            let inputNombre = nuevoModal.querySelector('.modal-body #nombre').focus()
+            let inputNombre = nuevoModal.querySelector('.modal-body #telefono').focus()
         })
 
         let editarModal = document.getElementById('actualizarModal')

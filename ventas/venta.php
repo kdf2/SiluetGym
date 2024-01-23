@@ -47,6 +47,7 @@ $_SESSION["nombrepersona"] = $fila2[$atributo2];
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <script src="../jquery-3.7.1.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <link href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
 </head>
 <style>
@@ -66,7 +67,10 @@ $_SESSION["nombrepersona"] = $fila2[$atributo2];
 
     #btn_anular_venta {
         display: none;
-    }
+    }  
+    #btncliente {
+        display: none;
+    }  
 </style>
 
 <body class="sb-nav-fixed">
@@ -212,9 +216,14 @@ $_SESSION["nombrepersona"] = $fila2[$atributo2];
 
                         <div class="card">
                             <div class="action_cliente">
-                                <a href="#" class="btn btn-primary btn_new btn_new_cliente" data-bs-toggle="modal"
+                                <a href="#" class="btn btn-primary btn_new "  id="miEnlace" data-bs-toggle="modal"
                                     data-bs-target="#nuevoModal"><i class="fa-solid fa-circle-plus"></i> Agregar
                                     cliente</a>
+
+                                    <button type="submit" id="btncliente"
+                                                class="btn btn-danger btn_ok text-center btn_anular_venta2"><i class="fas fa-ban"></i>
+                                                &nbsp;Anular venta</button>
+                                    
                             </div>
 
                             <div class="card-body">
@@ -262,6 +271,11 @@ $_SESSION["nombrepersona"] = $fila2[$atributo2];
                                                     class="far fa-edit"></i>&nbsp;Realizar venta</button>
                                             
                                         </div>
+                                        <div class=" col-md-2">
+                                       
+                                        
+                                        </div>
+                                        
                                     </div>
                                 </form>
                             </div>
@@ -334,7 +348,13 @@ $_SESSION["nombrepersona"] = $fila2[$atributo2];
     </div>
 
     <?php include 'nuevoModal.php' ?>
-
+    <script>
+        
+        let nuevoModal = document.getElementById('nuevoModal')
+                nuevoModal.addEventListener('shown.bs.modal', event => {
+                    let inputcantidad = nuevoModal.querySelector('.modal-body #nombre').focus()
+                })
+    </script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script type="text/javascript" src="funciones.js"></script>
 
@@ -357,13 +377,7 @@ $_SESSION["nombrepersona"] = $fila2[$atributo2];
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
 
-    <script>
-        
-        let nuevoModal = document.getElementById('nuevoModal')
-                nuevoModal.addEventListener('shown.bs.modal', event => {
-                    let inputcantidad = nuevoModal.querySelector('.modal-body #nombre').focus()
-                })
-    </script>
+
 
 
 </body>
