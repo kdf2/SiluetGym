@@ -270,15 +270,15 @@ while ($row = $result->fetch_assoc()) {
                         <div class="dropdown">
                             <a class=" nav-link collapsed" href="#" role="button" id="dropdownMenuLink"
                                 data-bs-toggle="dropdown" aria-expanded="false" aria-controls="collapseLayouts">
-                                <i class="fa-solid fa-hand-holding-dollar"></i> &nbsp;Ventas
+                                <i class="fa-solid fa-hand-holding-dollar"></i> &nbsp;Inventario
                             </a>
 
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                 <li><a class="dropdown-item" href="ventas/venta.php">Realizar venta</a></li>
-                                <li><a class="dropdown-item" href="ventas/stock.php">Stock</a></li>
+                                <li><a class="dropdown-item" href="ventas/stock.php">Realizar compra</a></li>
                                 <?php
                                 if ($filarol[$atributorol] == "Administrativo") { ?>
-                                    <li><a class="dropdown-item" href="ventas/informe.php">Informe</a></li>
+                                    <li><a class="dropdown-item" href="ventas/informe.php">Informe ventas</a></li>
                                 <?php } ?>
                             </ul>
                         </div>
@@ -343,7 +343,7 @@ while ($row = $result->fetch_assoc()) {
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <h1 class="mt-4 text-center">Panel de control</h1>
+                    <h1 class="mt-4 text-center">PANEL DE CONTROL</h1>
                     <div class="row">
                         <div class="col-lg-3 col-md-6 col-sm-6">
                             <div class="card card-stats">

@@ -23,7 +23,8 @@ $('#telefono_cliente').keyup(function (e) {
                 $('#btncliente').slideDown();
             }
             else {
-                $('#btncliente').slideUp();
+                
+                
                 var data = JSON.parse(response);
                 $('#idCliente').val(data.idpersona);
                 $('#nombre_cliente').val(data.nombre);
@@ -31,7 +32,7 @@ $('#telefono_cliente').keyup(function (e) {
                 $('#idCliente').attr('disabled', 'disabled');
                 $('#nombre_cliente').attr('disabled', 'disabled');
                 $('#direccion_cliente').attr('disabled', 'disabled');
-                
+                $('#btncliente').slideUp();
 
             }
 

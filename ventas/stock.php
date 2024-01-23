@@ -109,8 +109,8 @@ $stockinner = $conexion->query($innerjoinstock);
                                 <li><a class="dropdown-item" href="../pagos/pagos.php">Ralizar mensualidad</a></li>
                                 <li><a class="dropdown-item" href="../pagos/membresias.php">Membresias</a></li>
                                 <?php
-                        if ($filarol[$atributorol] == "Administrativo") { ?>
-                                <li><a class="dropdown-item" href="../pagos/informe.php">Informe</a></li>
+                                if ($filarol[$atributorol] == "Administrativo") { ?>
+                                    <li><a class="dropdown-item" href="../pagos/informe.php">Informe</a></li>
                                 <?php } ?>
                             </ul>
                         </div>
@@ -120,18 +120,19 @@ $stockinner = $conexion->query($innerjoinstock);
                         <div class="dropdown">
                             <a class=" nav-link collapsed" href="#" role="button" id="dropdownMenuLink"
                                 data-bs-toggle="dropdown" aria-expanded="false" aria-controls="collapseLayouts">
-                                <i class="fa-solid fa-hand-holding-dollar"></i> &nbsp;Ventas
+                                <i class="fa-solid fa-hand-holding-dollar"></i> &nbsp;Inventario
                             </a>
 
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                <li><a class="dropdown-item" href="venta.php">Realizar venta</a></li>
-                                <li><a class="dropdown-item" href="stock.php">Stock</a></li>
+                                <li><a class="dropdown-item" href="../ventas/venta.php">Realizar venta</a></li>
+                                <li><a class="dropdown-item" href="../ventas/stock.php">Realizar compra</a></li>
                                 <?php
                                 if ($filarol[$atributorol] == "Administrativo") { ?>
-                                    <li><a class="dropdown-item" href="informe.php">Informe</a></li>
+                                    <li><a class="dropdown-item" href="../ventas/informe.php">Informe ventas</a></li>
                                 <?php } ?>
                             </ul>
                         </div>
+
 
 
 
@@ -210,7 +211,10 @@ $stockinner = $conexion->query($innerjoinstock);
                                 <th>Categoría</th>
                                 <th>Cantidad</th>
                                 <th>Precio venta</th>
-                                <th>Acciones</th>
+                                <?php
+                                if ($filarol[$atributorol] == "Administrativo") { ?>
+                                    <th>Acciones</th>
+                                <?php } ?>
                             </tr>
                         </thead>
                         <tbody>
@@ -240,18 +244,21 @@ $stockinner = $conexion->query($innerjoinstock);
                                         <td>
                                             <?= 'Q' . $row_stock['p_precio']; ?>
                                         </td>
+                                        <?php
+                                        if ($filarol[$atributorol] == "Administrativo") { ?>
+                                            <td>
 
-                                        <td>
-
-                                            <a href="#" class="btn btn-sm btn-warning" data-bs-toggle="modal"
-                                                data-bs-target="#actualizarModal" data-bs-id="<?= $row_stock['idproducto']; ?>">
-                                                <i class="fa-solid fa-pen-to-square"></i> Editar</a>
+                                                <a href="#" class="btn btn-sm btn-warning" data-bs-toggle="modal"
+                                                    data-bs-target="#actualizarModal" data-bs-id="<?= $row_stock['idproducto']; ?>">
+                                                    <i class="fa-solid fa-pen-to-square"></i> Editar</a>
 
 
-                                            <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal"
-                                                data-bs-target="#eliminaModal" data-bs-id="<?= $row_stock['idproducto']; ?>"> <i class="fa-solid fa-trash"></i> Eliminar</a>
+                                                <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal"
+                                                    data-bs-target="#eliminaModal" data-bs-id="<?= $row_stock['idproducto']; ?>"> <i
+                                                        class="fa-solid fa-trash"></i> Eliminar</a>
 
-                                        </td>
+                                            </td>
+                                        <?php } ?>
                                     </tr>
                                 <?php } ?>
                                 <?php if ($row_stock['cantidad'] > 2) { ?>
@@ -279,18 +286,20 @@ $stockinner = $conexion->query($innerjoinstock);
                                         <td>
                                             <?= 'Q' . $row_stock['p_precio']; ?>
                                         </td>
+                                        <?php
+                                        if ($filarol[$atributorol] == "Administrativo") { ?>
+                                            <td>
+                                                <a href="#" class="btn btn-sm btn-warning" data-bs-toggle="modal"
+                                                    data-bs-target="#actualizarModal" data-bs-id="<?= $row_stock['idproducto']; ?>">
+                                                    <i class="fa-solid fa-pen-to-square"></i>
+                                                    Editar</a>
 
-                                        <td>
-                                            <a href="#" class="btn btn-sm btn-warning" data-bs-toggle="modal"
-                                                data-bs-target="#actualizarModal"
-                                                data-bs-id="<?= $row_stock['idproducto']; ?>"></i>
-                                                Editar</a>
+                                                <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal"
+                                                    data-bs-target="#eliminaModal" data-bs-id="<?= $row_stock['idproducto']; ?>">
+                                                    <i class="fa-solid fa-trash"></i> Eliminar</a>
 
-                                            <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal"
-                                                data-bs-target="#eliminaModal" data-bs-id="<?= $row_stock['idproducto']; ?>"
-                                                class="fa-solid fa-trash"></i></i> Eliminar</a>
-
-                                        </td>
+                                            </td>
+                                        <?php } ?>
                                     </tr>
                                 <?php } ?>
                             <?php } ?>

@@ -135,18 +135,19 @@ $_SESSION["nombrepersona"] = $fila2[$atributo2];
                         <div class="dropdown">
                             <a class=" nav-link collapsed" href="#" role="button" id="dropdownMenuLink"
                                 data-bs-toggle="dropdown" aria-expanded="false" aria-controls="collapseLayouts">
-                                <i class="fa-solid fa-hand-holding-dollar"></i> &nbsp;Ventas
+                                <i class="fa-solid fa-hand-holding-dollar"></i> &nbsp;Inventario
                             </a>
 
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                <li><a class="dropdown-item" href="venta.php">Realizar venta</a></li>
-                                <li><a class="dropdown-item" href="stock.php">Stock</a></li>
+                                <li><a class="dropdown-item" href="../ventas/venta.php">Realizar venta</a></li>
+                                <li><a class="dropdown-item" href="../ventas/stock.php">Realizar compra</a></li>
                                 <?php
-                        if ($filarol[$atributorol] == "Administrativo") { ?>
-                                <li><a class="dropdown-item" href="informe.php">Informe</a></li>
+                                if ($filarol[$atributorol] == "Administrativo") { ?>
+                                    <li><a class="dropdown-item" href="../ventas/informe.php">Informe ventas</a></li>
                                 <?php } ?>
                             </ul>
                         </div>
+
 
 
 
@@ -216,7 +217,7 @@ $_SESSION["nombrepersona"] = $fila2[$atributo2];
 
                         <div class="card">
                             <div class="action_cliente">
-                                <a href="#" class="btn btn-primary btn_new "  id="miEnlace" data-bs-toggle="modal"
+                                <a href="#" class="btn btn-primary btn_new "  id="btncliente" data-bs-toggle="modal"
                                     data-bs-target="#nuevoModal"><i class="fa-solid fa-circle-plus"></i> Agregar
                                     cliente</a>
 

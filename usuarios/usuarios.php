@@ -130,15 +130,15 @@ $usuariosiner = $conexion->query($innerjoinusuarios);
                         <div class="dropdown">
                             <a class=" nav-link collapsed" href="#" role="button" id="dropdownMenuLink"
                                 data-bs-toggle="dropdown" aria-expanded="false" aria-controls="collapseLayouts">
-                                <i class="fa-solid fa-hand-holding-dollar"></i> &nbsp;Ventas
+                                <i class="fa-solid fa-hand-holding-dollar"></i> &nbsp;Inventario
                             </a>
 
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                 <li><a class="dropdown-item" href="../ventas/venta.php">Realizar venta</a></li>
-                                <li><a class="dropdown-item" href="../ventas/stock.php">Stock</a></li>
+                                <li><a class="dropdown-item" href="../ventas/stock.php">Realizar compra</a></li>
                                 <?php
                                 if ($filarol[$atributorol] == "Administrativo") { ?>
-                                    <li><a class="dropdown-item" href="../ventas/informe.php">Informe</a></li>
+                                    <li><a class="dropdown-item" href="../ventas/informe.php">Informe ventas</a></li>
                                 <?php } ?>
                             </ul>
                         </div>
@@ -481,7 +481,7 @@ $usuariosiner = $conexion->query($innerjoinusuarios);
                         $('#generob').val('');
                         $('#nombreb').removeAttr('disabled');
                         $('#direccionb').removeAttr('disabled');
-                        $('#correob').removeAttr('disabled');
+                        $('#emailb').removeAttr('disabled');
                         $('#generob').removeAttr('disabled');
                     } else {
                         var data = JSON.parse(response);
